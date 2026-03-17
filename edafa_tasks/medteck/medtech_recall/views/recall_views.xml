@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Recall Tree View -->
+    <record id="view_medtech_recall_tree" model="ir.ui.view">
+        <field name="name">medtech.recall.tree</field>
+        <field name="model">medtech.recall</field>
+        <field name="arch" type="xml">
+            <list string="Recalls" decoration-danger="classification == 'class_i'" decoration-warning="classification == 'class_ii'">
+                <field name="name"/>
+                <field name="classification"/>
+                <field name="affected_product_ids" widget="many2many_tags"/>
+                <field name="total_manufactured"/>
+                <field name="state"/>
+                <field name="initiation_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Recall Form View -->
+    <record id="view_medtech_recall_form" model="ir.ui.view">
+        <field name="name">medtech.recall.form</field>
+        <field name="model">medtech.recall</field>
+        <field name="arch" type="xml">
+            <form string="Recall">
+                <header>
+                    <button name="action_run_recall_simulation" string="Run Recall Simulation" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_activate_recall" string="Activate Recall" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_generate_regulatory_pack" string="Generate Regulatory Pack" type="object" invisible="state not in ['active','monitoring','closed']"/>
+                    <button name="action_close_recall" string="Close Recall" type="object" invisible="state not in ['active','monitoring']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,monitoring,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_quarantines" type="object" class="oe_stat_button" icon="fa-ban">
+                            <field name="quarantine_count" widget="statinfo" string="Quarantines"/>
+                        </button>
+                        <button name="action_view_notifications" type="object" class="oe_stat_button" icon="fa-envelope">
+                            <field name="notification_count" widget="statinfo" string="Notifications"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Classification">
+                            <field name="classification" widget="priority"/>
+                            <field name="severity"/>
+                            <field name="recall_type"/>
+                            <field name="trigger_source"/>
+                            <field name="initiation_date"/>
+                        </group>
+                        <group string="Regulatory Reporting">
+                            <field name="fda_reported"/>
+                            <field name="fda_report_number" invisible="not fda_reported"/>
+                            <field name="fda_report_date" invisible="not fda_reported"/>
+                            <field name="eu_competent_authority_reported"/>
+                            <field name="eu_fsca_number" invisible="not eu_competent_authority_reported"/>
+                            <field name="regulatory_pack_generated" readonly="1"/>
+                            <field name="regulatory_pack_generated_at" readonly="1" invisible="not regulatory_pack_generated"/>
+                        </group>
+                    </group>
+
+                    <group string="Simulation Status">
+                        <group>
+                            <field name="simulation_done" readonly="1"/>
+                            <field name="simulation_at" readonly="1"/>
+                            <field name="impacted_customer_count" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="nonconformance_id" readonly="1"/>
+                            <field name="capa_id" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Recall Reason">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Health Hazard Evaluation">
+                        <field name="health_hazard_evaluation" nolabel="1"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Affected Population">
+                            <group>
+                                <field name="affected_determination"/>
+                                <field name="affected_product_ids" widget="many2many_tags"/>
+                                <field name="total_manufactured"/>
+                                <field name="total_distributed"/>
+                                <field name="total_in_stock"/>
+                                <field name="total_returned"/>
+                            </group>
+                            <group string="Affected Lots/Serials" invisible="affected_determination not in ['by_serial', 'by_lot']">
+                                <field name="affected_lot_ids" nolabel="1"/>
+                                <field name="affected_serial_ids" nolabel="1" invisible="affected_determination != 'by_serial'"/>
+                            </group>
+                            <group string="Component Lot" invisible="affected_determination != 'by_component'">
+                                <field name="affected_component_lot_id"/>
+                            </group>
+                            <group string="Date Range" invisible="affected_determination != 'by_date_range'">
+                                <field name="date_range_start"/>
+                                <field name="date_range_end"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Recall Strategy">
+                            <group>
+                                <field name="recall_action"/>
+                                <field name="correction_instructions"/>
+                                <field name="target_completion_date"/>
+                                <field name="actual_completion_date"/>
+                                <field name="simulation_notes" placeholder="Simulation notes and assumptions..."/>
+                            </group>
+                        </page>
+                        
+                        <page string="Quarantines">
+                            <field name="quarantine_ids"/>
+                        </page>
+                        
+                        <page string="Customer Notifications">
+                            <button name="action_view_notifications" string="Generate Customer Notifications" type="object" class="oe_highlight"/>
+                            <field name="customer_notification_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Recall Action -->
+    <record id="action_medtech_recall" model="ir.actions.act_window">
+        <field name="name">Recalls</field>
+        <field name="res_model">medtech.recall</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Recalls
+            </p>
+            <p>
+                Recalls manage the systematic removal or correction of medical devices
+                that present unacceptable risk to health.
+            </p>
+        </field>
+    </record>
+
+    <!-- Quarantine Views -->
+    <record id="view_medtech_quarantine_tree" model="ir.ui.view">
+        <field name="name">medtech.quarantine.tree</field>
+        <field name="model">medtech.quarantine</field>
+        <field name="arch" type="xml">
+            <list string="Quarantines" decoration-danger="status == 'quarantined'" decoration-success="status == 'released'">
+                <field name="lot_id"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="location_id"/>
+                <field name="status"/>
+                <field name="quarantine_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Quarantine Form View -->
+    <record id="view_medtech_quarantine_form" model="ir.ui.view">
+        <field name="name">medtech.quarantine.form</field>
+        <field name="model">medtech.quarantine</field>
+        <field name="arch" type="xml">
+            <form string="Quarantine">
+                <header>
+                    <button name="action_release" string="Release from Quarantine" type="object" class="oe_highlight" invisible="status != 'quarantined'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="lot_id"/>
+                            <field name="product_id"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="location_id"/>
+                            <field name="quarantine_date"/>
+                            <field name="released_date"/>
+                        </group>
+                    </group>
+                    <group string="Reason">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                    <group string="Disposition" invisible="status == 'quarantined'">
+                        <field name="disposition"/>
+                        <field name="disposition_notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Quarantine Action -->
+    <record id="action_medtech_quarantine" model="ir.actions.act_window">
+        <field name="name">Quarantines</field>
+        <field name="res_model">medtech.quarantine</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Quarantines
+            </p>
+        </field>
+    </record>
+
+</odoo>

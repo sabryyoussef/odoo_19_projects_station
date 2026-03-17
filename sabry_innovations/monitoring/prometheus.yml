@@ -1,0 +1,53 @@
+# Prometheus Configuration
+# For monitoring Odoo CRM Lead Audit Automation
+
+global:
+  scrape_interval: 15s          # Scrape targets every 15 seconds
+  evaluation_interval: 15s      # Evaluate rules every 15 seconds
+  external_labels:
+    monitor: 'odoo-crm-automation'
+    environment: 'development'
+
+# Alerting configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Load rules once and periodically evaluate them
+rule_files:
+  # - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Grafana metrics (optional)
+  - job_name: 'grafana'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['localhost:3000']
+
+  # Python application metrics
+  # Uncomment when you add prometheus_client to automation script
+  # - job_name: 'lead_audit_automation'
+  #   scrape_interval: 30s
+  #   static_configs:
+  #     - targets: ['localhost:8000']
+  #   metrics_path: '/metrics'
+
+  # Node Exporter (if enabled)
+  # - job_name: 'node'
+  #   scrape_interval: 15s
+  #   static_configs:
+  #     - targets: ['node-exporter:9100']
+
+  # Windows Exporter (if on Windows with WMI Exporter)
+  # - job_name: 'windows'
+  #   scrape_interval: 15s
+  #   static_configs:
+  #     - targets: ['localhost:9182']

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vendor Certification Tree View -->
+    <record id="view_medtech_vendor_certification_tree" model="ir.ui.view">
+        <field name="name">medtech.vendor.certification.tree</field>
+        <field name="model">medtech.vendor.certification</field>
+        <field name="arch" type="xml">
+            <list string="Vendor Certifications" decoration-danger="status == 'expired'" decoration-warning="status == 'expiring_soon'">
+                <field name="partner_id"/>
+                <field name="certification_type"/>
+                <field name="certificate_number"/>
+                <field name="issue_date"/>
+                <field name="expiry_date"/>
+                <field name="status" decoration-success="status == 'valid'"/>
+                <field name="required_for_po"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vendor Certification Form View -->
+    <record id="view_medtech_vendor_certification_form" model="ir.ui.view">
+        <field name="name">medtech.vendor.certification.form</field>
+        <field name="model">medtech.vendor.certification</field>
+        <field name="arch" type="xml">
+            <form string="Vendor Certification">
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Vendor">
+                            <field name="partner_id"/>
+                            <field name="certification_type"/>
+                            <field name="certificate_number"/>
+                        </group>
+                        <group string="Validity">
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="issuing_body"/>
+                            <field name="required_for_po"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                    <group string="Product Categories Covered">
+                        <field name="product_category_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
+                    <group string="Certificate">
+                        <field name="attachment_id" filename="attachment_filename"/>
+                        <field name="attachment_filename" invisible="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vendor Certification Action -->
+    <record id="action_medtech_vendor_certification" model="ir.actions.act_window">
+        <field name="name">Vendor Certifications</field>
+        <field name="res_model">medtech.vendor.certification</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Vendor Certification
+            </p>
+            <p>
+                Track vendor quality certifications (ISO 9001, ISO 13485, quality agreements)
+                to ensure only qualified suppliers are used for medical device components.
+            </p>
+        </field>
+    </record>
+
+    <!-- Purchase Order Extended Form View -->
+    <record id="view_purchase_order_medtech_form" model="ir.ui.view">
+        <field name="name">purchase.order.medtech.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vendor_compliance_status" 
+                       decoration-success="vendor_compliance_status == 'compliant'"
+                       decoration-warning="vendor_compliance_status == 'warning'"
+                       decoration-danger="vendor_compliance_status == 'non_compliant'"/>
+                <field name="compliance_override" invisible="vendor_compliance_status == 'compliant'"/>
+                <field name="compliance_override_reason" invisible="not compliance_override"/>
+                <field name="compliance_override_approved_by_id" invisible="not compliance_override"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vendor Compliance Submenu -->
+    <menuitem id="menu_medtech_vendor_compliance"
+              name="Vendor Compliance"
+              parent="medtech_core.menu_medtech_root"
+              sequence="50"/>
+
+    <menuitem id="menu_medtech_vendor_certifications"
+              name="Vendor Certifications"
+              parent="menu_medtech_vendor_compliance"
+              action="action_medtech_vendor_certification"
+              sequence="10"/>
+
+</odoo>

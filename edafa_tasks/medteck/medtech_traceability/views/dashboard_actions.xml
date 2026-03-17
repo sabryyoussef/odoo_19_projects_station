@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Traceability Dashboard Action -->
+    <record id="action_traceability_dashboard" model="ir.actions.client">
+        <field name="name">Traceability Dashboard</field>
+        <field name="tag">medtech_traceability.dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Dashboard Menu Item -->
+    <menuitem id="menu_traceability_dashboard"
+              name="Traceability Dashboard"
+              parent="menu_medtech_traceability"
+              action="action_traceability_dashboard"
+              sequence="1"/>
+</odoo>

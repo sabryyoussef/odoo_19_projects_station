@@ -1,0 +1,117 @@
+﻿"Module","DocType","Section","Content"
+"medtech_traceability","README","MedTech Traceability Module",""
+"medtech_traceability","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, stock, mrp"
+"medtech_traceability","README","Purpose","Complete device traceability system for medical devices, tracking from raw materials through production to end customer. Compliant with FDA 21 CFR Part 820 Subpart M and EU MDR Article 27 (UDI requirements)."
+"medtech_traceability","README","Key Features",""
+"medtech_traceability","README","1. Device History Record (DHR)","- Complete production history for each device/lot
+- Links to BOM, work orders, materials used
+- Operator signatures and timestamps
+- Quality inspection results
+- Environmental conditions during production
+- Automated DHR generation from MRP
+- PDF/HTML snapshot of record at completion"
+"medtech_traceability","README","2. UDI (Unique Device Identification)","- FDA UDI and EU UDI-DI management
+- Automatic UDI generation per GSIX/HIBC standards
+- Barcode label printing
+- GUDID database integration
+- Device lifecycle tracking"
+"medtech_traceability","README","3. Lot/Serial Traceability","- Forward traceability (where did material go?)
+- Backward traceability (where did material come from?)
+- One-step up, one-step down tracking
+- Genealogy reports for regulatory submissions"
+"medtech_traceability","README","4. Device Master Record (DMR)","- Design specifications
+- Manufacturing procedures
+- Quality acceptance criteria
+- Labeling specifications
+- Version control"
+"medtech_traceability","README","Regulatory Compliance",""
+"medtech_traceability","README","FDA 21 CFR Part 820.184","Device History Record requirements:
+- Quantity manufactured
+- Quantity released for distribution
+- Labeling used
+- Control number(s)
+- Date(s) of manufacture
+- Final acceptance records
+- Unit tested identification"
+"medtech_traceability","README","EU MDR Article 27","UDI System requirements:
+- Basic UDI-DI assignment
+- Production identifiers (serial/lot/batch/expiry)
+- Registration in EU UDID database
+- UDI carriers on labels"
+"medtech_traceability","README","Technical Architecture",""
+"medtech_traceability","README","Models",""
+"medtech_traceability","README","`medtech.dhr` (Device History Record)","- Tracks complete production history
+- Links to manufacturing order, BOM, quality results
+- Immutable after completion (audit locked)
+- PDF snapshot generation"
+"medtech_traceability","README","`medtech.udi` (Unique Device Identifier)","- UDI-DI and UDI-PI management
+- Issuing entity configuration
+- Barcode generation
+- GUDID sync"
+"medtech_traceability","README","Reports","- DHR Report (printable, archivable)
+- Traceability Report (forward/backward)
+- UDI Labels (GS1 barcode format)"
+"medtech_traceability","README","Module Structure","```
+medtech_traceability/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ device_master.py
+â”‚   â”œâ”€â”€ medtech_dhr.py
+â”‚   â”œâ”€â”€ medtech_udi.py
+â”‚   â””â”€â”€ stock_production_lot.py (extends)
+	
+
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ device_master_views.xml
+â”‚   â”œâ”€â”€ medtech_dhr_views.xml
+â”‚   â””â”€â”€ medtech_udi_views.xml
+â”œâ”€â”€ reports/
+â”‚   â”œâ”€â”€ dhr_report.xml
+â”‚   â””â”€â”€ udi_label.xml
+â”œâ”€â”€ static/src/xml/
+â”‚   â””â”€â”€ traceability_dashboard.xml
+â””â”€â”€ docs/
+```"
+"medtech_traceability","README","Use Cases",""
+"medtech_traceability","README","Use Case 1: DHR Creation During Manufacturing","**Workflow:**
+1. Production order created for Device ABC, Serial #12345
+2. DHR auto-generated at MO start
+3. As production proceeds:
+   - Raw materials scanned and logged
+   - Process parameters recorded
+   - In-process inspections documented
+   - Operator signoffs collected
+4. Final inspection passed
+5. DHR locked and PDF snapshot created
+6. DHR archived for device lifetime + 2 years"
+"medtech_traceability","README","Use Case 2: Product Recall Investigation","**Scenario:** Customer reports issue with Device Serial #SN789456
+
+**Steps:**
+1. Open traceability search
+2. Enter Serial #SN789456
+3. System shows:
+   - **DHR:** Production date, operators, materials used
+   - **Materials:** Lot numbers for all components
+   - **Related Devices:** Other units from same lots
+4. Determine scope:
+   - Issue isolated to one lot of Component X
+   - Identify all devices using that lot
+5. Initiate targeted recall"
+"medtech_traceability","README","Use Case 3: UDI Label Generation","**Workflow:**
+1. Product configured with UDI-DI
+2. Production order created
+3. System generates UDI-PI (serial/lot/expiry)
+4. Combines UDI-DI + UDI-PI
+5. Generates GS1 DataMatrix barcode
+6. Prints labels for application
+7. Registers in GUDID if new product"
+"medtech_traceability","README","Best Practices","1. **Scan Everything:** Use barcodes for material tracking
+2. **Real-Time Entry:** Record data as it happens
+3. **Lock DHRs Promptly:** After final inspection
+4. **Retain Forever:** DHRs for implantables
+5. **Test Traceability:** Mock recalls quarterly"
+"medtech_traceability","README","Changelog",""
+"medtech_traceability","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modern chatter implementation
+- XML template fixes (DHR report)
+- Demo data placeholder"

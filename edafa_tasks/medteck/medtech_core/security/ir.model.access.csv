@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_medtech_audit_event_operator,medtech.audit.event.operator,model_medtech_audit_event,group_medtech_operator,1,0,0,0
+access_medtech_audit_event_auditor,medtech.audit.event.auditor,model_medtech_audit_event,group_medtech_compliance_auditor,1,0,0,0
+access_medtech_audit_event_quality_manager,medtech.audit.event.quality_manager,model_medtech_audit_event,group_medtech_quality_manager,1,1,1,0
+access_medtech_approval_history_operator,medtech.approval.history.operator,model_medtech_approval_history,group_medtech_operator,1,0,0,0
+access_medtech_approval_history_auditor,medtech.approval.history.auditor,model_medtech_approval_history,group_medtech_compliance_auditor,1,0,0,0
+access_medtech_approval_history_quality_user,medtech.approval.history.quality_user,model_medtech_approval_history,group_medtech_quality_user,1,1,1,0

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Customer -->
+        <record id="partner_memorial_hospital" model="res.partner">
+            <field name="name">Memorial Hospital Cardiology Dept</field>
+            <field name="customer_rank">1</field>
+            <field name="company_type">company</field>
+            <field name="street">1000 Medical Center Drive</field>
+            <field name="city">Chicago</field>
+            <field name="zip">60611</field>
+            <field name="country_id" ref="base.us"/>
+            <field name="phone">+1-312-555-0200</field>
+            <field name="group_rfq">default</field>
+            <field name="group_on">default</field>
+        </record>
+
+        <!-- Service Visit 1 -->
+        <record id="service_visit_001" model="medtech.service.visit">
+            <field name="name">SV-00001</field>
+            <field name="customer_id" ref="partner_memorial_hospital"/>
+            <field name="visit_date">2026-01-22</field>
+            <field name="visit_type">corrective</field>
+            <field name="service_type">repair</field>
+            <field name="serial_number">CP2000-2601-001</field>
+            <field name="issue_description">Device retrieved pre-implant during routine inventory check. Hospital reported intermittent battery indicator during pre-op testing.</field>
+            <field name="state">completed</field>
+            <field name="technician_notes">Device quarantined and returned to manufacturer. Battery connection resistance measured at 2.5 ohms (spec: &lt;0.5 ohms). Clear indication of poor solder joint. Serial number matches LOT-2601-A. Hospital notified to check remaining inventory from same lot.</field>
+        </record>
+
+        <!-- Service Visit 2 -->
+        <record id="service_visit_002" model="medtech.service.visit">
+            <field name="name">SV-00002</field>
+            <field name="customer_id" ref="partner_memorial_hospital"/>
+            <field name="visit_date">2026-01-22</field>
+            <field name="visit_type">corrective</field>
+            <field name="service_type">inspection</field>
+            <field name="serial_number">CP2000-2601-002</field>
+            <field name="issue_description">Pre-implant testing shows marginal battery performance. Request manufacturer inspection.</field>
+            <field name="state">completed</field>
+            <field name="technician_notes">Device inspected on-site. Battery connection exhibits higher than expected resistance. Device quarantined. Confirmed as LOT-2601-A. Recommend field action for all units from this lot.</field>
+        </record>
+    </data>
+</odoo>

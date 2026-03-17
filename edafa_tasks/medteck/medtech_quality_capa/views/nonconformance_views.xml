@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Nonconformance Tree View -->
+    <record id="view_medtech_nonconformance_tree" model="ir.ui.view">
+        <field name="name">medtech.nonconformance.tree</field>
+        <field name="model">medtech.nonconformance</field>
+        <field name="arch" type="xml">
+            <list string="Nonconformances" decoration-danger="severity == 'critical'" decoration-warning="severity == 'high'">
+                <field name="name"/>
+                <field name="source"/>
+               <field name="severity"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Nonconformance Form View -->
+    <record id="view_medtech_nonconformance_form" model="ir.ui.view">
+        <field name="name">medtech.nonconformance.form</field>
+        <field name="model">medtech.nonconformance</field>
+        <field name="arch" type="xml">
+            <form string="Nonconformance">
+                <header>
+                    <button name="action_start_investigation" string="Start Investigation" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_mark_contained" string="Contain" type="object" class="oe_highlight" invisible="state != 'investigation'"/>
+                    <button name="action_close" string="Close" type="object" class="oe_highlight" invisible="state != 'contained'"/>
+                    <button name="action_create_capa" string="Create CAPA" type="object" invisible="state == 'closed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,investigation,contained,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Classification">
+                            <field name="source"/>
+                            <field name="severity" widget="priority"/>
+                            <field name="detection_date"/>
+                            <field name="detected_by_id"/>
+                        </group>
+                        <group string="Impact">
+                            <field name="affected_product_ids"/>
+                            <field name="affected_lot_ids"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Investigation">
+                            <group>
+                                <field name="root_cause"/>
+                                <field name="containment_action"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Affected Lots">
+                            <field name="affected_lot_ids"/>
+                        </page>
+                        
+                        <page string="CAPAs">
+                            <field name="capa_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Nonconformance Kanban View -->
+    <record id="view_medtech_nonconformance_kanban" model="ir.ui.view">
+        <field name="name">medtech.nonconformance.kanban</field>
+        <field name="model">medtech.nonconformance</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="severity"/>
+                <field name="state"/>
+                <field name="color"/>
+                <field name="detected_by_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_color_#{record.color.raw_value} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="object" name="action_start_investigation" class="dropdown-item">Start Investigation</a>
+                                    <a role="menuitem" type="object" name="action_mark_contained" class="dropdown-item">Mark Contained</a>
+                                    <a role="menuitem" type="object" name="action_create_capa" class="dropdown-item">Create CAPA</a>
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <t t-if="record.severity.raw_value == 'critical'">
+                                        <span class="badge badge-danger">🔴 CRITICAL</span>
+                                    </t>
+                                    <t t-if="record.severity.raw_value == 'high'">
+                                        <span class="badge badge-warning">🟡 HIGH</span>
+                                    </t>
+                                    <div class="text-muted mt-1">
+                                        <i class="fa fa-tag"/> <field name="source"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom mt-2">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="detected_by_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Nonconformance Search View -->
+    <record id="view_medtech_nonconformance_search" model="ir.ui.view">
+        <field name="name">medtech.nonconformance.search</field>
+        <field name="model">medtech.nonconformance</field>
+        <field name="arch" type="xml">
+            <search string="Search Nonconformances">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="affected_product_ids"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Under Investigation" name="investigation" domain="[('state', '=', 'investigation')]"/>
+                <filter string="Contained" name="contained" domain="[('state', '=', 'contained')]"/>
+                <filter string="Closed" name="closed" domain="[('state', '=', 'closed')]"/>
+                <separator/>
+                <filter string="Critical" name="critical" domain="[('severity', '=', 'critical')]"/>
+                <filter string="High" name="high" domain="[('severity', '=', 'high')]"/>
+                <group>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source'}"/>
+                    <filter string="Severity" name="group_severity" context="{'group_by': 'severity'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Nonconformance Action -->
+    <record id="action_medtech_nonconformance" model="ir.actions.act_window">
+        <field name="name">Nonconformances</field>
+        <field name="res_model">medtech.nonconformance</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Nonconformance
+            </p>
+            <p>
+                Nonconformances track quality issues from manufacturing, incoming inspection,
+                customer complaints, service reports, and audits.
+            </p>
+        </field>
+    </record>
+
+</odoo>

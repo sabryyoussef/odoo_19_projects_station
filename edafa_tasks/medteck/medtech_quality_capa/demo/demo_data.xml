@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Pharmaceutical Finished Products -->
+        <record id="product_cp2000" model="product.template">
+            <field name="name">Lubricant Eye Drops 10ml</field>
+            <field name="default_code">FG-EYE-LUB-10</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">6.50</field>
+            <field name="standard_price">2.10</field>
+        </record>
+
+        <record id="product_icd3000" model="product.template">
+            <field name="name">Antibiotic Eye Drops 5ml</field>
+            <field name="default_code">FG-EYE-ABX-5</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">8.90</field>
+            <field name="standard_price">3.20</field>
+        </record>
+
+        <record id="product_infusion500" model="product.template">
+            <field name="name">Artificial Tears Preservative-Free 15ml</field>
+            <field name="default_code">FG-EYE-AT-PF15</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">10.20</field>
+            <field name="standard_price">3.90</field>
+        </record>
+
+        <record id="product_neurostim700" model="product.template">
+            <field name="name">Nasal Saline Spray 20ml</field>
+            <field name="default_code">FG-NAS-SAL-20</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">4.10</field>
+            <field name="standard_price">1.45</field>
+        </record>
+
+        <record id="product_insulin_pen900" model="product.template">
+            <field name="name">Ear Drops Analgesic 10ml</field>
+            <field name="default_code">FG-EAR-ANL-10</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">7.80</field>
+            <field name="standard_price">2.75</field>
+        </record>
+
+        <!-- Raw Materials and Packaging Components -->
+        <record id="component_titanium_housing" model="product.template">
+            <field name="name">Sterile LDPE Dropper Bottle 10ml</field>
+            <field name="default_code">PKG-BOTTLE-10ML</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">0.20</field>
+            <field name="standard_price">0.08</field>
+        </record>
+
+        <record id="component_lithium_battery_pack" model="product.template">
+            <field name="name">Purified Water USP</field>
+            <field name="default_code">RM-WATER-USP</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">0.02</field>
+            <field name="standard_price">0.01</field>
+        </record>
+
+        <record id="component_microcontroller_pcb" model="product.template">
+            <field name="name">Sodium Chloride API</field>
+            <field name="default_code">API-SOD-CHL</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">18.00</field>
+            <field name="standard_price">12.00</field>
+        </record>
+
+        <record id="component_lead_connector" model="product.template">
+            <field name="name">Hydroxypropyl Methylcellulose</field>
+            <field name="default_code">EXC-HPMC</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">7.00</field>
+            <field name="standard_price">4.60</field>
+        </record>
+
+        <record id="component_sensing_module" model="product.template">
+            <field name="name">Benzalkonium Chloride</field>
+            <field name="default_code">EXC-BAK</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">9.00</field>
+            <field name="standard_price">6.00</field>
+        </record>
+
+        <record id="component_peristaltic_motor" model="product.template">
+            <field name="name">Moxifloxacin API</field>
+            <field name="default_code">API-MOXI</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">36.00</field>
+            <field name="standard_price">24.00</field>
+        </record>
+
+        <record id="component_flow_sensor" model="product.template">
+            <field name="name">Polyethylene Glycol 400</field>
+            <field name="default_code">EXC-PEG400</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">5.00</field>
+            <field name="standard_price">3.20</field>
+        </record>
+
+        <record id="component_enclosure_polymer" model="product.template">
+            <field name="name">Sterile Nozzle and Cap Set</field>
+            <field name="default_code">PKG-CAP-NOZZLE</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">0.12</field>
+            <field name="standard_price">0.05</field>
+        </record>
+
+        <record id="component_dispense_cartridge" model="product.template">
+            <field name="name">Outer Carton Label Set</field>
+            <field name="default_code">PKG-CARTON-LBL</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">0.07</field>
+            <field name="standard_price">0.03</field>
+        </record>
+
+        <record id="component_needle_module" model="product.template">
+            <field name="name">Citric Acid Monohydrate</field>
+            <field name="default_code">EXC-CITRIC</field>
+            <field name="type">consu</field>
+            <field name="tracking">lot</field>
+            <field name="list_price">4.00</field>
+            <field name="standard_price">2.70</field>
+        </record>
+
+        <!-- BOMs for Finished Products -->
+        <record id="bom_cp2000" model="mrp.bom">
+            <field name="product_tmpl_id" ref="product_cp2000"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">normal</field>
+        </record>
+
+        <record id="bom_cp2000_line_1" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_cp2000"/>
+            <field name="product_id" ref="component_titanium_housing_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_cp2000_line_2" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_cp2000"/>
+            <field name="product_id" ref="component_lithium_battery_pack_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_cp2000_line_3" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_cp2000"/>
+            <field name="product_id" ref="component_microcontroller_pcb_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_cp2000_line_4" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_cp2000"/>
+            <field name="product_id" ref="component_lead_connector_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+
+        <record id="bom_icd3000" model="mrp.bom">
+            <field name="product_tmpl_id" ref="product_icd3000"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">normal</field>
+        </record>
+
+        <record id="bom_icd3000_line_1" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_icd3000"/>
+            <field name="product_id" ref="component_titanium_housing_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_icd3000_line_2" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_icd3000"/>
+            <field name="product_id" ref="component_lithium_battery_pack_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_icd3000_line_3" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_icd3000"/>
+            <field name="product_id" ref="component_microcontroller_pcb_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_icd3000_line_4" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_icd3000"/>
+            <field name="product_id" ref="component_sensing_module_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+
+        <record id="bom_infusion500" model="mrp.bom">
+            <field name="product_tmpl_id" ref="product_infusion500"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">normal</field>
+        </record>
+
+        <record id="bom_infusion500_line_1" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_infusion500"/>
+            <field name="product_id" ref="component_peristaltic_motor_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_infusion500_line_2" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_infusion500"/>
+            <field name="product_id" ref="component_flow_sensor_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_infusion500_line_3" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_infusion500"/>
+            <field name="product_id" ref="component_microcontroller_pcb_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_infusion500_line_4" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_infusion500"/>
+            <field name="product_id" ref="component_enclosure_polymer_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+
+        <record id="bom_neurostim700" model="mrp.bom">
+            <field name="product_tmpl_id" ref="product_neurostim700"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">normal</field>
+        </record>
+
+        <record id="bom_neurostim700_line_1" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_neurostim700"/>
+            <field name="product_id" ref="component_lithium_battery_pack_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_neurostim700_line_2" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_neurostim700"/>
+            <field name="product_id" ref="component_microcontroller_pcb_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_neurostim700_line_3" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_neurostim700"/>
+            <field name="product_id" ref="component_sensing_module_product_variant"/>
+            <field name="product_qty">2.0</field>
+        </record>
+        <record id="bom_neurostim700_line_4" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_neurostim700"/>
+            <field name="product_id" ref="component_titanium_housing_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+
+        <record id="bom_insulin_pen900" model="mrp.bom">
+            <field name="product_tmpl_id" ref="product_insulin_pen900"/>
+            <field name="product_qty">1.0</field>
+            <field name="type">normal</field>
+        </record>
+
+        <record id="bom_insulin_pen900_line_1" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_insulin_pen900"/>
+            <field name="product_id" ref="component_dispense_cartridge_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_insulin_pen900_line_2" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_insulin_pen900"/>
+            <field name="product_id" ref="component_needle_module_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_insulin_pen900_line_3" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_insulin_pen900"/>
+            <field name="product_id" ref="component_microcontroller_pcb_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+        <record id="bom_insulin_pen900_line_4" model="mrp.bom.line">
+            <field name="bom_id" ref="bom_insulin_pen900"/>
+            <field name="product_id" ref="component_enclosure_polymer_product_variant"/>
+            <field name="product_qty">1.0</field>
+        </record>
+
+        <!-- Nonconformance - open investigation -->
+        <record id="nc_00001" model="medtech.nonconformance">
+            <field name="name">NC-00001</field>
+            <field name="source">manufacturing</field>
+            <field name="severity">high</field>
+            <field name="description">Battery connection intermittent failure detected during final inspection on CP-2000 batches.</field>
+            <field name="detection_date">2026-01-15</field>
+            <field name="detected_by_id" ref="base.user_admin"/>
+            <field name="containment_action">Quarantined affected in-process units and blocked shipment pending investigation.</field>
+            <field name="state">investigation</field>
+        </record>
+
+        <!-- Nonconformance - contained supplier issue -->
+        <record id="nc_00002" model="medtech.nonconformance">
+            <field name="name">NC-00002</field>
+            <field name="source">incoming</field>
+            <field name="severity">medium</field>
+            <field name="description">Incoming silicone tubing from supplier lot showed out-of-spec inner diameter variation.</field>
+            <field name="detection_date">2026-01-22</field>
+            <field name="detected_by_id" ref="base.user_admin"/>
+            <field name="containment_action">Material moved to quarantine and receiving hold released only for conforming lots.</field>
+            <field name="root_cause">Supplier process drift due to worn extrusion tooling.</field>
+            <field name="state">contained</field>
+        </record>
+
+        <!-- Nonconformance - closed complaint -->
+        <record id="nc_00003" model="medtech.nonconformance">
+            <field name="name">NC-00003</field>
+            <field name="source">complaint</field>
+            <field name="severity">low</field>
+            <field name="description">Customer reported minor label smudging on outer carton after transit.</field>
+            <field name="detection_date">2026-02-02</field>
+            <field name="detected_by_id" ref="base.user_admin"/>
+            <field name="containment_action">Additional overwrap applied for outgoing shipments and stock inspected.</field>
+            <field name="root_cause">Ink cure time was below minimum process setting during a short production window.</field>
+            <field name="closure_notes">Issue corrected by enforcing minimum cure dwell time and adding line clearance check.</field>
+            <field name="state">closed</field>
+            <field name="closed_date">2026-02-05</field>
+            <field name="closed_by_id" ref="base.user_admin"/>
+        </record>
+
+        <!-- CAPA - linked to NC-00001, implementation in progress -->
+        <record id="capa_00001" model="medtech.capa">
+            <field name="name">CAPA-00001</field>
+            <field name="source">nonconformance</field>
+            <field name="description">CAPA for battery terminal reliability deviations identified on CP-2000 assembly line.</field>
+            <field name="nonconformance_ids" eval="[(4, ref('nc_00001'))]"/>
+            <field name="investigation">Failure analysis confirmed inconsistent solder wetting at terminal joint under thermal stress.</field>
+            <field name="investigation_date">2026-01-18</field>
+            <field name="investigator_id" ref="base.user_admin"/>
+            <field name="containment_action">100% inspection introduced for terminal resistance and rework criteria deployed.</field>
+            <field name="containment_date">2026-01-19</field>
+            <field name="containment_verified">1</field>
+            <field name="root_cause_analysis">Root cause traced to nozzle temperature variation and insufficient operator setup checklist.</field>
+            <field name="root_cause_method">5_whys</field>
+            <field name="root_cause_date">2026-01-21</field>
+            <field name="action_plan">Standardize solder station calibration, revise setup checklist, and train all shift operators.</field>
+            <field name="action_type">both</field>
+            <field name="responsible_id" ref="base.user_admin"/>
+            <field name="target_completion_date">2026-03-15</field>
+            <field name="implementation_status">in_progress</field>
+            <field name="implementation_notes">Calibration SOP approved; operator training 70% complete.</field>
+            <field name="qa_approval_required">1</field>
+            <field name="stage">implementation</field>
+        </record>
+
+        <!-- CAPA - linked to NC-00002, effectiveness check pending -->
+        <record id="capa_00002" model="medtech.capa">
+            <field name="name">CAPA-00002</field>
+            <field name="source">nonconformance</field>
+            <field name="description">CAPA for supplier incoming tubing dimension nonconformance and receiving control improvement.</field>
+            <field name="nonconformance_ids" eval="[(4, ref('nc_00002'))]"/>
+            <field name="investigation">Supplier capability review and incoming trend analysis completed.</field>
+            <field name="investigation_date">2026-01-24</field>
+            <field name="investigator_id" ref="base.user_admin"/>
+            <field name="containment_action">Supplier lots placed on tightened acceptance sampling plan and release by QA only.</field>
+            <field name="containment_date">2026-01-25</field>
+            <field name="containment_verified">1</field>
+            <field name="root_cause_analysis">Extrusion tooling wear exceeded preventive replacement interval.</field>
+            <field name="root_cause_method">fishbone</field>
+            <field name="root_cause_date">2026-01-27</field>
+            <field name="action_plan">Supplier to implement tooling life tracking; internal receiving checklist updated with gauge verification.</field>
+            <field name="action_type">corrective</field>
+            <field name="responsible_id" ref="base.user_admin"/>
+            <field name="target_completion_date">2026-02-20</field>
+            <field name="implementation_status">completed</field>
+            <field name="implementation_date">2026-02-18</field>
+            <field name="implementation_notes">Supplier evidence reviewed; receiving checklist revision released.</field>
+            <field name="qa_approval_required">1</field>
+            <field name="qa_approved_by_id" ref="base.user_admin"/>
+            <field name="qa_approved_date">2026-02-19</field>
+            <field name="effectiveness_check_required">1</field>
+            <field name="effectiveness_check_date">2026-03-10</field>
+            <field name="stage">effectiveness</field>
+        </record>
+
+        <!-- CAPA - standalone preventive CAPA closed as effective -->
+        <record id="capa_00003" model="medtech.capa">
+            <field name="name">CAPA-00003</field>
+            <field name="source">risk_assessment</field>
+            <field name="description">Preventive CAPA to reduce risk of line mix-up during secondary packaging changeovers.</field>
+            <field name="investigation">Risk review identified packaging line clearance as highest residual risk item.</field>
+            <field name="investigation_date">2026-01-10</field>
+            <field name="investigator_id" ref="base.user_admin"/>
+            <field name="containment_action">Introduced independent verification before first-pack release.</field>
+            <field name="containment_date">2026-01-11</field>
+            <field name="containment_verified">1</field>
+            <field name="root_cause_analysis">Visual controls and documented reconciliation points were not standardized across shifts.</field>
+            <field name="root_cause_method">fmea</field>
+            <field name="root_cause_date">2026-01-13</field>
+            <field name="action_plan">Implement barcode-assisted line clearance and mandatory dual sign-off at changeover.</field>
+            <field name="action_type">preventive</field>
+            <field name="responsible_id" ref="base.user_admin"/>
+            <field name="target_completion_date">2026-01-31</field>
+            <field name="implementation_status">completed</field>
+            <field name="implementation_date">2026-01-29</field>
+            <field name="implementation_notes">Procedure released, operators trained, and first two audits showed full compliance.</field>
+            <field name="qa_approval_required">1</field>
+            <field name="qa_approved_by_id" ref="base.user_admin"/>
+            <field name="qa_approved_date">2026-01-30</field>
+            <field name="effectiveness_check_required">1</field>
+            <field name="effectiveness_check_date">2026-02-20</field>
+            <field name="effectiveness_result">effective</field>
+            <field name="effectiveness_notes">No packaging mix-up deviations observed in four weeks post implementation.</field>
+            <field name="effectiveness_checked_by_id" ref="base.user_admin"/>
+            <field name="stage">closed</field>
+            <field name="closed_date">2026-02-21</field>
+            <field name="closed_by_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>

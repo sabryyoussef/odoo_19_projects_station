@@ -1,0 +1,90 @@
+# MedTech ERP - Git Ignore Configuration
+# Optimized for Odoo 19 Custom Modules
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Odoo Specific
+*.pyc
+*.pyo
+*.swp
+*.swo
+*~
+.DS_Store
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.settings/
+
+# Logs
+*.log
+logs/
+*.err
+
+# Database
+*.sql
+*.sqlite
+*.db
+
+# Session files
+sessions/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS Files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Compiled translations
+*.mo
+
+# Documentation build
+_build/
+docs/_build/
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Odoo filestore (if included accidentally)
+filestore/
+
+# Configuration files with sensitive data (keep templates only)
+# odoo.conf  # Uncomment if you want to exclude config
+
+# Keep these tracked:
+!README.md
+!IMPLEMENTATION_PLAN.md
+!PROGRESS.md
+!WORKFLOW_GUIDE.md
+!.git-workflow.md

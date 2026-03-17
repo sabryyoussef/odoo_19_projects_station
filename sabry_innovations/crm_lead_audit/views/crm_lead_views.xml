@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit CRM Lead Form View to add Audit Information -->
+        <record id="crm_lead_view_form_inherit_audit" model="ir.ui.view">
+            <field name="name">crm.lead.form.audit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- Add audit information in a dedicated page/group -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Audit Information" 
+                          groups="sales_team.group_sale_manager"
+                          attrs="{'invisible': [('type', '!=', 'lead')]}">
+                        <group name="audit_information">
+                            <group string="Audit Status">
+                                <field name="x_is_audited" widget="boolean_toggle"/>
+                                <field name="x_last_audit_date" readonly="1"/>
+                                <field name="x_is_stale" widget="boolean_toggle" readonly="1"/>
+                            </group>
+                            <group string="Audit Actions">
+                                <button name="action_reset_audit_flag" 
+                                        string="Reset Audit Flag" 
+                                        type="object"
+                                        class="btn-secondary"
+                                        attrs="{'invisible': [('x_is_audited', '=', False)]}"/>
+                                <button name="mark_as_audited" 
+                                        string="Mark as Audited" 
+                                        type="object"
+                                        class="btn-primary"
+                                        attrs="{'invisible': [('x_is_audited', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <group name="audit_help_info">
+                            <div class="alert alert-info" role="alert">
+                                <h5>About Lead Auditing</h5>
+                                <ul>
+                                    <li><strong>Is Audited:</strong> Indicates if this lead has been reviewed by the automated audit system</li>
+                                    <li><strong>Last Audit Date:</strong> Shows when the last automated audit was performed</li>
+                                    <li><strong>Is Stale:</strong> Automatically computed - True if lead is older than 48 hours without activities</li>
+                                </ul>
+                                <p>
+                                    <strong>Automation Workflow:</strong> The system automatically creates audit activities for leads 
+                                    that remain in "New" stage for more than 48 hours without any scheduled activities.
+                                </p>
+                            </div>
+                        </group>
+                    </page>
+                </xpath>
+                
+                <!-- Optional: Add indicator badge in header -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" 
+                            type="action" 
+                            icon="fa-exclamation-triangle"
+                            attrs="{'invisible': [('x_is_stale', '=', False)]}"
+                            groups="sales_team.group_sale_manager">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text text-danger">Stale Lead</span>
+                        </div>
+                    </button>
+                    <button class="oe_stat_button" 
+                            type="action" 
+                            icon="fa-check-circle"
+                            attrs="{'invisible': [('x_is_audited', '=', False)]}"
+                            groups="sales_team.group_sale_manager">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text text-success">Audited</span>
+                        </div>
+                    </button>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Inherit CRM Lead Tree View to show audit status -->
+        <record id="crm_lead_view_tree_inherit_audit" model="ir.ui.view">
+            <field name="name">crm.lead.tree.audit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+            <field name="arch" type="xml">
+                
+                <!-- Add audit fields to tree view -->
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="x_is_audited" 
+                           optional="hide" 
+                           groups="sales_team.group_sale_manager"
+                           widget="boolean_toggle"/>
+                    <field name="x_is_stale" 
+                           optional="show" 
+                           groups="sales_team.group_sale_manager"
+                           widget="boolean_toggle"
+                           decoration-danger="x_is_stale == True"/>
+                    <field name="x_last_audit_date" 
+                           optional="hide" 
+                           groups="sales_team.group_sale_manager"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Create a filter for stale leads in search view -->
+        <record id="crm_lead_view_search_inherit_audit" model="ir.ui.view">
+            <field name="name">crm.lead.search.audit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+            <field name="arch" type="xml">
+                
+                <!-- Add filters for audit status -->
+                <xpath expr="//filter[@name='unassigned']" position="after">
+                    <separator/>
+                    <filter string="Stale Leads" 
+                            name="stale_leads" 
+                            domain="[('x_is_stale', '=', True)]"
+                            groups="sales_team.group_sale_manager"
+                            help="Leads older than 48 hours without activities"/>
+                    <filter string="Not Audited" 
+                            name="not_audited" 
+                            domain="[('x_is_audited', '=', False)]"
+                            groups="sales_team.group_sale_manager"
+                            help="Leads that haven't been audited yet"/>
+                    <filter string="Audited" 
+                            name="audited" 
+                            domain="[('x_is_audited', '=', True)]"
+                            groups="sales_team.group_sale_manager"
+                            help="Leads that have been audited"/>
+                </xpath>
+                
+                <!-- Add groupby options -->
+                <xpath expr="//filter[@name='stage']" position="after">
+                    <filter string="Audit Status" 
+                            name="group_by_audit_status" 
+                            context="{'group_by': 'x_is_audited'}"
+                            groups="sales_team.group_sale_manager"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Optional: Create a separate action/menu for stale leads dashboard -->
+        <record id="crm_lead_action_stale_leads" model="ir.actions.act_window">
+            <field name="name">Stale Leads Dashboard</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar,activity</field>
+            <field name="domain">[('x_is_stale', '=', True)]</field>
+            <field name="context">{
+                'default_type': 'lead',
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No stale leads found!
+                </p>
+                <p>
+                    Stale leads are those that have been created more than 48 hours ago
+                    without any scheduled activities and haven't been audited yet.
+                </p>
+            </field>
+        </record>
+
+        <!-- Add menu item for Stale Leads under CRM > Leads -->
+        <menuitem id="crm_lead_menu_stale_leads"
+                  name="Stale Leads"
+                  parent="crm.crm_menu_sales"
+                  action="crm_lead_action_stale_leads"
+                  groups="sales_team.group_sale_manager"
+                  sequence="15"/>
+
+    </data>
+</odoo>

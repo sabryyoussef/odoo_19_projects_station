@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Khaled Error #1: Sale Order Task Creation -->
+        <record id="error_khaled_01_sale_order_planned_hours" model="error.report">
+            <field name="name">Sale Order Confirmation - planned_hours Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 10:00:00</field>
+            <field name="error_location">Sales → Orders → Confirm</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>Tried to confirm sale order and system crashed.</p>
+                <p>Could not complete sale order confirmation process.</p>
+            ]]></field>
+            <field name="error_message">AttributeError: 'project.task' object has no attribute 'planned_hours'</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Go to Sales → Orders</li>
+                    <li>Create or open a sale order</li>
+                    <li>Add products/services that create project tasks</li>
+                    <li>Click "Confirm" button</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">e2b9d8c</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Implemented version-adaptive field mapping for hours field.</p>
+                <p>System now automatically detects correct hours field (planned_hours, allocated_hours, etc.)</p>
+                <p>File: freezoner_custom/models/sale.py</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 12:00:00</field>
+        </record>
+
+        <!-- Khaled Error #2: Documents Inspector -->
+        <record id="error_khaled_02_documents_inspector" model="error.report">
+            <field name="name">Documents Inspector - Owl Lifecycle Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 10:30:00</field>
+            <field name="error_location">Documents → Click document → Inspector panel</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="impact">high</field>
+            <field name="status">fixed</field>
+            <field name="priority">2</field>
+            <field name="description"><![CDATA[
+                <p>Clicked on document in Documents app.</p>
+                <p>Right panel (Inspector) crashed with Owl error.</p>
+                <p>Could not view document details.</p>
+            ]]></field>
+            <field name="error_message">UncaughtPromiseError > OwlError: Cannot read properties of undefined (reading 'string')</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Go to Documents app</li>
+                    <li>Click on any document</li>
+                    <li>Inspector panel tries to open</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">173f18d</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Added field existence guards to OWL template.</p>
+                <p>Inspector now checks if fields exist before displaying.</p>
+                <p>File: freezoner_custom/static/src/xml/documents.xml</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 13:00:00</field>
+        </record>
+
+        <!-- Khaled Error #3: CRM Log Call -->
+        <record id="error_khaled_03_crm_log_call" model="error.report">
+            <field name="name">CRM Log Call - KeyError 'type'</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 11:00:00</field>
+            <field name="error_location">CRM → Leads → Log Call button</field>
+            <field name="module_name">crm_log</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>Tried to log a call from CRM lead.</p>
+                <p>System crashed and could not log calls.</p>
+                <p>Blocked from moving leads through stages.</p>
+            ]]></field>
+            <field name="error_message">KeyError: 'type' on mail.activity</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Go to CRM → Leads/Pipeline</li>
+                    <li>Open any lead</li>
+                    <li>Click "Log Call" button</li>
+                    <li>Enter call description</li>
+                    <li>Click "Submit"</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">eda48ee</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Removed invalid 'type' field from mail.activity creation.</p>
+                <p>Updated to use Odoo 17 API: action_feedback()</p>
+                <p>File: crm_log/wizard/call.py</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 14:00:00</field>
+        </record>
+
+        <!-- Khaled Error #4: Invoice Owner Change -->
+        <record id="error_khaled_04_invoice_owner_change" model="error.report">
+            <field name="name">Invoice Owner Change - Notification Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 11:30:00</field>
+            <field name="error_location">Sales → Invoices → Other Info → Salesperson</field>
+            <field name="module_name">project_custom</field>
+            <field name="impact">medium</field>
+            <field name="status">fixed</field>
+            <field name="priority">1</field>
+            <field name="description"><![CDATA[
+                <p>Tried to change "Salesperson" field on pro-forma invoice.</p>
+                <p>Could not reassign invoice owner.</p>
+            ]]></field>
+            <field name="error_message">sale.order object has no attribute '_notify_get_recipients_thread_wim'</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Open pro-forma invoice</li>
+                    <li>Go to "Other Info" tab</li>
+                    <li>Change "Salesperson" field</li>
+                    <li>Try to save</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">eda48ee</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Deployment issue - code was correct but cached.</p>
+                <p>Mail notification signature already fixed in repository.</p>
+                <p>Required cache clear/deployment.</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 14:30:00</field>
+        </record>
+
+        <!-- Khaled Error #5: SOV Tab Missing (Clarification) -->
+        <record id="error_khaled_05_sov_tab_location" model="error.report">
+            <field name="name">SOV Tab Missing on Pro-forma (Design Clarification)</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 12:00:00</field>
+            <field name="error_location">Sales → Pro-forma Invoice → Tabs</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="impact">low</field>
+            <field name="status">wont_fix</field>
+            <field name="priority">0</field>
+            <field name="description"><![CDATA[
+                <p>Looked for SOV tab on pro-forma invoice.</p>
+                <p>Could not find it to enter expenses and calculate profit.</p>
+            ]]></field>
+            <field name="error_message">N/A - Not an error</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Open pro-forma invoice (PFI...)</li>
+                    <li>Look through tabs</li>
+                    <li>SOV tab not visible</li>
+                </ol>
+            ]]></field>
+            <field name="fix_notes"><![CDATA[
+                <p>This is BY DESIGN, not an error.</p>
+                <p>SOV tab is on Customer Invoices (INV...), not Pro-formas (PFI...).</p>
+                <p>Workflow: Confirm pro-forma → Open customer invoice → SOV tab appears.</p>
+            ]]></field>
+        </record>
+
+        <!-- Khaled Error #6: Lead Creation -->
+        <record id="error_khaled_06_lead_creation" model="error.report">
+            <field name="name">Lead Creation - Invalid Fields 'Customer'</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 12:30:00</field>
+            <field name="error_location">CRM → Leads → Create</field>
+            <field name="module_name">crm_log</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>Tried to create new lead in CRM.</p>
+                <p>Filled basic information: Name, Mobile, Email, Source.</p>
+                <p>Could not save - validation error appeared.</p>
+            ]]></field>
+            <field name="error_message">Invalid Fields 'Customer'</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Go to CRM → Leads</li>
+                    <li>Click "Create"</li>
+                    <li>Fill: Name, Mobile, Email, Source</li>
+                    <li>Click "Save"</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">3719d0a</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Removed invalid default='' from customer_status Selection field.</p>
+                <p>Also fixed 3 other fields with same issue.</p>
+                <p>Files: crm_log/models/crm.py, project_custom/models/models.py</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 15:00:00</field>
+        </record>
+
+        <!-- Khaled Error #7: Database Column Missing -->
+        <record id="error_khaled_07_database_column" model="error.report">
+            <field name="name">Projects Access - Database Column Missing</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 13:00:00</field>
+            <field name="error_location">Projects menu</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>Tried to access Projects menu.</p>
+                <p>System crashed - could not see any projects.</p>
+                <p>Complete blocker for project management.</p>
+            ]]></field>
+            <field name="error_message">psycopg2.errors.UndefinedColumn: column account_move.sov_planned_expenses does not exist</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Click on Projects menu</li>
+                    <li>System tries to load project list</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_notes"><![CDATA[
+                <p>Deployment issue - code deployed but module not upgraded.</p>
+                <p>Solution: Upgrade freezoner_custom module to create database columns.</p>
+                <p>SOV fields added in commit d2a598d.</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 15:30:00</field>
+        </record>
+
+        <!-- Khaled Error #8: Documents Contact View -->
+        <record id="error_khaled_08_documents_contact" model="error.report">
+            <field name="name">Documents App - Contact View Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 13:30:00</field>
+            <field name="error_location">Contacts → Individual → Documents</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="impact">medium</field>
+            <field name="status">fixed</field>
+            <field name="priority">1</field>
+            <field name="description"><![CDATA[
+                <p>Navigated to: All Contacts → Khaled Fathi → Documents.</p>
+                <p>Error appeared when trying to view contact's documents.</p>
+            ]]></field>
+            <field name="error_message">UncaughtPromiseError > OwlError</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Go to Contacts</li>
+                    <li>Open any contact</li>
+                    <li>Click "Documents" button or tab</li>
+                    <li>Error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">173f18d</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Same fix as Documents Inspector error.</p>
+                <p>Field existence guards already in place.</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 13:00:00</field>
+        </record>
+
+    </data>
+</odoo>
+

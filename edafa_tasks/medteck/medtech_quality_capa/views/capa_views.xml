@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- CAPA Tree View -->
+    <record id="view_medtech_capa_tree" model="ir.ui.view">
+        <field name="name">medtech.capa.tree</field>
+        <field name="model">medtech.capa</field>
+        <field name="arch" type="xml">
+            <list string="CAPAs" decoration-info="stage == 'draft'" decoration-warning="stage in ('investigation','containment')" decoration-success="stage == 'closed'">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="stage"/>
+                <field name="responsible_id"/>
+                <field name="target_completion_date"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- CAPA Form View -->
+    <record id="view_medtech_capa_form" model="ir.ui.view">
+        <field name="name">medtech.capa.form</field>
+        <field name="model">medtech.capa</field>
+        <field name="arch" type="xml">
+            <form string="CAPA">
+                <header>
+                    <button name="action_progress_stage" string="Progress to Next Stage" type="object" class="oe_highlight" invisible="stage == 'closed'"/>
+                    <button name="request_approval" string="Request Approval" type="object" invisible="approval_stage != 'draft'"/>
+                    <field name="stage" widget="statusbar" statusbar_visible="draft,investigation,containment,root_cause,action_plan,implementation,effectiveness,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_medtech_nonconformance)d" type="action" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Nonconformances</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="CAPA Info">
+                            <field name="source"/>
+                            <field name="responsible_id"/>
+                            <field name="target_completion_date"/>
+                        </group>
+                        <group string="Approval">
+                            <field name="approval_stage"/>
+                            <field name="qa_approval_required"/>
+                            <field name="regulatory_approval_required"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Problem Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Investigation" invisible="stage == 'draft'">
+                            <group string="Immediate Actions (Containment)">
+                                <field name="containment_action" nolabel="1"/>
+                            </group>
+                            <group string="Root Cause Analysis">
+                                <field name="root_cause_analysis" nolabel="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Corrective/Preventive Actions" invisible="stage in ['draft','investigation','containment']">
+                            <group string="Action Plan">
+                                <field name="action_plan" nolabel="1"/>
+                                <field name="action_type"/>
+                            </group>
+                            <group>
+                                <field name="implementation_notes"/>
+                                <field name="implementation_date"/>
+                                <field name="implementation_status"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Effectiveness Check" invisible="stage not in ['effectiveness','closed']">
+                            <group>
+                                <field name="effectiveness_check_required"/>
+                                <field name="effectiveness_check_date"/>
+                                <field name="effectiveness_result"/>
+                            </group>
+                            <group string="Effectiveness Notes">
+                                <field name="effectiveness_notes" nolabel="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Affected Items">
+                            <group>
+                                <field name="nonconformance_ids" widget="many2many_tags"/>
+                                <field name="affected_serial_lot_ids" widget="many2many_tags"/>
+                                <field name="affected_product_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Approval History">
+                            <field name="approval_history_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- CAPA Kanban View -->
+    <record id="view_medtech_capa_kanban" model="ir.ui.view">
+        <field name="name">medtech.capa.kanban</field>
+        <field name="model">medtech.capa</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="responsible_id"/>
+                <field name="target_completion_date"/>
+                <field name="stage"/>
+                <field name="color"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_color_#{record.color.raw_value} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <field name="description" widget="text"/>
+                                    <t t-if="record.is_overdue.raw_value">
+                                        <div class="mt-2">
+                                            <span class="badge badge-danger">⚠️ OVERDUE</span>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="responsible_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="target_completion_date" widget="date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- CAPA Search View -->
+    <record id="view_medtech_capa_search" model="ir.ui.view">
+        <field name="name">medtech.capa.search</field>
+        <field name="model">medtech.capa</field>
+        <field name="arch" type="xml">
+            <search string="Search CAPAs">
+                <field name="name"/>
+                <field name="responsible_id"/>
+                <filter string="My CAPAs" name="my_capas" domain="[('responsible_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('stage', '=', 'draft')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('stage', 'in', ['investigation','containment','root_cause','action_plan'])]"/>
+                <filter string="Implementation" name="implementation" domain="[('stage', '=', 'implementation')]"/>
+                <filter string="Effectiveness Check" name="effectiveness" domain="[('stage', '=', 'effectiveness')]"/>
+                <filter string="Closed" name="closed" domain="[('stage', '=', 'closed')]"/>
+                <separator/>
+                <filter string="Overdue" name="overdue" domain="[('target_completion_date', '&lt;', context_today().strftime('%Y-%m-%d')), ('stage', '!=', 'closed')]"/>
+                <group>
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage'}"/>
+                    <filter string="Assigned To" name="group_assigned" context="{'group_by': 'responsible_id'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- CAPA Action -->
+    <record id="action_medtech_capa" model="ir.actions.act_window">
+        <field name="name">CAPAs</field>
+        <field name="res_model">medtech.capa</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first CAPA
+            </p>
+            <p>
+                CAPA (Corrective and Preventive Action) is a 9-stage workflow for
+                systematically addressing quality issues and preventing recurrence.
+            </p>
+        </field>
+    </record>
+
+</odoo>

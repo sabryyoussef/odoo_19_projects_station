@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_medtech_filling_batch_list" model="ir.ui.view">
+        <field name="name">medtech.filling.batch.list</field>
+        <field name="model">medtech.filling.batch</field>
+        <field name="arch" type="xml">
+            <list string="Filling" decoration-success="state == 'moved'" decoration-danger="state == 'qc_failed'">
+                <field name="name"/>
+                <field name="production_id"/>
+                <field name="operator_id"/>
+                <field name="filling_at"/>
+                <field name="unit_count"/>
+                <field name="finished_lot_id"/>
+                <field name="measured_volume_ml"/>
+                <field name="volume_qc_status"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_medtech_filling_batch_form" model="ir.ui.view">
+        <field name="name">medtech.filling.batch.form</field>
+        <field name="model">medtech.filling.batch</field>
+        <field name="arch" type="xml">
+            <form string="Filling Batch">
+                <header>
+                    <button name="action_start_filling" string="Start Filling" type="object" class="oe_highlight" invisible="state not in ['draft','in_progress']"/>
+                    <button name="action_volume_qc_pass" string="Volume QC Pass" type="object" class="oe_highlight" invisible="state not in ['draft','in_progress']"/>
+                    <button name="action_volume_qc_fail" string="Volume QC Fail" type="object" class="btn-danger" invisible="state not in ['draft','in_progress']"/>
+                    <button name="action_move_to_packaging" string="Move to Packaging" type="object" class="oe_highlight" invisible="state != 'qc_passed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,qc_passed,qc_failed,moved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Batch Context">
+                            <field name="production_id"/>
+                            <field name="sterilization_batch_id"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="product_qty" readonly="1"/>
+                        </group>
+                        <group string="Filling Execution">
+                            <field name="operator_id"/>
+                            <field name="filling_at"/>
+                            <field name="unit_count"/>
+                            <field name="finished_lot_id"/>
+                        </group>
+                    </group>
+
+                    <group string="Fill Volume QC">
+                        <group>
+                            <field name="target_volume_ml"/>
+                            <field name="measured_volume_ml"/>
+                        </group>
+                        <group>
+                            <field name="min_volume_ml"/>
+                            <field name="max_volume_ml"/>
+                            <field name="volume_qc_status" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Escalation">
+                        <field name="nonconformance_id" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_medtech_filling_batch_search" model="ir.ui.view">
+        <field name="name">medtech.filling.batch.search</field>
+        <field name="model">medtech.filling.batch</field>
+        <field name="arch" type="xml">
+            <search string="Filling">
+                <field name="name"/>
+                <field name="production_id"/>
+                <filter string="QC Passed" name="qc_passed" domain="[('state', '=', 'qc_passed')]"/>
+                <filter string="QC Failed" name="qc_failed" domain="[('state', '=', 'qc_failed')]"/>
+                <filter string="Moved" name="moved" domain="[('state', '=', 'moved')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_medtech_filling_batch" model="ir.actions.act_window">
+        <field name="name">Filling</field>
+        <field name="res_model">medtech.filling.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

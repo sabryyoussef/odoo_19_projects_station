@@ -1,0 +1,245 @@
+pipeline {
+    agent any
+    
+    triggers {
+        // Run every day at 08:00 AM
+        cron('0 8 * * *')
+    }
+    
+    environment {
+        // Odoo connection details from Jenkins credentials
+        ODOO_URL = credentials('odoo-url')
+        ODOO_DB = credentials('odoo-db')
+        ODOO_USERNAME = credentials('odoo-username')
+        ODOO_PASSWORD = credentials('odoo-password')
+        
+        // Script configuration
+        STALE_HOURS = '48'
+        MAX_LEADS_PER_RUN = '500'
+        
+        // Paths
+        WORKSPACE_PATH = "${WORKSPACE}"
+        SCRIPT_PATH = "${WORKSPACE}/automation"
+        VENV_PATH = "${SCRIPT_PATH}/venv"
+    }
+    
+    options {
+        // Keep last 30 builds
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+        
+        // Timeout after 2 hours
+        timeout(time: 2, unit: 'HOURS')
+        
+        // Timestamps in console output
+        timestamps()
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    echo 'Checking out code...'
+                    checkout scm
+                }
+            }
+        }
+        
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    echo 'Setting up Python virtual environment...'
+                    sh '''
+                        cd ${SCRIPT_PATH}
+                        
+                        # Remove old venv if exists
+                        if [ -d "venv" ]; then
+                            rm -rf venv
+                        fi
+                        
+                        # Create new virtual environment
+                        python3 -m venv venv
+                        
+                        # Activate and install dependencies
+                        . venv/bin/activate
+                        pip install --upgrade pip
+                        pip install -r requirements.txt
+                        
+                        # Verify installation
+                        pip list
+                    '''
+                }
+            }
+        }
+        
+        stage('Validate Configuration') {
+            steps {
+                script {
+                    echo 'Validating configuration...'
+                    sh '''
+                        cd ${SCRIPT_PATH}
+                        . venv/bin/activate
+                        
+                        # Test Python imports
+                        python -c "import erppeek; print(f'erppeek version: {erppeek.__version__}')"
+                        
+                        # Validate environment variables
+                        if [ -z "$ODOO_URL" ]; then
+                            echo "ERROR: ODOO_URL not set"
+                            exit 1
+                        fi
+                        
+                        if [ -z "$ODOO_DB" ]; then
+                            echo "ERROR: ODOO_DB not set"
+                            exit 1
+                        fi
+                        
+                        echo "Configuration validated successfully"
+                    '''
+                }
+            }
+        }
+        
+        stage('Run Lead Audit') {
+            steps {
+                script {
+                    echo 'Running CRM Lead Audit Automation...'
+                    sh '''
+                        cd ${SCRIPT_PATH}
+                        . venv/bin/activate
+                        
+                        # Set environment variables for script
+                        export ODOO_URL="${ODOO_URL}"
+                        export ODOO_DB="${ODOO_DB}"
+                        export ODOO_USERNAME="${ODOO_USERNAME}"
+                        export ODOO_PASSWORD="${ODOO_PASSWORD}"
+                        export STALE_HOURS="${STALE_HOURS}"
+                        export MAX_LEADS_PER_RUN="${MAX_LEADS_PER_RUN}"
+                        
+                        # Run the automation script
+                        python lead_audit_automation.py
+                    '''
+                }
+            }
+        }
+        
+        stage('Process Results') {
+            steps {
+                script {
+                    echo 'Processing results and generating reports...'
+                    sh '''
+                        cd ${SCRIPT_PATH}
+                        
+                        # Find today's log file
+                        LOG_FILE="logs/lead_audit_$(date +%Y%m%d).log"
+                        
+                        if [ -f "$LOG_FILE" ]; then
+                            echo "=== Audit Summary ==="
+                            echo ""
+                            grep -E "Stale leads found|Activities created|Leads marked as audited|Errors encountered|Success rate" "$LOG_FILE" || echo "No summary found"
+                            echo ""
+                            echo "Full log available in artifacts"
+                        else
+                            echo "WARNING: Log file not found: $LOG_FILE"
+                        fi
+                    '''
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                echo 'Archiving artifacts...'
+                // Archive log files
+                archiveArtifacts artifacts: 'automation/logs/*.log', 
+                                 allowEmptyArchive: true,
+                                 fingerprint: true
+            }
+        }
+        
+        success {
+            script {
+                echo 'Build succeeded!'
+                
+                // Send success notification
+                emailext(
+                    subject: "✅ CRM Lead Audit - Success [${env.BUILD_NUMBER}]",
+                    body: """
+                        <h2>CRM Lead Audit Automation - SUCCESS</h2>
+                        <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                        <p><strong>Timestamp:</strong> ${new Date()}</p>
+                        <p><strong>Status:</strong> <span style="color: green;">COMPLETED SUCCESSFULLY</span></p>
+                        
+                        <h3>Build Information</h3>
+                        <ul>
+                            <li>Job: ${env.JOB_NAME}</li>
+                            <li>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
+                            <li>Duration: ${currentBuild.durationString}</li>
+                        </ul>
+                        
+                        <p>Check the console output and archived logs for detailed results.</p>
+                    """,
+                    to: 'admin@company.com',
+                    mimeType: 'text/html'
+                )
+            }
+        }
+        
+        failure {
+            script {
+                echo 'Build failed!'
+                
+                // Send failure notification
+                emailext(
+                    subject: "❌ CRM Lead Audit - FAILURE [${env.BUILD_NUMBER}]",
+                    body: """
+                        <h2>CRM Lead Audit Automation - FAILURE</h2>
+                        <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                        <p><strong>Timestamp:</strong> ${new Date()}</p>
+                        <p><strong>Status:</strong> <span style="color: red;">FAILED</span></p>
+                        
+                        <h3>Build Information</h3>
+                        <ul>
+                            <li>Job: ${env.JOB_NAME}</li>
+                            <li>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></li>
+                            <li>Console: <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></li>
+                            <li>Duration: ${currentBuild.durationString}</li>
+                        </ul>
+                        
+                        <h3>Action Required</h3>
+                        <p>Please investigate the failure by:</p>
+                        <ol>
+                            <li>Checking the console output</li>
+                            <li>Reviewing the archived logs</li>
+                            <li>Verifying Odoo connectivity</li>
+                            <li>Checking Jenkins credentials</li>
+                        </ol>
+                    """,
+                    to: 'admin@company.com',
+                    mimeType: 'text/html',
+                    attachLog: true
+                )
+            }
+        }
+        
+        unstable {
+            script {
+                echo 'Build is unstable!'
+                emailext(
+                    subject: "⚠️ CRM Lead Audit - Unstable [${env.BUILD_NUMBER}]",
+                    body: "The CRM Lead Audit automation completed with warnings. Please review the logs.",
+                    to: 'admin@company.com'
+                )
+            }
+        }
+        
+        cleanup {
+            script {
+                echo 'Cleaning up...'
+                // Clean up workspace if needed
+                // cleanWs()
+            }
+        }
+    }
+}

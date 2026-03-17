@@ -1,0 +1,25 @@
+{
+    "name": "Elevator Pro Demo",
+    "version": "19.0.1.0.0",
+    "summary": "Lean elevator sales-to-live demo flow",
+    "category": "Sales/CRM",
+    "author": "Edafa Tasks",
+    "license": "LGPL-3",
+    "depends": [
+        "crm",
+        "sale_management",
+        "sale_mrp",
+        "project",
+        "mrp",
+        "maintenance",
+    ],
+    "data": [
+        "data/project_data.xml",
+        "views/crm_lead_views.xml",
+        "views/project_task_views.xml",
+        "views/sale_order_views.xml",
+        "views/flow_dashboard_views.xml",
+    ],
+    "application": True,
+    "installable": True,
+}

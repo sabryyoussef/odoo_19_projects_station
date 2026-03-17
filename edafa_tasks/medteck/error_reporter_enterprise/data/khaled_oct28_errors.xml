@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Khaled Oct 28 Error #1: Project Tags Constraint -->
+        <record id="error_khaled_oct28_01_project_tags" model="error.report">
+            <field name="name">Project Tags Validation Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-28 13:00:00</field>
+            <field name="error_location">Sales → Pro-forma → Confirm</field>
+            <field name="module_name">project</field>
+            <field name="record_reference">PFI04336</field>
+            <field name="impact">high</field>
+            <field name="status">new</field>
+            <field name="priority">2</field>
+            <field name="description"><![CDATA[
+                <p>Tried to confirm pro-forma invoice PFI04336.</p>
+                <p>System showed validation error about project tags.</p>
+                <p>Could not complete confirmation.</p>
+            ]]></field>
+            <field name="error_message">Validation Error: The operation cannot be completed: another model requires the record being deleted. Constraint: project_project_project_tags_rel_project_tags_id_fkey</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Open invoice PFI04336</li>
+                    <li>Click "Confirm"</li>
+                    <li>Validation error appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_notes"><![CDATA[
+                <p>Frontend cleanup required - not a code fix.</p>
+                <p>Products have deleted project tags assigned.</p>
+                <p>Solution: Remove invalid tags from products:</p>
+                <ul>
+                    <li>[S] Business Set-up | 1 year</li>
+                    <li>[S] Corporate Banking Assistance</li>
+                    <li>[S] Personal Banking Assistance</li>
+                </ul>
+                <p>Go to Products → Open each → Remove Project Tags → Save</p>
+            ]]></field>
+        </record>
+
+        <!-- Khaled Oct 28 Error #2: Required Fields -->
+        <record id="error_khaled_oct28_02_required_fields" model="error.report">
+            <field name="name">Project - Please fill in all required fields</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-28 13:30:00</field>
+            <field name="error_location">Projects → Company tab → Save</field>
+            <field name="module_name">project / partner</field>
+            <field name="record_reference">PFI04336 - Marwan Alseikh</field>
+            <field name="impact">medium</field>
+            <field name="status">new</field>
+            <field name="priority">1</field>
+            <field name="description"><![CDATA[
+                <p>Opened project PFI04336 - Marwan Alseikh.</p>
+                <p>Tried to edit fields in Company tab.</p>
+                <p>Yellow warning appeared when trying to save.</p>
+                <p>Cannot save the project.</p>
+            ]]></field>
+            <field name="error_message">⚠️ Please fill in all required fields</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Open project PFI04336</li>
+                    <li>Go to Company tab</li>
+                    <li>Try to edit any field</li>
+                    <li>Click Save</li>
+                    <li>Yellow warning appears</li>
+                </ol>
+            ]]></field>
+            <field name="fix_notes"><![CDATA[
+                <p>User action required - not a code fix.</p>
+                <p>Required fields are empty (Company Name is blank).</p>
+                <p>Solution: Fill in required fields:</p>
+                <ul>
+                    <li>Company Name (most likely required)</li>
+                    <li>Check for bold labels or red * symbols</li>
+                    <li>Check all tabs for required fields</li>
+                </ul>
+                <p>Tip: Press F12 → Console to see which field is required</p>
+            ]]></field>
+        </record>
+
+    </data>
+</odoo>
+

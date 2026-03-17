@@ -1,0 +1,173 @@
+﻿"Module","DocType","Section","Content"
+"medtech_recall","README","MedTech Recall Module",""
+"medtech_recall","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, medtech_traceability"
+"medtech_recall","README","Purpose","Comprehensive product recall management system for medical devices, supporting FDA recall requirements (21 CFR Part 7) and EU MDR Field Safety Corrective Actions (FSCAs)."
+"medtech_recall","README","Key Features",""
+"medtech_recall","README","1. Recall Management","- Recall classification (Class I, II, III)
+- Scope definition (lots, serials, date ranges)
+- Status tracking (Planning, Active, Closed)
+- Effectiveness checks
+- FDA/Notified Body reporting"
+"medtech_recall","README","2. Customer Notification System","- Automated notification generation
+- Multi-channel (email, mail, fax)
+- Template library (Urgent, Important, routine)
+- Response tracking
+- Acknowledgment collection"
+"medtech_recall","README","3. Quarantine Management","- Automatic inventory quarantine
+- Customer hold notifications
+- Return merchandise authorization (RMA)
+- Disposal/rework tracking"
+"medtech_recall","README","4. Recall Effectiveness","- Response rate calculation
+- Product recovery rate
+- Customer acknowledgment tracking
+- FDA effectiveness check submission"
+"medtech_recall","README","Regulatory Compliance",""
+"medtech_recall","README","FDA 21 CFR Part 7","- **Subpart C:** Recalls (firms responsibilities)
+- **Subpart D:** FDA facility recalls
+- **آ§7.40-7.59:**Recall procedures, depth, status"
+"medtech_recall","README","EU MDR Article 83-92","- Field Safety Corrective Actions (FSCA)
+- Field Safety Notices (FSN)
+- Reporting to competent authorities"
+"medtech_recall","README","Technical Architecture",""
+"medtech_recall","README","Models",""
+"medtech_recall","README","`medtech.recall`","**Key Fields:**
+- `recall_number` - Unique identifier  
+- `classification` - Class I/II/III or FSCA level
+- `scope` - Affected products, lots, serials
+- `reason` - Root cause description
+- `action_required` - Customer instructions
+- `effectiveness_rate` - % recovered/responded
+- `customer_notification_ids` - Linked notifications"
+"medtech_recall","README","`medtech.recall.notification`","- Customer contact details
+- Notification date/method
+- Response received (Yes/No)
+- Device returned status"
+"medtech_recall","README","Reports","- Recall Status Report
+- Effectiveness Check Report
+- FDA Recall Report (Form 3-500A format)
+- Customer Notification Letter
+
+##Module Structure
+
+```
+medtech_recall/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ medtech_recall.py
+â”‚   â”œâ”€â”€ recall_notification.py
+...   â””â”€â”€ stock_quant.py (extends for quarantine)
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ recall_views.xml
+â”‚   â””â”€â”€ notification_views.xml
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ recall_report_pack.xml
+â”œâ”€â”€ data/
+â”‚   â””â”€â”€ notification_templates.xml
+â””â”€â”€ docs/
+```"
+"medtech_recall","README","Use Cases",""
+"medtech_recall","README","Use Case 1: Voluntary Medical Device Recall","**Scenario:** Software bug causes incorrect readings (safety risk)
+
+**Steps:**
+
+**Day 1: Recall Decision**
+1. Quality/Regulatory team identifies issue
+2. Risk assessment: Potential patient harm
+3. Decision: Class II recall
+
+**Day 2-3: Recall Planning**
+1. Create recall record
+2. Define scope:
+   - Products: Model X, Software v2.1
+   - Serial range: 10001-15000
+   - Distributed: 2024-01-01 to 2024-06-30
+3. Determine corrective action:
+   - Software update (remote)
+   - Or return for upgrade
+4. Draft customer notification
+
+**Day 4: Notification**
+1. Generate customer notifications (automated)
+2. System identifies 250 affected customers
+3. Sends """"Urgent Medical Device Recall"""" notices
+4. Quarantines inventory (75 units in stock)
+
+**Day 5-30: Active Recall**
+1. Track customer responses
+2. Monitor return rates
+3. Update recall dashboard
+
+**Day 31-45: Effectiveness Check**
+1. Calculate metrics:
+   - Response rate: 95% (238/250)
+   - Recovery rate: 92% (230/250)
+2. Follow up with non-responders
+3. Document final results
+
+**Day 46+: FDA Reporting**
+1. Submit recall termination request
+2. Provide effectiveness data
+3. FDA reviews and approves closure"
+"medtech_recall","README","Use Case 2: Customer Complaint-Triggered Recall","**Scenario:** Customer reports device crack causing leakage
+
+**Investigation:**
+1. Field service reviews complaints
+2. Discovers pattern: 5 complaints, same lot
+3. Creates CAPA for investigation
+4. Root cause: Component supplier change
+
+**Decision Tree:**
+```
+Is it a safety issue? â†’ YES
+â”‚
+â”œâ†’ Immediate hazard? â†’ YES â†’ Class I Recall
+â””â†’ Serious harm likely? â†’ MAYBE â†’ Class II Recall
+```
+
+**Recall Execution:**
+1. Classify as Class II
+2. Scope: Single lot (ABC-123)
+3. Customer notification: """"Important Safety Information""""
+4. Offer free replacement
+5. Track returns and disposal"
+"medtech_recall","README","Best Practices",""
+"medtech_recall","README","Recall Classification Guidelines","**Class I (Most Serious):**
+- Reasonable probability of serious adverse health consequences or death
+- Example: Pacemaker lead fracture causing device failure
+
+**Class II (Moderate):**
+- May cause temporary/medically reversible adverse health consequences
+- Remote probability of serious harm
+- Example: Incorrect labeling, software bug
+
+**Class III (Least Serious):**
+- Not likely to cause adverse health consequences
+- Example: Packaging defect, cosmetic issue"
+"medtech_recall","README","Recall Speed","- **Class I:** Notify within 24 hours
+- **Class II:** Notify within 5 days
+- **Class III:** Notify within 10 days"
+"medtech_recall","README","Communication","âœ… **DO:**
+- Be clear and specific about risk
+- Provide simple instructions
+- Include contact information
+- Use multiple notification methods
+
+â‌Œ **DON'T:**
+- Minimize the risk
+- Use vague language
+- Delay notification
+- Assume customers saw news"
+"medtech_recall","README","Improvements Roadmap",""
+"medtech_recall","README","High Priority","1. **FDA Rec Reporting Integration** - Auto-submit to FDA recall portal
+2. **Recall Cost Tracking** - Calculate financial impact
+3. **Recall Simulation** - Practice recalls with mock scenarios"
+"medtech_recall","README","Medium Priority","4. **Multi-Language Notifications** - Auto-translate for global recalls
+5. **Customer Portal** - Self-service recall acknowledgment
+6. **SMS/Push Notifications** - Additional notification channels"
+"medtech_recall","README","Low Priority","7. **Recall Analytics** - Trend analysis, risk prediction
+8. **Integration with TraceLink** - Pharmaceutical track-and-trace"
+"medtech_recall","README","Changelog",""
+"medtech_recall","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modernized chatter
+- Fixed XML report templates (escaped special characters)
+- Demo data structure created"

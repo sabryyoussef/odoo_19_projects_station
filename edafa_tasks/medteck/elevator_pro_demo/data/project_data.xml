@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_elevator_operations" model="project.project">
+        <field name="name">Elevator Operations</field>
+    </record>
+
+    <record id="task_type_inspection" model="project.task.type">
+        <field name="name">Inspection</field>
+        <field name="sequence">10</field>
+        <field name="project_ids" eval="[(4, ref('elevator_pro_demo.project_elevator_operations'))]"/>
+    </record>
+
+    <record id="task_type_manufacturing" model="project.task.type">
+        <field name="name">Manufacturing</field>
+        <field name="sequence">20</field>
+        <field name="project_ids" eval="[(4, ref('elevator_pro_demo.project_elevator_operations'))]"/>
+    </record>
+
+    <record id="task_type_installation" model="project.task.type">
+        <field name="name">Installation</field>
+        <field name="sequence">30</field>
+        <field name="project_ids" eval="[(4, ref('elevator_pro_demo.project_elevator_operations'))]"/>
+    </record>
+
+    <record id="task_type_qc" model="project.task.type">
+        <field name="name">QC</field>
+        <field name="sequence">40</field>
+        <field name="project_ids" eval="[(4, ref('elevator_pro_demo.project_elevator_operations'))]"/>
+    </record>
+
+    <record id="task_type_live" model="project.task.type">
+        <field name="name">Live</field>
+        <field name="sequence">50</field>
+        <field name="project_ids" eval="[(4, ref('elevator_pro_demo.project_elevator_operations'))]"/>
+    </record>
+</odoo>

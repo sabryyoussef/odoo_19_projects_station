@@ -1,0 +1,76 @@
+# Ignore Python virtual environment
+venv/
+env/
+ENV/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Ignore environment files (contains sensitive data)
+.env
+*.env
+!.env.example
+
+# Ignore log files
+*.log
+logs/
+*.log.*
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# Ignore Odoo-specific files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore backup files
+*.bak
+*.backup
+*~
+
+# Ignore temporary files
+*.tmp
+temp/
+tmp/
+
+# Ignore compiled files
+*.so
+*.dll
+*.dylib
+
+# Ignore package files
+*.egg
+*.egg-info/
+dist/
+build/
+*.tar.gz
+*.whl
+
+# Ignore coverage reports
+.coverage
+htmlcov/
+*.cover
+
+# Ignore test files
+.pytest_cache/
+.tox/
+
+# Ignore documentation build
+docs/_build/
+
+# Keep directory structure
+!logs/.gitkeep

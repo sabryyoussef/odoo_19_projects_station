@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_elevator_demo" model="ir.ui.view">
+        <field name="name">crm.lead.form.elevator.demo</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_create_site_inspection" type="object" class="oe_stat_button" icon="fa-building" invisible="type == 'lead'">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Create Site Inspection</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <xpath expr="//sheet/group[1]" position="after">
+                <group string="Elevator Demo Flow" invisible="type == 'lead'">
+                    <group>
+                        <field name="elevator_flow_stage"/>
+                        <field name="site_inspection_task_id" readonly="1"/>
+                        <field name="floors_count"/>
+                        <field name="passengers_capacity"/>
+                        <field name="elevator_speed"/>
+                        <field name="machine_room_required"/>
+                    </group>
+                    <group>
+                        <field name="shaft_height"/>
+                        <field name="shaft_width"/>
+                        <field name="shaft_depth"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

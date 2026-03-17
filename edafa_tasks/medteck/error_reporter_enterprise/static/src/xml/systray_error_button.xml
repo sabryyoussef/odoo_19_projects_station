@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="error_reporter_enterprise.ErrorReportSystray">
+        <button class="btn btn-sm btn-danger rounded-pill px-3" 
+                title="Report an Error"
+                t-on-click="onClick">
+            <i class="fa fa-bug me-1"/> Report Error
+        </button>
+    </t>
+</templates>
+

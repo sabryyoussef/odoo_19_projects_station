@@ -1,0 +1,2546 @@
+﻿"Module","DocType","Section","Content"
+"medtech_core","IMPROVEMENTS","MedTech Core - Improvement Ideas",""
+"medtech_core","IMPROVEMENTS","Overview","This document contains future enhancement ideas, feature requests, and potential improvements for the MedTech Core module. Items are categorized by priority and complexity."
+"medtech_core","IMPROVEMENTS","High Priority Enhancements",""
+"medtech_core","IMPROVEMENTS","1. Electronic Signature (21 CFR Part 11 Compliance)","**Description:**  
+Implement full electronic signature functionality compliant with FDA 21 CFR Part 11.
+
+**Requirements:**
+- Two-factor authentication for signatures
+- Signature meaning capture
+- Signature timestamping
+- Unique user credentials
+- Signature audit trail
+- Non-repudiation
+
+**Implementation:**
+```python
+class MedtechSignature(models.Model):
+    _name = 'medtech.signature'
+    
+    user_id = fields.Many2one('res.users', required=True)
+    signature_date = fields.Datetime(required=True)
+    signature_meaning = fields.Char(required=True)  # e.g., """"Approved by QA Manager""""
+    record_model = fields.Char(required=True)
+    record_id = fields.Integer(required=True)
+    password_verified = fields.Boolean(default=False)
+```
+
+**Benefits:**
+- Eliminates paper signatures
+- Faster approval processes
+- Better audit trails
+- Regulatory compliance
+
+**Estimated Effort:** 40 hours  
+**Priority:** High  
+**Regulatory Impact:** FDA 21 CFR Part 11, EU GMP Annex 11
+
+---"
+"medtech_core","IMPROVEMENTS","2. Company-Level Compliance Configuration","**Description:**  
+Create a configuration interface for company-specific compliance settings.
+
+**Features:**
+- Regulatory framework selection (FDA, EU MDR, ISO 13485, multiple)
+- Document retention policies
+- Approval chain configuration
+- Electronic signature settings
+- GxP module enablement
+- Compliance reporting preferences
+
+**UI Mockup:**
+```
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ
+â”‚ MedTech Configuration                       â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚                                             â”‚
+â”‚ Regulatory Framework(s):                    â”‚
+â”‚ âک‘ FDA 21 CFR Part 820                      â”‚
+â”‚ âک‘ EU MDR 2017/745                          â”‚
+â”‚ âک‘ ISO 13485:2016                           â”‚
+â”‚ âکگ ISO 14971 (Risk Management)             â”‚
+â”‚                                             â”‚
+â”‚ Document Retention:                         â”‚
+â”‚ DHR Retention: [âˆ‍] Device Life + [2] yearsâ”‚
+â”‚ CAPA Retention: [3] years from closure     â”‚
+â”‚                                             â”‚
+â”‚ Electronic Signatures:                      â”‚
+â”‚ âڑھ Disabled                                â”‚
+â”‚ âڑ« Enabled with password verification      â”‚
+â”‚ âڑھ Enabled with 2FA                        â”‚
+â”‚                                             â”‚
+â”‚ [Save Configuration]                        â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک
+```
+
+**Benefits:**
+- Tailored compliance per company
+- Multi-framework support
+- Easier regulatory audits
+- Centralized configuration
+
+**Estimated Effort:** 24 hours  
+**Priority:** High  
+
+---"
+"medtech_core","IMPROVEMENTS","3. Role-Based Dashboard Widgets","**Description:**  
+Create customizable dashboards based on user's security groups.
+
+**Operator Dashboard:**
+- My open work orders
+- Quality alerts
+- Training due dates
+- Equipment status
+
+**Quality Manager Dashboard:**
+- Open CAPAs (overdue highlighted)
+- Pending approvals
+- NCR trends (chart)
+- Compliance metrics
+- Upcoming audits
+
+**Regulatory Manager Dashboard:**
+- Submission timelines
+- Regulatory deadlines (Gantt)
+- Compliance score
+- Change control status
+
+**Implementation:**
+- OWL components for widgets
+- Configurable layouts
+- Real-time updates
+- Export capability
+
+**Estimated Effort:** 60 hours  
+**Priority:** High  
+
+---"
+"medtech_core","IMPROVEMENTS","Medium Priority Enhancements",""
+"medtech_core","IMPROVEMENTS","4. Advanced Audit Trail Analytics","**Description:**  
+Provide analytics and visualization for audit trail data.
+
+**Features:**
+- Most edited records (heat map)
+- User activity patterns
+- Change frequency analysis
+- Approval bottleneck identification
+- Anomaly detection
+
+**Visualizations:**
+- Timeline of changes (Gantt-style)
+- User activity bar charts
+- Field modification heat maps
+- Approval cycle time trends
+
+**Use Case:**  
+Identify which users/records have unusual activity patterns for targeted audit.
+
+**Estimated Effort:** 32 hours  
+**Priority:** Medium  
+
+---"
+"medtech_core","IMPROVEMENTS","5. Delegation & Substitute Approvers","**Description:**  
+Allow approvers to delegate approval authority during absence.
+
+**Features:**
+- Temporary delegation (with expiration)
+- Permanent substitute configuration
+- Delegation audit trail
+- Email notifications
+- Override capability for emergencies
+
+**Workflow:**
+```
+1. Jane (QA Manager) going on vacation
+2. Jane designates Tom as substitute approver
+3. Sets delegation period: 2024-07-01 to 2024-07-15
+4. Tom receives notification
+5. During period, pending approvals route to Tom
+6. After period, auto-reverts to Jane
+```
+
+**Estimated Effort:** 20 hours  
+**Priority:** Medium  
+
+---"
+"medtech_core","IMPROVEMENTS","6. Approval Workflow Templates","**Description:**  
+Pre-defined approval workflow templates for different record types.
+
+**Templates:**
+- **Single-stage:** Manager approval only
+- **Two-stage:** QA Manager â†’ Regulatory Manager
+- **Three-stage:** Quality User â†’ QA Manager â†’ Regulatory Manager
+- **Parallel:** Both QA and Regulatory simultaneously
+- **Custom:** User-defined chains
+
+**Configuration:**
+```python
+workflow_template_id = fields.Many2one('medtech.approval.template')
+
+# Template defines:
+# - Number of stages
+# - Required groups at each stage
+# - Sequence (sequential/parallel)
+# - Auto-escalation rules
+```
+
+**Estimated Effort:** 28 hours  
+**Priority:** Medium  
+
+---"
+"medtech_core","IMPROVEMENTS","7. Email Digest & Notifications","**Description:**  
+Configurable email notifications for compliance events.
+
+**Notification Types:**
+- Daily digest of pending approvals
+- Weekly overdue CAPA report
+- Monthly compliance metrics
+- Immediate critical alerts (recalls, safety)
+
+**User Preferences:**
+```
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ
+â”‚ Notification Preferences             â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Daily Digest:     âک‘ Enabled         â”‚
+â”‚ Send at:          [08:00] [AM]      â”‚
+â”‚                                      â”‚
+â”‚ Include:                             â”‚
+â”‚ âک‘ Pending Approvals                 â”‚
+â”‚ âک‘ Overdue CAPAs                     â”‚
+â”‚ âکگ New NCRs                          â”‚
+â”‚ âک‘ Upcoming Audits                   â”‚
+â”‚                                      â”‚
+â”‚ Critical Alerts:  âک‘ Immediate Email â”‚
+â”‚                   âک‘ SMS             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک
+```
+
+**Estimated Effort:** 24 hours  
+**Priority:** Medium  
+
+---"
+"medtech_core","IMPROVEMENTS","Low Priority / Future Enhancements",""
+"medtech_core","IMPROVEMENTS","8. Mobile Application","**Description:**  
+Native mobile app for field operations.
+
+**Features:**
+- Offline capability
+- Barcode scanning
+- Photo capture for audit evidence
+- Digital signatures
+- Sync when online
+
+**Use Cases:**
+- Field service technicians
+- Warehouse operators
+- Shop floor production
+- Remote quality inspections
+
+**Estimated Effort:** 200+ hours  
+**Priority:** Low (Phase 2)  
+
+---"
+"medtech_core","IMPROVEMENTS","9. AI-Powered Anomaly Detection","**Description:**  
+Machine learning to identify unusual patterns in audit trails.
+
+**Capabilities:**
+- Detect suspicious edit patterns
+- Flag unusual approval times
+- Identify data entry anomalies
+- Predict CAPA recurrence
+
+**Example Alert:**  
+""""User John modified 15 approved records in 10 minutesâ€”unusual pattern detected.""""
+
+**Estimated Effort:** 80 hours  
+**Priority:** Low (Future)  
+**Dependencies:** Odoo ML infrastructure
+
+---"
+"medtech_core","IMPROVEMENTS","10. Integration with External Systems","**Description:**  
+APIs and connectors for third-party systems.
+
+**Integrations:**
+- LIMS (Laboratory Information Management)
+- MES (Manufacturing Execution Systems)
+- PLM (Product Lifecycle Management)
+- ERP systems (SAP, Oracle)
+- Quality management tools (Greenlight Guru, MasterControl)
+
+**API Endpoints:**
+```
+POST /api/medtech/audit_trail
+GET /api/medtech/capa/{id}
+PUT /api/medtech/approval/{id}/approve
+```
+
+**Estimated Effort:** 60 hours per integration  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","11. Compliance Training Module Integration","**Description:**  
+Track and enforce training requirements tied to system access.
+
+**Features:**
+- Define required training per security group
+- Automatic access suspension if training expires
+- Training records with quiz scores
+- Scheduled re-training reminders
+- Integration with LMS systems
+
+**Workflow:**
+```
+1. User needs Quality Manager role
+2. System checks required training: """"GMP Basics"""", """"CAPA Process""""
+3. User completes training
+4. Admin verifies completion
+5. System grants Quality Manager access
+6. Training expires after 1 year
+7. System sends renewal reminder 30 days before
+8. If not renewed, access auto-suspended
+```
+
+**Estimated Effort:** 40 hours  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","12. Blockchain Audit Trail (Immutability Proof)","**Description:**  
+Use blockchain to provide cryptographic proof of audit trail integrity.
+
+**Implementation:**
+- Hash each audit trail entry
+- Store hash on blockchain
+- Provide verification tool for inspectors
+- Demonstrate tamper-proof records
+
+**Benefits:**
+- Ultimate data integrity proof
+- Enhanced trust with regulators
+- Marketing differentiation
+
+**Estimated Effort:** 120 hours  
+**Priority:** Low (Experimental)  
+**Dependencies:** Blockchain infrastructure
+
+---"
+"medtech_core","IMPROVEMENTS","Quick Wins (Easy Implementations)",""
+"medtech_core","IMPROVEMENTS","13. Favorite Records","**Description:**  
+Allow users to """"star"""" frequently accessed records.
+
+**Implementation:**
+- Add star icon to record view
+- Create """"My Favorites"""" menu
+- Store in user preferences
+
+**Estimated Effort:** 4 hours  
+**Priority:** Low  
+**Benefit:** Improved UX
+
+---"
+"medtech_core","IMPROVEMENTS","14. Bulk Approval","**Description:**  
+Approve multiple records at once (with safeguards).
+
+**Implementation:**
+- Multi-select in list view
+- """"Bulk Approve"""" action
+- Confirmation dialog with record list
+- Individual audit trail entries
+
+**Safeguards:**
+- Limit to 10 records per bulk action
+- Require password re-entry
+- Show summary before confirm
+
+**Estimated Effort:** 8 hours  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","15. Record Templates","**Description:**  
+Save frequently used configurations as templates.
+
+**Example:**
+- CAPA template: """"Material contamination investigation""""
+- Pre-filled root cause categories
+- Standard corrective actions
+- Typical timeline
+
+**Estimated Effort:** 12 hours  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","Technical Debt & Refactoring",""
+"medtech_core","IMPROVEMENTS","16. Convert to Odoo 19 Best Practices","**Tasks:**
+- Update all decorators to Odoo 19 syntax
+- Replace deprecated APIs
+- Optimize database queries
+- Add proper indexing
+- Write unit tests (target: 80% coverage)
+
+**Estimated Effort:** 40 hours  
+**Priority:** Medium (Ongoing)  
+
+---"
+"medtech_core","IMPROVEMENTS","17. Performance Optimization","**Focus Areas:**
+- Lazy loading for audit trails
+- Cached computed fields
+- Database query optimization
+- Pagination for large datasets
+
+**Metrics to Track:**
+- Page load time < 2 seconds
+- Audit trail query < 500ms
+- Approval action < 1 second
+
+**Estimated Effort:** 24 hours  
+**Priority:** Medium  
+
+---"
+"medtech_core","IMPROVEMENTS","Community-Requested Features",""
+"medtech_core","IMPROVEMENTS","18. Dark Mode Support","**Description:**  
+Support dark theme for reduced eye strain.
+
+**Estimated Effort:** 8 hours  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","19. Localization & Multi-Language","**Description:**  
+Translate module to multiple languages.
+
+**Target Languages:**
+- Spanish (Latin America)
+- German (EU MDR compliance)
+- French (Canada, Europe)
+- Mandarin (China NMPA)
+
+**Estimated Effort:** 20 hours per language  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","20. Scheduled Reporting","**Description:**  
+Auto-generate and email reports on schedule.
+
+**Examples:**
+- Weekly CAPA status report to QA Manager
+- Monthly metrics to executive team
+- Quarterly compliance summary
+
+**Estimated Effort:** 16 hours  
+**Priority:** Low  
+
+---"
+"medtech_core","IMPROVEMENTS","Voting & Prioritization","To request these features or vote on priorities, please:
+
+1. Create GitHub issue with tag `enhancement`
+2. Reference improvement number (e.g., """"Request: #5 Delegation"""")
+3. Describe your use case
+4. Community votes with ًں‘چ reaction
+
+Top-voted features will be prioritized for development.
+
+---"
+"medtech_core","IMPROVEMENTS","Contributing","We welcome community contributions! See `CONTRIBUTING.md` for:
+- Code standards
+- Pull request process
+- Testing requirements
+- Documentation expectations
+
+---
+
+**Last Updated:** February 25, 2026  
+**Next Review:** May 2026"
+"medtech_core","INSTALLATION","MedTech Core - Installation Guide",""
+"medtech_core","INSTALLATION","Prerequisites",""
+"medtech_core","INSTALLATION","System Requirements","- **Odoo Version:** 19.0 or higher
+- **Python:** 3.10+
+- **PostgreSQL:** 13+
+- **Operating System:** Windows, Linux, or macOS"
+"medtech_core","INSTALLATION","Required Odoo Modules","- `base` (pre-installed)
+- `web` (pre-installed)
+- `mail` (pre-installed)"
+"medtech_core","INSTALLATION","Installation Steps",""
+"medtech_core","INSTALLATION","Method 1: Manual Installation (Development)","1. **Clone or Copy Module**
+   ```bash
+   cd /path/to/odoo/addons
+   cp -r /path/to/medtech_core .
+   ```
+
+2. **Update Apps List**
+   - Login to Odoo as Administrator
+   - Go to **Apps** menu
+   - Click **Update Apps List**
+   - Search for """"MedTech Core""""
+
+3. **Install Module**
+   - Click **Install** button
+   - Wait for installation to complete (takes 5-15 seconds)
+
+4. **Verify Installation**
+   - Navigate to **Settings** > **Users & Companies** > **Groups**
+   - Confirm MedTech security groups exist:
+     - MedTech / Operator
+     - MedTech / Warehouse Supervisor
+     - MedTech / Quality User
+     - MedTech / Quality Manager
+     - MedTech / Regulatory User
+     - MedTech / Regulatory Manager
+     - MedTech / Service Technician
+     - MedTech / Auditor"
+"medtech_core","INSTALLATION","Method 2: Command Line Installation","```bash
+# Navigate to Odoo root directory
+cd /path/to/odoo
+
+# Install module
+python odoo-bin -c odoo.conf -d your_database -i medtech_core --stop-after-init
+
+# Start server
+python odoo-bin -c odoo.conf -d your_database
+```"
+"medtech_core","INSTALLATION","Method 3: Docker Installation","```yaml
+# docker-compose.yml
+version: '3'
+services:
+  odoo:
+    image: odoo:19.0
+    volumes:
+      - ./medtech_core:/mnt/extra-addons/medtech_core
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+```
+
+```bash
+docker-compose up -d
+```"
+"medtech_core","INSTALLATION","Post-Installation Configuration",""
+"medtech_core","INSTALLATION","1. Assign Security Groups","Navigate to **Settings** > **Users & Companies** > **Users**
+
+For each user, assign appropriate groups:
+
+**Manufacturing Staff:**
+- MedTech / Operator
+
+**Warehouse Staff:**
+- MedTech / Warehouse Supervisor
+
+**Quality Team:**
+- MedTech / Quality User (inspectors)
+- MedTech / Quality Manager (QA managers)
+
+**Regulatory Team:**
+- MedTech / Regulatory User (documentation)
+- MedTech / Regulatory Manager (submissions)
+
+**Field Service:**
+- MedTech / Service Technician
+
+**Auditors:**
+- MedTech / Auditor (read-only access)"
+"medtech_core","INSTALLATION","2. Configure Company Settings (Future Enhancement)","This will be available in the MedTech Config views (currently commented out):
+- Go to **MedTech** > **Configuration** > **Settings**
+- Set regulatory framework (FDA, EU MDR, ISO 13485)
+- Configure electronic signature requirements
+- Set document retention periods"
+"medtech_core","INSTALLATION","3. Enable Audit Trails","Audit trails are automatically enabled for any model inheriting `medtech.audit.mixin`.
+
+To add audit trails to custom models:
+
+```python
+class YourModel(models.Model):
+    _name = 'your.model'
+    _inherit = ['medtech.audit.mixin']
+```"
+"medtech_core","INSTALLATION","Troubleshooting",""
+"medtech_core","INSTALLATION","Module Not Appearing in Apps List","**Solution:**
+```bash
+# Update module list
+python odoo-bin -c odoo.conf -d your_database -u base --stop-after-init
+
+# Restart server
+python odoo-bin -c odoo.conf -d your_database
+```"
+"medtech_core","INSTALLATION","Security Groups Not Created","**Solution:**
+1. Check logs: `tail -f /path/to/odoo.log`
+2. Verify `security/medtech_security.xml` file exists
+3. Reinstall module:
+   ```bash
+   python odoo-bin -c odoo.conf -d your_database -u medtech_core --stop-after-init
+   ```"
+"medtech_core","INSTALLATION","Permission Errors","**Solution:**
+1. Verify user is assigned to appropriate security groups
+2. Check record rules in **Settings** > **Technical** > **Security** > **Record Rules**
+3. Review access rights in **Settings** > **Technical** > **Security** > **Access Rights**"
+"medtech_core","INSTALLATION","Menu Not Visible","**Solution:**
+1. Verify you have at least one MedTech security group assigned
+2. Clear browser cache (Ctrl+Shift+R)
+3. Check if `views/medtech_menus.xml` is loaded"
+"medtech_core","INSTALLATION","Upgrade Instructions",""
+"medtech_core","INSTALLATION","From Previous Version","```bash
+# Backup database first!
+pg_dump your_database > backup_$(date +%Y%m%d).sql
+
+# Stop Odoo server
+sudo systemctl stop odoo
+
+# Update module files
+cp -r /path/to/new/medtech_core /path/to/odoo/addons/
+
+# Upgrade module
+python odoo-bin -c odoo.conf -d your_database -u medtech_core --stop-after-init
+
+# Start server
+sudo systemctl start odoo
+```"
+"medtech_core","INSTALLATION","Uninstallation","**Warning:** Uninstalling this module will affect all dependent MedTech modules.
+
+```bash
+# Command line
+python odoo-bin -c odoo.conf -d your_database --uninstall medtech_core --stop-after-init
+```
+
+Or via UI:
+1. Go to **Apps**
+2. Find """"MedTech Core""""
+3. Click **Uninstall**
+4. Confirm deletion"
+"medtech_core","INSTALLATION","Development Setup",""
+"medtech_core","INSTALLATION","For Module Development","1. **Enable Developer Mode**
+   - Go to **Settings**
+   - Scroll to bottom, click **Activate the developer mode**
+
+2. **Install Developer Tools**
+   ```bash
+   pip install watchdog
+   pip install odoo-test-helper
+   ```
+
+3. **Run Tests**
+   ```bash
+   python odoo-bin -c odoo.conf -d test_database --test-enable --stop-after-init -i medtech_core
+   ```
+
+4. **Debug Mode**
+   ```bash
+   python odoo-bin -c odoo.conf -d your_database --dev=all
+   ```"
+"medtech_core","INSTALLATION","Production Deployment",""
+"medtech_core","INSTALLATION","Recommended Settings","In `odoo.conf`:
+
+```ini
+[options]
+# Workers for production
+workers = 4
+
+# Security
+list_db = False
+admin_passwd = YOUR_STRONG_PASSWORD
+
+# Logging
+logfile = /var/log/odoo/odoo.log
+log_level = warn
+
+# Performance
+max_cron_threads = 2
+db_maxconn = 64
+```"
+"medtech_core","INSTALLATION","Systemd Service (Linux)","```ini
+[Unit]
+Description=Odoo 19 with MedTech ERP
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=odoo
+Group=odoo
+ExecStart=/usr/bin/python3 /opt/odoo/odoo-bin -c /etc/odoo/odoo.conf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```"
+"medtech_core","INSTALLATION","Support","For installation issues:
+- Check logs: `tail -f /var/log/odoo/odoo.log`
+- Verify file permissions
+- Ensure all dependencies are installed
+- Contact MedTech ERP Team for assistance"
+"medtech_core","README","MedTech Core Module",""
+"medtech_core","README","Overview","**Version:** 19.0.1.0.0  
+**Category:** Manufacturing/MedTech  
+**License:** LGPL-3  
+**Author:** MedTech ERP Team"
+"medtech_core","README","Purpose","MedTech Core is the foundation module for FDA 21 CFR Part 820, EU MDR, and ISO 13485 compliance. It provides the essential compliance framework that all other MedTech modules depend on."
+"medtech_core","README","Key Features",""
+"medtech_core","README","1. Audit Trail System","- **Compliance-grade change tracking** for all critical records
+- Tracks who changed what, when, and why
+- Immutable audit logs for regulatory inspections
+- Automatic timestamping with user attribution"
+"medtech_core","README","2. Multi-Stage Approval Workflow","- Configurable approval chains for critical processes
+- Role-based approval gates (QA, Regulatory, Management)
+- Approval history with signatures and timestamps
+- Rejection handling with mandatory comments"
+"medtech_core","README","3. Security Groups & Access Control","- **Operator** - Basic manufacturing operations
+- **Warehouse Supervisor** - Inventory and logistics management
+- **Quality User** - Quality control activities
+- **Quality Manager** - Quality system oversight
+- **Regulatory User** - Regulatory documentation access
+- **Regulatory Manager** - Regulatory submissions and audits
+- **Service Technician** - Field service operations
+- **Auditor** - Read-only access for compliance audits"
+"medtech_core","README","4. Compliance Configuration","- Company-level compliance settings
+- Regulatory framework selection (FDA, EU MDR, ISO 13485)
+- Document control parameters
+- Electronic signature configuration"
+"medtech_core","README","Technical Architecture",""
+"medtech_core","README","Models",""
+"medtech_core","README","`medtech.audit.mixin`","Abstract model providing audit trail functionality to any model that inherits it.
+
+**Fields:**
+- `audit_ids` - One2many relation to audit trail records
+- `last_modified_by` - User who last modified the record
+- `last_modified_date` - Timestamp of last modification
+
+**Methods:**
+- `_track_audit()` - Automatically creates audit entries on changes
+- `get_audit_trail()` - Returns formatted audit history"
+"medtech_core","README","`medtech.approval.mixin`","Abstract model providing multi-stage approval workflow.
+
+**Fields:**
+- `approval_state` - Selection: draft, pending_qa, pending_regulatory, approved, rejected
+- `approval_user_id` - User who approved/rejected
+- `approval_date` - Timestamp of approval
+- `approval_comment` - Comments from approver
+
+**Methods:**
+- `action_submit_for_approval()` - Initiates approval workflow
+- `action_approve()` - Approves the record
+- `action_reject()` - Rejects with mandatory comments"
+"medtech_core","README","Views","- Audit trail tree and form views
+- Approval workflow status indicator
+- Activity timeline for approvals"
+"medtech_core","README","Security","- Record rules for role-based access
+- Field-level security for sensitive data
+- Audit log protection (no deletion allowed)"
+"medtech_core","README","Dependencies","- `base` - Odoo core
+- `web` - Web interface
+- `mail` - Messaging and activity tracking"
+"medtech_core","README","Module Structure","```
+medtech_core/
+â”œâ”€â”€ __init__.py
+â”œâ”€â”€ __manifest__.py
+â”œâ”€â”€ security/
+â”‚   â”œâ”€â”€ medtech_security.xml       # Security groups
+â”‚   â””â”€â”€ ir.model.access.csv        # Access rights
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”œâ”€â”€ medtech_audit.py           # Audit trail models
+â”‚   â””â”€â”€ medtech_approval.py        # Approval workflow models
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ medtech_audit_views.xml
+â”‚   â””â”€â”€ medtech_menus.xml
+â”œâ”€â”€ demo/
+â”‚   â””â”€â”€ demo_data.xml
+â””â”€â”€ docs/
+    â”œâ”€â”€ README.md
+    â”œâ”€â”€ INSTALLATION.md
+    â”œâ”€â”€ USER_GUIDE.md
+    â””â”€â”€ IMPROVEMENTS.md
+```"
+"medtech_core","README","Regulatory Compliance",""
+"medtech_core","README","FDA 21 CFR Part 820","- **آ§820.70(i)** - Automated processes validation
+- **آ§820.75** - Process change control
+- **آ§820.181** - Device History Record (DHR) requirements
+- **آ§820.184** - Device Master Record (DMR) requirements
+- **آ§820.186** - Quality system record requirements"
+"medtech_core","README","EU MDR (2017/745)","- **Article 10(8)** - Electronic systems validation
+- **Annex I, Chapter II** - Design and manufacturing information
+- **Annex IX** - Quality management system requirements"
+"medtech_core","README","ISO 13485:2016","- **7.3.7** - Control of design and development changes
+- **7.5.1** - Control of production and service provision
+- **4.2.4** - Control of records
+- **4.2.5** - Control of documents"
+"medtech_core","README","Data Model Integration","This module provides mixins that can be inherited by any model requiring compliance features:
+
+```python
+from odoo import models
+
+class MyCompliantModel(models.Model):
+    _name = 'my.model'
+    _inherit = ['medtech.audit.mixin', 'medtech.approval.mixin']
+    
+    # Your model fields here
+```"
+"medtech_core","README","Performance Considerations","- Audit trails are indexed for fast querying
+- Approval workflows use computed fields with proper caching
+- Security groups are optimized for minimal database queries"
+"medtech_core","README","Related Modules","- **medtech_traceability** - Device traceability and UDI management
+- **medtech_quality_capa** - CAPA and nonconformance management
+- **medtech_recall** - Product recall management
+- **medtech_vendor_compliance** - Supplier quality management
+- **medtech_field_service_history** - Field service and maintenance
+- **error_reporter_enterprise** - Error tracking and analytics"
+"medtech_core","README","Support & Maintenance","For issues, feature requests, or contributions, please contact the MedTech ERP Team."
+"medtech_core","README","Changelog",""
+"medtech_core","README","Version 19.0.1.0.0","- Initial Odoo 19 release
+- Modernized security groups (removed category_id)
+- Updated Command syntax for Odoo 19
+- Removed deprecated icon references
+- Created placeholder demo data structure"
+"medtech_core","USER_GUIDE","MedTech Core - User Guide",""
+"medtech_core","USER_GUIDE","Table of Contents","1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+3. [Security Groups & Roles](#security-groups--roles)
+4. [Audit Trail System](#audit-trail-system)
+5. [Approval Workflows](#approval-workflows)
+6. [Use Cases](#use-cases)
+7. [Best Practices](#best-practices)
+8. [FAQ](#faq)"
+"medtech_core","USER_GUIDE","Introduction","MedTech Core provides the compliance foundation for medical device manufacturing in Odoo. This guide will help you understand and effectively use the core compliance features."
+"medtech_core","USER_GUIDE","Getting Started",""
+"medtech_core","USER_GUIDE","First-Time Login","1. **Access Odoo**
+   - Navigate to your Odoo instance (e.g., `http://localhost:8069`)
+   - Login with your credentials
+
+2. **Check Your Access**
+   - Click on your name (top-right corner)
+   - Select **My Profile**
+   - Scroll to **Access Rights** tab
+   - Verify your MedTech groups are assigned
+
+3. **Navigate to MedTech**
+   - Look for **MedTech** in the main menu
+   - This appears only if you have at least one MedTech security group"
+"medtech_core","USER_GUIDE","User Interface Overview","The MedTech menu structure:
+```
+MedTech
+â”œâ”€â”€ Dashboard (Overview of all modules)
+â”œâ”€â”€ Quality
+â”‚   â”œâ”€â”€ CAPAs
+â”‚   â”œâ”€â”€ Nonconformances
+â”‚   â””â”€â”€ Quality Points
+â”œâ”€â”€ Traceability
+â”‚   â”œâ”€â”€ Device History Records (DHR)
+â”‚   â”œâ”€â”€ UDI Management
+â”‚   â””â”€â”€ Lot/Serial Tracking
+â”œâ”€â”€ Recalls
+â”œâ”€â”€ Vendor Compliance
+â”œâ”€â”€ Field Service
+â”œâ”€â”€ Configuration
+â”‚   â”œâ”€â”€ Settings
+â”‚   â””â”€â”€ Audit Trails
+â””â”€â”€ Reporting
+```"
+"medtech_core","USER_GUIDE","Security Groups & Roles",""
+"medtech_core","USER_GUIDE","Group Hierarchy","```
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ
+â”‚      Regulatory Manager     â”‚ â†گ Full regulatory access
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚      Quality Manager        â”‚ â†گ Approve CAPAs, NCRs
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚      Regulatory User        â”‚ â†گ Documentation access
+â”‚      Quality User           â”‚ â†گ Quality activities
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  Warehouse Supervisor       â”‚ â†گ Inventory management
+â”‚  Service Technician         â”‚ â†گ Field service
+â”‚  Operator                   â”‚ â†گ Manufacturing
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚         Auditor             â”‚ â†گ Read-only access
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک
+```"
+"medtech_core","USER_GUIDE","Role Descriptions",""
+"medtech_core","USER_GUIDE","**Operator**","**Who:** Production floor workers, technicians
+**Can Do:**
+- View manufacturing orders
+- Create device history records
+- Record production data
+- View quality instructions
+
+**Cannot Do:**
+- Approve changes
+- Access confidential regulatory data
+- Delete audit records
+
+**Typical Users:** Assembly technicians, machinists, packagers
+
+---"
+"medtech_core","USER_GUIDE","**Warehouse Supervisor**","**Who:** Inventory managers, logistics coordinators
+**Can Do:**
+- Manage inventory levels
+- Create/receive shipments
+- Handle quarantine materials
+- Generate inventory reports
+
+**Cannot Do:**
+- Approve quality decisions
+- Access detailed regulatory files
+- Override quality holds
+
+**Typical Users:** Warehouse managers, shipping coordinators, receiving clerks
+
+---"
+"medtech_core","USER_GUIDE","**Quality User**","**Who:** Quality inspectors, test technicians
+**Can Do:**
+- Perform inspections
+- Create nonconformance reports
+- Execute quality tests
+- Document inspection results
+
+**Cannot Do:**
+- Approve CAPAs
+- Close nonconformances
+- Modify approved procedures
+
+**Typical Users:** Quality inspectors, test engineers, calibration technicians
+
+---"
+"medtech_core","USER_GUIDE","**Quality Manager**","**Who:** Quality assurance managers, QA leads
+**Can Do:**
+- All Quality User permissions
+- Approve CAPAs and NCRs
+- Close quality investigations
+- Generate quality metrics
+- Review and approve procedures
+
+**Cannot Do:**
+- Approve regulatory submissions
+- Submit to authorities
+
+**Typical Users:** QA managers, quality engineers, compliance officers
+
+---"
+"medtech_core","USER_GUIDE","**Regulatory User**","**Who:** Regulatory affairs specialists
+**Can Do:**
+- View regulatory documentation
+- Prepare submission documents
+- Track regulatory timelines
+- Access compliance records
+
+**Cannot Do:**
+- Approve submissions
+- Final signoff on regulatory filings
+
+**Typical Users:** Regulatory specialists, documentation coordinators
+
+---"
+"medtech_core","USER_GUIDE","**Regulatory Manager**","**Who:** Sr. regulatory affairs managers
+**Can Do:**
+- All Regulatory User permissions
+- Approve regulatory submissions
+- Sign regulatory documents
+- Interface with authorities
+- Strategic regulatory decisions
+
+**Typical Users:** VP of Regulatory Affairs, Regulatory Directors
+
+---"
+"medtech_core","USER_GUIDE","**Service Technician**","**Who:** Field service engineers
+**Can Do:**
+- View service history
+- Create service reports
+- Document field issues
+- Track device installations
+
+**Cannot Do:**
+- Access all customer data
+- Modify closed service records
+
+**Typical Users:** Field service engineers, installation technicians
+
+---"
+"medtech_core","USER_GUIDE","**Auditor**","**Who:** Internal/external auditors, consultants
+**Can Do:**
+- Read-only access to all records
+- Generate audit reports
+- View complete audit trails
+- Export compliance data
+
+**Cannot Do:**
+- Create, modify, or delete any records
+- Approve workflows
+- Change configurations
+
+**Typical Users:** Internal auditors, FDA inspectors, notified body auditors"
+"medtech_core","USER_GUIDE","Audit Trail System",""
+"medtech_core","USER_GUIDE","Understanding Audit Trails","Every record inheriting from `medtech.audit.mixin` automatically tracks:
+- **Who** made the change (user)
+- **What** was changed (field name and values)
+- **When** it was changed (timestamp)
+- **Why** (optional change reason)"
+"medtech_core","USER_GUIDE","Viewing Audit Trails","1. **Open any compliant record** (e.g., a CAPA, DHR, or NCR)
+2. **Look for """"Audit Trail"""" tab** at the bottom
+3. **Review change history:**
+
+```
+Date/Time          User              Field Changed    Old Value â†’ New Value
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+2026-02-25 10:30   John Smith        Status           Draft â†’ Approved
+2026-02-25 09:15   Jane Doe          Root Cause       [empty] â†’ Material defect
+2026-02-24 16:45   John Smith        Created          â€”
+```"
+"medtech_core","USER_GUIDE","Use Case: Audit Trail Review","**Scenario:** FDA inspector asks, """"Who approved this CAPA and when?""""
+
+**Steps:**
+1. Open the CAPA record
+2. Navigate to **Audit Trail** tab
+3. Filter by Field = """"approval_state""""
+4. Find approval entry showing:
+   - Approver: Sarah Johnson
+   - Date: 2026-01-15 14:30:22
+   - Change: pending_approval â†’ approved
+
+**Export for Inspector:**
+- Click **Export** button
+- Select """"Audit Trail""""
+- Provide Excel file to inspector"
+"medtech_core","USER_GUIDE","Approval Workflows",""
+"medtech_core","USER_GUIDE","Workflow States","```
+â”Œâ”€â”€â”€â”€â”€â”€â”گ    Submit    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ   QA Approve   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ
+â”‚ Draftâ”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€>â”‚ Pending QA â”‚â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€>â”‚ Pending Reg  â”‚
+â””â”€â”€â”€â”€â”€â”€â”ک              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک                â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک
+   â†‘                       â”‚                              â”‚
+   â”‚                       â”‚ Reject                       â”‚ Approve
+   â”‚                       â†“                              â†“
+   â”‚                  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ                   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”گ
+   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”‚ Rejected â”‚                   â”‚ Approved â”‚
+                      â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک                   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”ک
+```"
+"medtech_core","USER_GUIDE","Submitting for Approval","**Example: Submitting a CAPA for approval**
+
+1. **Complete all required fields**
+   - Root cause analysis
+   - Corrective actions
+   - Preventive actions
+   - Timeline
+
+2. **Click """"Submit for Approval"""" button**
+   - System validates completeness
+   - State changes to """"Pending QA""""
+   - QA Manager receives notification
+
+3. **Track approval status**
+   - Check **Approval** tab
+   - View current approver
+   - See approval history"
+"medtech_core","USER_GUIDE","Approving Records","**As Quality Manager:**
+
+1. **Receive notification**
+   - Email: """"CAPA #2055 awaits your approval""""
+   - Or check **Discuss** > **Activities**
+
+2. **Review the record**
+   - Open CAPA #2055
+   - Review all details thoroughly
+   - Check supporting documents
+
+3. **Approve or Reject**
+   - **To Approve:**
+     - Click """"Approve"""" button
+     - Add approval comments (optional)
+     - Click """"Confirm""""
+   
+   - **To Reject:**
+     - Click """"Reject"""" button
+     - Add rejection reason (mandatory)
+     - Record returns to submitter"
+"medtech_core","USER_GUIDE","Approval Best Practices","âœ… **DO:**
+- Review all supporting evidence before approving
+- Add meaningful approval comments
+- Reject with clear, actionable feedback
+- Approve within SLA timeframes
+
+â‌Œ **DON'T:**
+- Approve without thorough review
+- Delegate approval responsibilities inappropriately
+- Approve records with missing information
+- Skip required approval steps"
+"medtech_core","USER_GUIDE","Use Cases",""
+"medtech_core","USER_GUIDE","Use Case 1: New Employee Onboarding","**Scenario:** New quality inspector joins the team
+
+**Steps:**
+1. **IT Administrator:**
+   - Create Odoo user account
+   - Email: `jdoe@company.com`
+   - Login: `jdoe`
+
+2. **HR Manager:**
+   - Assign to Quality department
+
+3. **Quality Manager:**
+   - Go to **Settings** > **Users**
+   - Find Jane Doe
+   - Click **Edit**
+   - Scroll to **Access Rights**
+   - Check **MedTech / Quality User**
+   - Click **Save**
+
+4. **Verify:**
+   - Jane logs in
+   - Sees MedTech menu
+   - Can create NCRs
+   - Cannot approve CAPAs
+
+---"
+"medtech_core","USER_GUIDE","Use Case 2: Performing a Quality Inspection","**Scenario:** Operator completes production batch, quality inspector must verify
+
+**As Operator:**
+1. Navigate to **Manufacturing** > **Work Orders**
+2. Select work order #MO/0042
+3. Click **Mark as Done**
+4. System triggers quality inspection
+
+**As Quality Inspector:**
+1. Receive notification: """"Inspection required for MO/0042""""
+2. Navigate to **Quality** > **Quality Checks**
+3. Open inspection #QC/0123
+4. Perform measurements:
+   - Dimension A: 25.3mm (spec: 25.0آ±0.5mm) âœ“
+   - Dimension B: 12.1mm (spec: 12.0آ±0.2mm) âœ—
+5. Record results
+6. **Fail** inspection due to Dimension B
+7. System automatically creates NCR #001234
+
+**As Quality Manager:**
+1. Review NCR #001234
+2. Decide: Scrap, Rework, or Use-As-Is
+3. Initiate CAPA if needed
+
+---"
+"medtech_core","USER_GUIDE","Use Case 3: Regulatory Audit Preparation","**Scenario:** FDA pre-approval inspection scheduled in 2 weeks
+
+**Regulatory Manager Tasks:**
+1. **Generate Compliance Report**
+   - **MedTech** > **Reporting** > **Compliance Dashboard**
+   - Date range: Last 12 months
+   - Export to PDF
+
+2. **Review All Open CAPAs**
+   - Ensure all are on-track or closed
+   - Prepare explanations for overdue items
+
+3. **Prepare Audit Trails**
+   - Select sample records (DHRs, CAPAs, Changes)
+   - Export audit trails
+   - Verify completeness
+
+4. **Grant Auditor Access**
+   - Create temporary user: `fda_inspector`
+   - Assign **MedTech / Auditor** group
+   - Set access expiration date
+
+**During Audit:**
+- Auditor has read-only access
+- Can view all records and trails
+- Cannot modify anydata
+- All auditor activity is logged
+
+---"
+"medtech_core","USER_GUIDE","Use Case 4: Handling a Product Complaint","**Scenario:** Customer reports device malfunction
+
+**Service Technician (Receives complaint):**
+1. **MedTech** > **Field Service** > **Service Visits**
+2. Click **Create**
+3. Fill details:
+   - Customer: ABC Hospital
+   - Device Serial: SN123456
+   - Issue: Device error code E42
+4. Save and document findings
+
+**Quality User (Investigates):**
+1. Review service report
+2. Create NCR if device defect confirmed
+3. Link NCR to service visit
+4. Analyze root cause
+
+**Quality Manager (Decides action):**
+1. Review investigation
+2. If isolated: Close NCR
+3. If systemic: Initiate CAPA
+4. If safety concern: Trigger recall evaluation
+
+**Regulatory Manager (If recall needed):**
+1. **MedTech** > **Recalls** > **Create**
+2. Classify recall (Class I, II, III)
+3. Define scope and timeline
+4. Submit to authorities"
+"medtech_core","USER_GUIDE","Best Practices",""
+"medtech_core","USER_GUIDE","Data Integrity (ALCOA Principles)","Follow **ALCOA+** for all data entry:
+
+- **Attributable:** Always login with your own credentials
+- **Legible:** Enter clear, complete descriptions
+- **Contemporaneous:** Record data as it occurs
+- **Original:** Enter data directly into system
+- **Accurate:** Double-check measurements and values
+- **Complete:** Fill all required fields
+- **Consistent:** Follow SOPs for data entry
+- **Enduring:** Don't delete records; use proper workflows
+- **Available:** Ensure data is searchable and retrievable"
+"medtech_core","USER_GUIDE","Document Retention","**Retention Periods:**
+- **DHRs:** Life of device + 2 years (FDA), 10 years (EU MDR)
+- **DMRs:** Life of device + 2 years
+- **CAPAs:** 3 years from closure
+- **NCRs:** 3 years from closure
+- **Audit Trails:** Same as parent record"
+"medtech_core","USER_GUIDE","Electronic Signatures","When electronic signature is enabled:
+1. Enter username and password when prompted
+2. Add signature meaning (e.g., """"Approved by QA Manager"""")
+3. System records:
+   - Signature date/time
+   - User identity
+   - Signature meaning
+   - Record state at signature time"
+"medtech_core","USER_GUIDE","Change Control","For system changes:
+1. Never modify production records directly
+2. Use formal change control process
+3. Test changes in sandbox environment
+4. Document all configuration changes
+5. Train users before deploy"
+"medtech_core","USER_GUIDE","FAQ","**Q: Can I delete an incorrect audit trail entry?**  
+A: No. Audit trails are immutable for compliance. If data was entered incorrectly, create a corrective entry and note the error in comments.
+
+**Q: How long are audit trails retained?**  
+A: Audit trails are retained for the same period as the parent record, typically device life + 2 years minimum.
+
+**Q: Can I have multiple security groups?**  
+A: Yes. Users can have multiple groups. Permissions are combined (most permissive wins).
+
+**Q: What if I need temporary elevated access?**  
+A: Contact your system administrator. They can grant temporary group membership with automatic expiration.
+
+**Q: How do I export audit trails for an inspector?**  
+A: Open the record > Audit Trail tab > Export button > Select format (Excel/PDF).
+
+**Q: Can I customize approval workflows?**  
+A: Yes, but requires developer access. Contact your Odoo administrator or MedTech ERP support.
+
+**Q: What happens if an approver is on vacation?**  
+A: Administrator can reassign activities to a delegate or add secondary approvers to groups.
+
+**Q: Are audit trails backed up?**  
+A: Yes, audit trails are part of the database and included in regular backups.
+
+**Q: Can external auditors access the system?**  
+A: Yes. Create a user with Auditor group (read-only). Set expiration date for security.
+
+**Q: How do I report a bug or request a feature?**  
+A: Use the error_reporter_enterprise module (systray icon) or contact MedTech ERP support team."
+"medtech_core","USER_GUIDE","Getting Help","- **User Documentation:** Check module docs folder
+- **Administrator:** Contact your internal Odoo admin
+- **Technical Support:** MedTech ERP Team
+- **Training:** Request formal training sessions
+- **Community:** Odoo community forums for general Odoo questions"
+"medtech_core","USER_GUIDE","Quick Reference",""
+"medtech_core","USER_GUIDE","Common Tasks","| Task | Navigation | Required Role |
+|------|------------|---------------|
+| View audit trails | Record > Audit Trail tab | Any MedTech group |
+| Submit for approval | Record > Submit for Approval button | Creator or Quality User |
+| Approve CAPA | CAPA > Approve button | Quality Manager+ |
+| Create NCR | Quality > Nonconformances > Create | Quality User+ |
+| Generate compliance report | Reporting > Compliance Dashboard | Quality/Regulatory Manager |
+| Grant user access | Settings > Users > Edit | Administrator |
+| Review audit trail | Record > Audit Trail | Auditor |"
+"medtech_core","USER_GUIDE","Keyboard Shortcuts","- `Alt + C` - Create new record
+- `Alt + E` - Edit current record
+- `Alt + S` - Save record
+- `Alt + K` - Discard changes
+- `Ctrl + K` - Open command palette"
+"medtech_quality_capa","IMPROVEMENTS","MedTech Quality CAPA - Future Improvements",""
+"medtech_quality_capa","IMPROVEMENTS","High Priority",""
+"medtech_quality_capa","IMPROVEMENTS","1. Root Cause Analysis Templates","- Pre-built Fishbone (Ishikawa) diagram tool
+- 5 Whys wizard with guided questions
+-Fault Tree Analysis integration
+- FMEA linkage
+
+**Benefit:** Standardized, thorough root cause analysis"
+"medtech_quality_capa","IMPROVEMENTS","2. CAPA Risk Scoring","- Automatic risk calculation (Severity أ— Occurrence أ— Detection)
+- Priority-based workflow routing
+- High-risk CAPAs â†’ Expedited approval
+
+**Implementation:**
+```python
+risk_score = fields.Integer(compute='_compute_risk')
+# Low: 1-10, Medium: 11-50, High: 51-125
+```"
+"medtech_quality_capa","IMPROVEMENTS","3. Recurring CAPA Detection","- AI-powered duplicate/similar CAPA detection
+- Alert: """"Similar CAPA exists (CAPA-2024-0042)""""
+- Suggest investigation for systemic root cause"
+"medtech_quality_capa","IMPROVEMENTS","4. CAPA Templates Library","- Pre-defined CAPAs for common issues
+- Industry best practices
+- Customizable template catalog"
+"medtech_quality_capa","IMPROVEMENTS","5. Integration with Training Module","- Auto-assign training when CAPA identifies knowledge gap
+- Track training completion tied to CAPA closure
+- Verification of effectiveness through assessments"
+"medtech_quality_capa","IMPROVEMENTS","Medium Priority",""
+"medtech_quality_capa","IMPROVEMENTS","6. Advanced Dashboard Analytics","- Trend charts (CAPA creation over time)
+- Root cause Pareto analysis
+- Department/product breakdown
+- Cost of quality metrics"
+"medtech_quality_capa","IMPROVEMENTS","7. Mobile CAPA App","- Create NCRs from mobile device
+- Photo attachment for evidence
+- Approve CAPAs on-the-go
+- Offline capability"
+"medtech_quality_capa","IMPROVEMENTS","8. Email Escalation","- Auto-email if CAPA overdue by X days
+- Escalate to management if no response
+- Daily digest of assigned CAPAs"
+"medtech_quality_capa","IMPROVEMENTS","9. CAPA Metrics & KPIs","- Mean Time to Close (MTTC)
+- Recurrence rate
+- Effectiveness success rate
+- Cost per CAPA"
+"medtech_quality_capa","IMPROVEMENTS","10. External CAPA Management","- Customer CAPAs (issued to you)
+- Supplier CAPAs (issued to vendors)
+- Bidirectional status tracking"
+"medtech_quality_capa","IMPROVEMENTS","Low Priority",""
+"medtech_quality_capa","IMPROVEMENTS","11. CAPA Import/Export","- Import from Excel template
+- Export to FDA submission format  
+- Integration with eQMS systems"
+"medtech_quality_capa","IMPROVEMENTS","12. Geins/Losses Tracking","- Financial impact of nonconformances
+- Cost savings from preventive actions
+- ROI calculation"
+"medtech_quality_capa","IMPROVEMENTS","13. Predictive Analytics","- Predict likelihood of CAPA recurrence
+- Identify high-risk products/processes
+- Forecast CAPA volumes
+
+##14. Voice-to-Text NCR Creation
+- Dictate NCR descriptions
+- AI transcription and formatting"
+"medtech_quality_capa","INSTALLATION","MedTech Quality CAPA - Installation Guide",""
+"medtech_quality_capa","INSTALLATION","Prerequisites","- **Odoo 19.0+**
+- **medtech_core** module already installed
+- **Quality Control** (optional, for integration)"
+"medtech_quality_capa","INSTALLATION","Installation",""
+"medtech_quality_capa","INSTALLATION","Step 1: Install via Apps Menu","1. Go to **Apps** > Update Apps List
+2. Search """"MedTech Quality CAPA""""
+3. Click **Install**
+4. Wait 10-15 seconds"
+"medtech_quality_capa","INSTALLATION","Step 2: Verify Installation","Check that these menus appear under **MedTech > Quality**:
+- Nonconformances
+- CAPAs
+- CAPA Dashboard
+- Configuration"
+"medtech_quality_capa","INSTALLATION","Step 3: Configure Access Rights","Assign users to appropriate groups:
+- **Quality User:** Can create NCRs and CAPAs
+- **Quality Manager:** Can approve CAPAs
+- **Regulatory Manager:** Can signoff critical CAPAs"
+"medtech_quality_capa","INSTALLATION","Step 4: Configure Sequences","Navigate to **Settings** > **Technical** > **Sequences**
+
+Verify these exist:
+- `medtech.nonconformance` (Format: NCR/YYYY/0001)
+- `medtech.capa` (Format: CAPA/YYYY/0001)"
+"medtech_quality_capa","INSTALLATION","Post-Installation Setup",""
+"medtech_quality_capa","INSTALLATION","1. Define Root Cause Categories","Create common root cause categories for your organization:
+- Material defect
+- Process deviation
+- Equipment failure
+- Human error
+- Design flaw
+- Software bug
+- Environmental factor"
+"medtech_quality_capa","INSTALLATION","2. Set CAPA Thresholds","Define when CAPAs are mandatory:
+- All Critical NCRs â†’ Automatic CAPA
+- Multiple Minor NCRs (same root cause) â†’ CAPA
+- Customer complaints â†’ CAPA evaluation"
+"medtech_quality_capa","INSTALLATION","3. Configure Effectiveness Check Schedule","Typical timeline:
+- Immediate actions: 1 week effectiveness check
+- Process changes: 30 days effectiveness check
+- Design changes: 90 days effectiveness check"
+"medtech_quality_capa","INSTALLATION","Troubleshooting","**Dashboard not loading?**
+- Clear browser cache (Ctrl+Shift+R)
+- Check browser console for JavaScript errors
+- Verify OWL component loaded: Check static/src/js/capa_dashboard.js
+
+**CAPAs not creating?**
+- Check user has Quality User group
+- Verify sequences configured
+- Check server logs for errors
+
+**Approval buttons missing?**
+- Verify user has Quality Manager group
+- Check CAPA state (must be """"Pending Approval"""")
+- Review record rules in Security settings"
+"medtech_quality_capa","README","MedTech Quality CAPA Module",""
+"medtech_quality_capa","README","Overview","**Version:** 19.0.1.0.0  
+**Category:** Manufacturing/MedTech/Quality  
+**License:** LGPL-3  
+**Dependencies:** medtech_core"
+"medtech_quality_capa","README","Purpose","Comprehensive CAPA (Corrective and Preventive Action) and Nonconformance management system for medical device manufacturers, compliant with FDA 21 CFR Part 820 and ISO 13485."
+"medtech_quality_capa","README","Key Features",""
+"medtech_quality_capa","README","1. Nonconformance Report (NCR) Management","- Create NCRs from quality inspections, complaints, or audits
+- Classify by severity (Critical, Major, Minor)
+- Disposition decision (Scrap, Rework, Use-As-Is, Return)
+- Root cause analysis framework
+- Link to related DHRs, lots, or devices"
+"medtech_quality_capa","README","2. CAPA System","- Corrective AND preventive action tracking
+- Multi-stage approval workflow
+- Effectiveness check scheduling
+- Recurrence prevention measures
+- FDA inspection-ready documentation"
+"medtech_quality_capa","README","3. CAPA Dashboard (OWL Component)","- Real-time KPI visualization
+- Overdue CAPA highlighting
+- Effectiveness check calendar
+- CAPA trend charts
+- By-stage pipeline view"
+"medtech_quality_capa","README","4. Approval Workflows","- Draft â†’ In Progress â†’ Pending Approval â†’ Approved â†’ Effectiveness Check â†’ Closed
+- Quality Manager approval required
+- Regulatory Manager signoff for critical CAPAs
+- Audit trail for all approvals"
+"medtech_quality_capa","README","Technical Architecture",""
+"medtech_quality_capa","README","Models",""
+"medtech_quality_capa","README","`medtech.nonconformance`","**Purpose:** Document quality deviations
+
+**Key Fields:**
+- `name` - Auto-generated NCR number
+- `description` - Detailed description
+- `severity` - Critical/Major/Minor
+- `disposition` - Scrap/Rework/Use-As-Is/Return
+- `root_cause` - Text analysis
+- `capa_ids` - Linked CAPAs"
+"medtech_quality_capa","README","`medtech.capa`","**Purpose:** Manage corrective/preventive actions
+
+**Key Fields:**
+- `name` - Auto-generated CAPA number
+- `capa_type` - Corrective, Preventive, or Both
+- `root_cause` - Root cause categoryization
+- `corrective_action` - What to fix
+- `preventive_action` - How to prevent recurrence
+- `target_completion_date` - Deadline
+- `effectiveness_check_required` - Boolean
+- `effectiveness_check_date` - When to verify
+- `effectiveness_result` - Pass/Fail"
+"medtech_quality_capa","README","Views","- Tree, form, kanban for NCRs and CAPAs
+- CAPA dashboard with charts
+- Calendar view for effectiveness checks"
+"medtech_quality_capa","README","Reports","- CAPA effectiveness report
+- NCR summary report
+- Trend analysis"
+"medtech_quality_capa","README","Regulatory Compliance",""
+"medtech_quality_capa","README","FDA 21 CFR Part 820.100","- **(a)** Corrective and preventive action procedures
+- **(b)** Analysis of processes, operations, concessions, quality data
+- **(c)** Investigation of nonconforming product causes
+- **(d)** Identification of action needed
+- **(e)** Verification or validation of corrective/preventive action
+- **(f)** Documentation and information dissemination
+- **(g)** Submission of relevant information to management review"
+"medtech_quality_capa","README","ISO 13485:2016 Clause 8.5","- **8.5.2** Corrective action
+- **8.5.3** Preventive action"
+"medtech_quality_capa","README","Module Structure","```
+medtech_quality_capa/
+â”œâ”€â”€ __init__.py
+â”œâ”€â”€ __manifest__.py
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”œâ”€â”€ medtech_nonconformance.py
+â”‚   â”œâ”€â”€ medtech_capa.py
+â”‚   â””â”€â”€ medtech_quality_config.py
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ nonconformance_views.xml
+â”‚   â”œâ”€â”€ capa_views.xml
+â”‚   â”œâ”€â”€ capa_dashboard_actions.xml
+â”‚   â””â”€â”€ quality_menus.xml
+â”œâ”€â”€ static/src/
+â”‚   â”œâ”€â”€ js/capa_dashboard.js        # OWL Component
+â”‚   â””â”€â”€ xml/capa_dashboard.xml      # Dashboard template
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ capa_report.xml
+â”œâ”€â”€ data/
+â”‚   â””â”€â”€ ir_sequence_data.xml
+â”œâ”€â”€ security/
+â”‚   â””â”€â”€ ir.model.access.csv
+â”œâ”€â”€ demo/
+â”‚   â””â”€â”€ demo_data.xml
+â””â”€â”€ docs/
+    â”œâ”€â”€ README.md
+    â”œâ”€â”€ INSTALLATION.md
+    â”œâ”€â”€ USER_GUIDE.md
+    â””â”€â”€ IMPROVEMENTS.md
+```"
+"medtech_quality_capa","README","CAPA Dashboard","The OWL-based dashboard provides real-time visibility:"
+"medtech_quality_capa","README","KPI Cards","- Total CAPAs
+- Open CAPAs
+- Overdue CAPAs
+- Closed this month
+- Average time to close
+- Effectiveness rate"
+"medtech_quality_capa","README","Charts","- CAPA by stage (pie chart)
+- Trend over time (line chart)
+- Root cause Pareto (bar chart)"
+"medtech_quality_capa","README","Lists","- Overdue CAPAs (action required)
+- Effectiveness checks due
+- Recent CAPAs"
+"medtech_quality_capa","README","Integration Points","- **medtech_core:** Audit trails, approval workflows
+- **medtech_traceability:** Link DHRs to NCRs
+- **medtech_recall:** Trigger recalls from CAPAs
+- **medtech_vendor_compliance:** Supplier CAPAs
+- **quality_control:** Auto-create NCRs from failed inspections"
+"medtech_quality_capa","README","Best Practices","1. **Create NCRs Immediately:** Don't delay documentation
+2. **Root Cause is Critical:** Invest time in thorough analysis (5 Whys, Fishbone)
+3. **Preventive > Corrective:** Focus on preventing recurrence
+4. **Effectiveness Checks:** Always verify CAPA worked
+5. **Close CAPAs Promptly:** Don't leave open indefinitely
+6. **Link Related Records:** Connect NCRs, CAPAs, DHRs for traceability"
+"medtech_quality_capa","README","Changelog",""
+"medtech_quality_capa","README","Version 19.0.1.0.0","- Odoo 19 compatibility
+- Modern <chatter/> tag implementation
+- OWL dashboard with modern hooks (onWillStart)
+- Fixed create method to use @api.model_create_multi
+- HTML-decoded XML templates"
+"medtech_quality_capa","USER_GUIDE","MedTech Quality CAPA - User Guide",""
+"medtech_quality_capa","USER_GUIDE","Creating a Nonconformance Report (NCR)",""
+"medtech_quality_capa","USER_GUIDE","Scenario: Failed Inspection","1. **Navigate:** MedTech > Quality > Nonconformances > Create
+2. **Fill Required Fields:**
+   - **Description:** """"Dimension B out of specification (12.3mm, spec: 12.0آ±0.2mm)""""
+   - **Severity:** Major
+   - **Product:** Select affected product
+   - **Lot/Serial:** Enter traceability info
+3. **Root Cause Analysis:**
+   - Use 5 Whys technique
+   - Document findings
+4. **Disposition Decision:**
+   - **Scrap:** If unusable
+   - **Rework:** If can be corrected
+   - **Use-As-Is:** If acceptable (requires waiver)
+   - **Return to Supplier:** If vendor issue
+5. **Determine if CAPA Needed:**
+   - Click """"Create CAPA"""" if systemic issue
+   - Otherwise, close NCR after disposition"
+"medtech_quality_capa","USER_GUIDE","Creating a CAPA",""
+"medtech_quality_capa","USER_GUIDE","From NCR","1. Open NCR
+2. Click """"Create CAPA"""" button
+3. CAPA auto-populates with NCR info"
+"medtech_quality_capa","USER_GUIDE","Standalone CAPA","1. **Navigate:** MedTech > Quality > CAPAs > Create
+2. **CAPA Type:**
+   - **Corrective:** Fix existing problem
+   - **Preventive:** Prevent potential problem
+   - **Both:** Fix and prevent
+3. **Root Cause:** Document thoroughly
+4. **Corrective Action:**
+   - What specifically will be done
+   - Who is responsible
+   - Target completion date
+5. **Preventive Action:**
+   - How to prevent recurrence
+   - Process changes needed
+   - Training requirements
+6. **Effectiveness Check:**
+   - Set review date
+   - Define success criteria
+7. **Save and Submit for Approval**"
+"medtech_quality_capa","USER_GUIDE","CAPA Workflow","```
+Draft â†’ In Progress â†’ Pending Approval â†’ Approved â†’ 
+Effectiveness Check â†’ Closed (or Re-opened if ineffective)
+```"
+"medtech_quality_capa","USER_GUIDE","As CAPA Owner","1. **Draft:** Fill all required fields
+2. **Submit for Approval:** Click button
+3. **Implement Actions:** Complete corrective/preventive actions
+4. **Request Effectiveness Check:** When ready"
+"medtech_quality_capa","USER_GUIDE","As Quality Manager","1. **Receive Notification:** """"CAPA awaiting approval""""
+2. **Review Thoroughly:**
+   - Root cause makes sense?
+   - Actions address root cause?
+   - Timeline realistic?
+3. **Approve or Reject:**
+   - Approve: CAPA proceeds
+   - Reject: Returns to owner with comments"
+"medtech_quality_capa","USER_GUIDE","Effectiveness Check","1. **When Due:** System sends reminder
+2. **Perform Verification:**
+   - Check if issue recurred
+   - Review metrics
+   - Interview staff
+3. **Record Results:**
+   - **Pass:** Close CAPA
+   - **Fail:** Re-open CAPA, refine actions"
+"medtech_quality_capa","USER_GUIDE","Using the CAPA Dashboard",""
+"medtech_quality_capa","USER_GUIDE","Access Dashboard","**MedTech > Quality > CAPA Dashboard**"
+"medtech_quality_capa","USER_GUIDE","Dashboard Sections","**KPI Cards (Top Row):**
+- Total CAPAs
+- Open CAPAs
+- Overdue CAPAs (red if > 0)
+- Closed This Month
+- Avg Time to Close (days)
+- Effectiveness Rate (%)
+
+**CAPA Pipeline (Middle):**
+Pie chart showing distribution:
+- Draft
+- In Progress
+- Pending Approval
+- Approved
+- Effectiveness Check
+- Closed
+
+**Action Lists (Bottom):**
+- **Overdue CAPAs:** Requires immediate attention
+- **Effectiveness Checks Due:** Schedule reviews
+- **Recent CAPAs:** Last 10 created"
+"medtech_quality_capa","USER_GUIDE","Filtering","Click chart segments to filter:
+- Click """"Overdue"""" slice â†’ Shows only overdue CAPAs
+- Click """"In Progress"""" â†’ Shows all in-progress"
+"medtech_quality_capa","USER_GUIDE","Use Cases",""
+"medtech_quality_capa","USER_GUIDE","Use Case 1: Product Defect Found During Final Inspection","**Situation:** Inspector finds crack in 10% of units from Lot ABC123
+
+**Steps:**
+1. **Create NCR:**
+   - Description: """"Cracks found in housingâ€”10% defect rate""""
+   - Severity: Critical
+   - Lot: ABC123
+   - Disposition: Scrap (100 units)
+
+2. **Immediate Containment:**
+   - Quarantine entire lot
+   - Inspect all other lots from same production run
+
+3. **Create CAPA:**
+   - Root Cause: Injection molding pressure too high
+   - Corrective: Adjust molding parameters
+   - Preventive: Implement process monitoring, operator training
+
+4. **Effectiveness Check (30 days):**
+   - Review next 1000 units
+   - No cracks found
+   - Close CAPA"
+"medtech_quality_capa","USER_GUIDE","Use Case 2: Customer Complaint Trend","**Situation:** Three customer complaints about device software crash
+
+**Steps:**
+1. **Create CAPA (Preventive):**
+   - Type: Both (Corrective + Preventive)
+   - Root Cause: Software memory leak
+   - Corrective: Release firmware update
+   - Preventive: Implement stress testing in QA
+
+2. **Link Related Records:**
+   - Add links to 3 customer complaint records
+   - Reference software test reports
+
+3. **Implementation:**
+   - Develop and validate firmware fix
+   - Notify customers of available update
+   - Update design controls
+
+4. **Effectiveness Check (90 days):**
+   - Monitor complaint database
+   - No new complaints
+   - Close CAPA"
+"medtech_quality_capa","USER_GUIDE","Best Practices",""
+"medtech_quality_capa","USER_GUIDE","Root Cause Analysis","**Use 5 Whys:**
+```
+Problem: Part failed leak test
+Why? Seal was defective
+Why? Seal had visible crack
+Why? Molding temperature too low
+Why? Thermocouple miscalibrated
+Why? Calibration schedule not followed
+Root Cause: Inadequate calibration procedure
+```"
+"medtech_quality_capa","USER_GUIDE","CAPA Writing Tips","âœ… **Good CAPA:**
+- """"Implement weekly calibration checks for all thermocouples per SOP-CAL-001. Training completed by 2026-03-15. Verify with calibration logbook review at 30 days.""""
+
+â‌Œ **Poor CAPA:**
+- """"Fix the problem. Train people better."""""
+"medtech_quality_capa","USER_GUIDE","Effectiveness Criteria","Define measurable success:
+- âœ… """"Zero defects in next 500 units""""
+- âœ… """"Cycle time reduced by 15%""""
+- âœ… """"100% operator quiz scores > 90%""""
+- â‌Œ """"Things get better"""""
+"medtech_quality_capa","USER_GUIDE","FAQ","**Q: Do I need a CAPA for every NCR?**  
+A: No. Single isolated incidents may not require CAPA. Trends or critical issues always need CAPA.
+
+**Q: Can I have multiple CAPAs for one NCR?**  
+A: Yes. Complex issues may need multiple correction paths.
+
+**Q: What if CAPA fails effectiveness check?**  
+A: Re-open CAPA, revise actions, implement additional measures.
+
+**Q: How long to keep closed CAPAs?**  
+A: Minimum 3 years per FDA. Some critical device CAPAs: life of device + 2 years.
+
+**Q: Can I delete a CAPA?**  
+A: No. Cancel it instead (provides audit trail)."
+"medtech_traceability","README","MedTech Traceability Module",""
+"medtech_traceability","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, stock, mrp"
+"medtech_traceability","README","Purpose","Complete device traceability system for medical devices, tracking from raw materials through production to end customer. Compliant with FDA 21 CFR Part 820 Subpart M and EU MDR Article 27 (UDI requirements)."
+"medtech_traceability","README","Key Features",""
+"medtech_traceability","README","1. Device History Record (DHR)","- Complete production history for each device/lot
+- Links to BOM, work orders, materials used
+- Operator signatures and timestamps
+- Quality inspection results
+- Environmental conditions during production
+- Automated DHR generation from MRP
+- PDF/HTML snapshot of record at completion"
+"medtech_traceability","README","2. UDI (Unique Device Identification)","- FDA UDI and EU UDI-DI management
+- Automatic UDI generation per GSIX/HIBC standards
+- Barcode label printing
+- GUDID database integration
+- Device lifecycle tracking"
+"medtech_traceability","README","3. Lot/Serial Traceability","- Forward traceability (where did material go?)
+- Backward traceability (where did material come from?)
+- One-step up, one-step down tracking
+- Genealogy reports for regulatory submissions"
+"medtech_traceability","README","4. Device Master Record (DMR)","- Design specifications
+- Manufacturing procedures
+- Quality acceptance criteria
+- Labeling specifications
+- Version control"
+"medtech_traceability","README","Regulatory Compliance",""
+"medtech_traceability","README","FDA 21 CFR Part 820.184","Device History Record requirements:
+- Quantity manufactured
+- Quantity released for distribution
+- Labeling used
+- Control number(s)
+- Date(s) of manufacture
+- Final acceptance records
+- Unit tested identification"
+"medtech_traceability","README","EU MDR Article 27","UDI System requirements:
+- Basic UDI-DI assignment
+- Production identifiers (serial/lot/batch/expiry)
+- Registration in EU UDID database
+- UDI carriers on labels"
+"medtech_traceability","README","Technical Architecture",""
+"medtech_traceability","README","Models",""
+"medtech_traceability","README","`medtech.dhr` (Device History Record)","- Tracks complete production history
+- Links to manufacturing order, BOM, quality results
+- Immutable after completion (audit locked)
+- PDF snapshot generation"
+"medtech_traceability","README","`medtech.udi` (Unique Device Identifier)","- UDI-DI and UDI-PI management
+- Issuing entity configuration
+- Barcode generation
+- GUDID sync"
+"medtech_traceability","README","Reports","- DHR Report (printable, archivable)
+- Traceability Report (forward/backward)
+- UDI Labels (GS1 barcode format)"
+"medtech_traceability","README","Module Structure","```
+medtech_traceability/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ device_master.py
+â”‚   â”œâ”€â”€ medtech_dhr.py
+â”‚   â”œâ”€â”€ medtech_udi.py
+â”‚   â””â”€â”€ stock_production_lot.py (extends)
+	
+
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ device_master_views.xml
+â”‚   â”œâ”€â”€ medtech_dhr_views.xml
+â”‚   â””â”€â”€ medtech_udi_views.xml
+â”œâ”€â”€ reports/
+â”‚   â”œâ”€â”€ dhr_report.xml
+â”‚   â””â”€â”€ udi_label.xml
+â”œâ”€â”€ static/src/xml/
+â”‚   â””â”€â”€ traceability_dashboard.xml
+â””â”€â”€ docs/
+```"
+"medtech_traceability","README","Use Cases",""
+"medtech_traceability","README","Use Case 1: DHR Creation During Manufacturing","**Workflow:**
+1. Production order created for Device ABC, Serial #12345
+2. DHR auto-generated at MO start
+3. As production proceeds:
+   - Raw materials scanned and logged
+   - Process parameters recorded
+   - In-process inspections documented
+   - Operator signoffs collected
+4. Final inspection passed
+5. DHR locked and PDF snapshot created
+6. DHR archived for device lifetime + 2 years"
+"medtech_traceability","README","Use Case 2: Product Recall Investigation","**Scenario:** Customer reports issue with Device Serial #SN789456
+
+**Steps:**
+1. Open traceability search
+2. Enter Serial #SN789456
+3. System shows:
+   - **DHR:** Production date, operators, materials used
+   - **Materials:** Lot numbers for all components
+   - **Related Devices:** Other units from same lots
+4. Determine scope:
+   - Issue isolated to one lot of Component X
+   - Identify all devices using that lot
+5. Initiate targeted recall"
+"medtech_traceability","README","Use Case 3: UDI Label Generation","**Workflow:**
+1. Product configured with UDI-DI
+2. Production order created
+3. System generates UDI-PI (serial/lot/expiry)
+4. Combines UDI-DI + UDI-PI
+5. Generates GS1 DataMatrix barcode
+6. Prints labels for application
+7. Registers in GUDID if new product"
+"medtech_traceability","README","Best Practices","1. **Scan Everything:** Use barcodes for material tracking
+2. **Real-Time Entry:** Record data as it happens
+3. **Lock DHRs Promptly:** After final inspection
+4. **Retain Forever:** DHRs for implantables
+5. **Test Traceability:** Mock recalls quarterly"
+"medtech_traceability","README","Changelog",""
+"medtech_traceability","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modern chatter implementation
+- XML template fixes (DHR report)
+- Demo data placeholder"
+"medtech_recall","README","MedTech Recall Module",""
+"medtech_recall","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, medtech_traceability"
+"medtech_recall","README","Purpose","Comprehensive product recall management system for medical devices, supporting FDA recall requirements (21 CFR Part 7) and EU MDR Field Safety Corrective Actions (FSCAs)."
+"medtech_recall","README","Key Features",""
+"medtech_recall","README","1. Recall Management","- Recall classification (Class I, II, III)
+- Scope definition (lots, serials, date ranges)
+- Status tracking (Planning, Active, Closed)
+- Effectiveness checks
+- FDA/Notified Body reporting"
+"medtech_recall","README","2. Customer Notification System","- Automated notification generation
+- Multi-channel (email, mail, fax)
+- Template library (Urgent, Important, routine)
+- Response tracking
+- Acknowledgment collection"
+"medtech_recall","README","3. Quarantine Management","- Automatic inventory quarantine
+- Customer hold notifications
+- Return merchandise authorization (RMA)
+- Disposal/rework tracking"
+"medtech_recall","README","4. Recall Effectiveness","- Response rate calculation
+- Product recovery rate
+- Customer acknowledgment tracking
+- FDA effectiveness check submission"
+"medtech_recall","README","Regulatory Compliance",""
+"medtech_recall","README","FDA 21 CFR Part 7","- **Subpart C:** Recalls (firms responsibilities)
+- **Subpart D:** FDA facility recalls
+- **آ§7.40-7.59:**Recall procedures, depth, status"
+"medtech_recall","README","EU MDR Article 83-92","- Field Safety Corrective Actions (FSCA)
+- Field Safety Notices (FSN)
+- Reporting to competent authorities"
+"medtech_recall","README","Technical Architecture",""
+"medtech_recall","README","Models",""
+"medtech_recall","README","`medtech.recall`","**Key Fields:**
+- `recall_number` - Unique identifier  
+- `classification` - Class I/II/III or FSCA level
+- `scope` - Affected products, lots, serials
+- `reason` - Root cause description
+- `action_required` - Customer instructions
+- `effectiveness_rate` - % recovered/responded
+- `customer_notification_ids` - Linked notifications"
+"medtech_recall","README","`medtech.recall.notification`","- Customer contact details
+- Notification date/method
+- Response received (Yes/No)
+- Device returned status"
+"medtech_recall","README","Reports","- Recall Status Report
+- Effectiveness Check Report
+- FDA Recall Report (Form 3-500A format)
+- Customer Notification Letter
+
+##Module Structure
+
+```
+medtech_recall/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ medtech_recall.py
+â”‚   â”œâ”€â”€ recall_notification.py
+...   â””â”€â”€ stock_quant.py (extends for quarantine)
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ recall_views.xml
+â”‚   â””â”€â”€ notification_views.xml
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ recall_report_pack.xml
+â”œâ”€â”€ data/
+â”‚   â””â”€â”€ notification_templates.xml
+â””â”€â”€ docs/
+```"
+"medtech_recall","README","Use Cases",""
+"medtech_recall","README","Use Case 1: Voluntary Medical Device Recall","**Scenario:** Software bug causes incorrect readings (safety risk)
+
+**Steps:**
+
+**Day 1: Recall Decision**
+1. Quality/Regulatory team identifies issue
+2. Risk assessment: Potential patient harm
+3. Decision: Class II recall
+
+**Day 2-3: Recall Planning**
+1. Create recall record
+2. Define scope:
+   - Products: Model X, Software v2.1
+   - Serial range: 10001-15000
+   - Distributed: 2024-01-01 to 2024-06-30
+3. Determine corrective action:
+   - Software update (remote)
+   - Or return for upgrade
+4. Draft customer notification
+
+**Day 4: Notification**
+1. Generate customer notifications (automated)
+2. System identifies 250 affected customers
+3. Sends """"Urgent Medical Device Recall"""" notices
+4. Quarantines inventory (75 units in stock)
+
+**Day 5-30: Active Recall**
+1. Track customer responses
+2. Monitor return rates
+3. Update recall dashboard
+
+**Day 31-45: Effectiveness Check**
+1. Calculate metrics:
+   - Response rate: 95% (238/250)
+   - Recovery rate: 92% (230/250)
+2. Follow up with non-responders
+3. Document final results
+
+**Day 46+: FDA Reporting**
+1. Submit recall termination request
+2. Provide effectiveness data
+3. FDA reviews and approves closure"
+"medtech_recall","README","Use Case 2: Customer Complaint-Triggered Recall","**Scenario:** Customer reports device crack causing leakage
+
+**Investigation:**
+1. Field service reviews complaints
+2. Discovers pattern: 5 complaints, same lot
+3. Creates CAPA for investigation
+4. Root cause: Component supplier change
+
+**Decision Tree:**
+```
+Is it a safety issue? â†’ YES
+â”‚
+â”œâ†’ Immediate hazard? â†’ YES â†’ Class I Recall
+â””â†’ Serious harm likely? â†’ MAYBE â†’ Class II Recall
+```
+
+**Recall Execution:**
+1. Classify as Class II
+2. Scope: Single lot (ABC-123)
+3. Customer notification: """"Important Safety Information""""
+4. Offer free replacement
+5. Track returns and disposal"
+"medtech_recall","README","Best Practices",""
+"medtech_recall","README","Recall Classification Guidelines","**Class I (Most Serious):**
+- Reasonable probability of serious adverse health consequences or death
+- Example: Pacemaker lead fracture causing device failure
+
+**Class II (Moderate):**
+- May cause temporary/medically reversible adverse health consequences
+- Remote probability of serious harm
+- Example: Incorrect labeling, software bug
+
+**Class III (Least Serious):**
+- Not likely to cause adverse health consequences
+- Example: Packaging defect, cosmetic issue"
+"medtech_recall","README","Recall Speed","- **Class I:** Notify within 24 hours
+- **Class II:** Notify within 5 days
+- **Class III:** Notify within 10 days"
+"medtech_recall","README","Communication","âœ… **DO:**
+- Be clear and specific about risk
+- Provide simple instructions
+- Include contact information
+- Use multiple notification methods
+
+â‌Œ **DON'T:**
+- Minimize the risk
+- Use vague language
+- Delay notification
+- Assume customers saw news"
+"medtech_recall","README","Improvements Roadmap",""
+"medtech_recall","README","High Priority","1. **FDA Rec Reporting Integration** - Auto-submit to FDA recall portal
+2. **Recall Cost Tracking** - Calculate financial impact
+3. **Recall Simulation** - Practice recalls with mock scenarios"
+"medtech_recall","README","Medium Priority","4. **Multi-Language Notifications** - Auto-translate for global recalls
+5. **Customer Portal** - Self-service recall acknowledgment
+6. **SMS/Push Notifications** - Additional notification channels"
+"medtech_recall","README","Low Priority","7. **Recall Analytics** - Trend analysis, risk prediction
+8. **Integration with TraceLink** - Pharmaceutical track-and-trace"
+"medtech_recall","README","Changelog",""
+"medtech_recall","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modernized chatter
+- Fixed XML report templates (escaped special characters)
+- Demo data structure created"
+"medtech_vendor_compliance","README","MedTech Vendor Compliance Module",""
+"medtech_vendor_compliance","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, purchase"
+"medtech_vendor_compliance","README","Purpose","Supplier quality management system for medical device manufacturers. Ensures incoming materials meet specifications and vendors maintain compliance with FDA, ISO 13485, and EU MDR requirements."
+"medtech_vendor_compliance","README","Key Features",""
+"medtech_vendor_compliance","README","1. Vendor Certification Management","- Supplier approval process
+- Certificate repository (ISO, CE, FDA registration)
+- Expiration tracking and auto-alerts
+- Re-certification workflows
+- Audit scheduling"
+"medtech_vendor_compliance","README","2. Incoming Inspection","- Receipt inspections with accept/reject
+- Certificate of Conformance (CoC) verification
+- Sample testing integration
+- Batch disposition (Accept, Reject, Conditional)
+- Vendor scorecard updates"
+"medtech_vendor_compliance","README","3. Vendor Audits","- Audit scheduling and planning
+- On-site/remote audit checklists
+- Finding tracking (Major/Minor)
+- Corrective action requests to vendors
+- Audit report repository"
+"medtech_vendor_compliance","README","4. Vendor Scorecards","- On-time delivery %
+- Quality acceptance rate
+- NCR frequency
+- Responsiveness metrics
+- Overall vendor rating (A/B/C/D/F)"
+"medtech_vendor_compliance","README","5. Purchase Order Integration","- Automatic CoC request generation
+- Quality hold on receipts pending inspection
+- Receiving inspection workflows
+- Auto-quarantine of failed batches"
+"medtech_vendor_compliance","README","Regulatory Compliance",""
+"medtech_vendor_compliance","README","FDA 21 CFR Part 820.50","- **Subpart E:** Purchasing Controls
+- **(a)** Evaluation of suppliers
+- **(b)** Purchasing data requirements"
+"medtech_vendor_compliance","README","ISO 13485:2016 Clause 7.4","- **7.4.1:** Purchasing process
+- **7.4.2:** Purchasing information
+- **7.4.3:** Verification of purchased product"
+"medtech_vendor_compliance","README","EU MDR Economic Operators","- Article 16: Obligations of manufacturers regarding suppliers"
+"medtech_vendor_compliance","README","Technical Architecture",""
+"medtech_vendor_compliance","README","Models","####`medtech.vendor.certification`
+- Vendor ID (link to res.partner)
+- Certification type (ISO 9001, ISO 13485, FDA, CE)
+- Issue/expiry dates
+- Certificate file attachment
+- Status (Valid, Expiring Soon, Expired)"
+"medtech_vendor_compliance","README","`medtech.incoming.inspection`","- Purchase order reference
+- Product/material
+- Lot number received
+- Inspection date/inspector
+- Results (measurements, visual checks)
+- Disposition (Accept/Reject/Conditional)"
+"medtech_vendor_compliance","README","`medtech.vendor.audit`","- Vendor
+- Audit type (Initial, Surveillance, For-Cause)
+- Audit date
+- Auditor(s)
+- Findings (major/minor nonconformances)
+- Follow-up actions"
+"medtech_vendor_compliance","README","Reports","- Vendor Scorecard
+- Incoming Inspection Summary
+- Audit Report
+- Certificate Expiration Report"
+"medtech_vendor_compliance","README","Module Structure","```
+medtech_vendor_compliance/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ vendor_certification.py
+â”‚   â”œâ”€â”€ incoming_inspection.py
+â”‚   â”œâ”€â”€ vendor_audit.py
+â”‚   â”œâ”€â”€ vendor_scorecard.py
+â”‚   â””â”€â”€ purchase_order.py (extends)
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ vendor_certification_views.xml
+â”‚   â”œâ”€â”€ incoming_inspection_views.xml
+â”‚   â””â”€â”€ vendor_audit_views.xml
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ vendor_scorecard_report.xml
+â””â”€â”€ docs/
+```"
+"medtech_vendor_compliance","README","Use Cases",""
+"medtech_vendor_compliance","README","Use Case 1: New Supplier Qualification","**Scenario:** Need new supplier for critical component
+
+**Qualification Process:**
+1. **Initial Assessment:**
+   - Request quality manual
+   - Request certifications (ISO 13485, ISO 9001)
+   - Review financial stability
+
+2. **Create Vendor Record:**
+   - MedTech > Vendor Compliance > Vendors > Create
+   - Upload certifications
+   - Set review schedule
+
+3. **Initial Audit:**
+   - Schedule on-site audit
+   - Complete audit checklist
+   - Document findings
+   - Request corrective actions if needed
+
+4. **Approval:**
+   - Quality Manager reviews
+   - Approves vendor for specific materials
+   - Sets conditions (e.g., 100% incoming inspection)
+
+5. **Ongoing Monitoring:**
+   - Quarterly scorecard review
+   - Annual re-audits
+   - Certificate expiration monitoring"
+"medtech_vendor_compliance","README","Use Case 2: Incoming Material Inspection","**Scenario:** Receive shipment of 1000 units of Component X, Lot Y789
+
+**Workflow:**
+
+**Receiving:**
+1. Warehouse receives PO shipment
+2. System creates incoming inspection record
+3. Material placed in quarantine area
+4. Inspector notified
+
+**Inspection:**
+1. Inspector opens inspection record
+2. Reviews CoC from supplier
+3. Performs sampling (AQL 2.5, Sample size: 50 units)
+4. Checks:
+   - Dimensions (pass/fail)
+   - Visual defects (pass/fail)
+   - Certificates match
+5. Records results
+
+**Disposition:**
+- **Accept:** Move to stock, update vendor scorecard (+1 good batch)
+- **Reject:** Create vendor NCR, return to supplier, update scorecard (-1)
+- **Conditional Accept:** Use with restrictions, document deviation"
+"medtech_vendor_compliance","README","Use Case 3: Managing Vendor NCR","**Scenario:** Received batch fails inspection
+
+**Steps:**
+1. **Create NCR:** """"Dimension out of specâ€”10 units failed""""
+2. **Notify Vendor:**
+   - Auto-email supplier
+   - Request 8D report
+3. **Track Response:**
+   - Supplier submits investigation
+   - Corrective actions proposed
+4. **Verification:**
+   - Review next shipment extra carefully
+   - If resolved, close NCR
+   - If persists, escalate (audit, disqualification)"
+"medtech_vendor_compliance","README","Best Practices",""
+"medtech_vendor_compliance","README","Supplier Categorization","**Critical Suppliers:**
+- Sole source materials
+- Class III device components
+- Direct patient contact materials
+- **Audit Frequency:** Annual
+- **Incoming Inspection:** 100% or strict AQL
+
+**Important Suppliers:**
+- Alternative sources available
+- Class II components
+- **Audit Frequency:** Every 2 years
+- **Incoming Inspection:** AQL 1.5-2.5
+
+**Standard Suppliers:**
+- Commodity items
+- Non-critical materials
+- **Audit Frequency:** Risk-based
+- **Incoming Inspection:** AQL 4.0 or skip lot"
+"medtech_vendor_compliance","README","Scorecard Weighting","Suggested formula:
+- Quality (40%): % batches accepted
+- Delivery (30%): % on-time deliveries
+- Responsiveness (20%): Time to resolve issues
+- Cost (10%): Competitive pricing"
+"medtech_vendor_compliance","README","Certificate Management","- Set expiration reminders: 90, 60, 30 days before
+- Require annual CoC even if certificate valid
+- Verify certificate authenticity (call issuing body)
+- Don't accept expired certificates"
+"medtech_vendor_compliance","README","Improvements Roadmap",""
+"medtech_vendor_compliance","README","High Priority","1. **Automated CoC Parsing** - OCR to extract data from PDF certificates
+2. **Vendor Portal** - Suppliers upload certs, respond to NCRs
+3. **Risk-Based Inspection** - Dynamic AQL based on vendor history"
+"medtech_vendor_compliance","README","Medium Priority","4. **Supplier Diversity Tracking** - Monitor sole-source risks
+5. **Vendor Development Programs** - improvement initiatives
+6. **Cost of Poor Quality (COPQ)** - Calculate impact of vendor issues"
+"medtech_vendor_compliance","README","Low Priority","7. **Blockchain for CoCs** - Immutable certificate verification
+8. **Supplier Collaboration Tools** - Shared dashboards, forecasts"
+"medtech_vendor_compliance","README","Changelog",""
+"medtech_vendor_compliance","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modern chatter tags
+- Purchase order purchase_order.py model extensions
+- Demo data placeholders"
+"medtech_field_service_history","README","MedTech Field Service History Module",""
+"medtech_field_service_history","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** medtech_core, medtech_traceability"
+"medtech_field_service_history","README","Purpose","Comprehensive field service management for medical devices post-market. Tracks installations, maintenance, repairs, complaints, and device performance in clinical settings. Supports FDA post-market surveillance and EU MDR vigilance requirements."
+"medtech_field_service_history","README","Key Features",""
+"medtech_field_service_history","README","1. Service Visit Management","- Schedule and track service calls
+- Installation records
+- Preventive maintenance (PM)
+- Corrective maintenance
+- Calibration visits
+- Software updates"
+"medtech_field_service_history","README","2. Device Installation Tracking","- Installation date and location
+- Customer site details
+- Initial acceptance testing
+- Training provided
+- Installation qualification (IQ)"
+"medtech_field_service_history","README","3. Maintenance Plans","- Scheduled PM intervals
+- Auto-generate work orders
+- Service due notifications
+- Maintenance history per device"
+"medtech_field_service_history","README","4. Field Performance Monitoring","- Track device issues by site
+- Trend analysis (failure modes)
+- Mean Time Between Failures (MTBF)
+- Post-market surveillance data collection"
+"medtech_field_service_history","README","5. Parts Management","- Service parts inventory
+- Parts replaced tracking
+- Warranty status
+- Parts consumption analysis"
+"medtech_field_service_history","README","6. Customer Complaint Integration","- Link service visits to complaints
+- Trigger CAPAs from field issues
+- MDR reportable events flagging
+- FDA MedWatch integration"
+"medtech_field_service_history","README","Regulatory Compliance",""
+"medtech_field_service_history","README","FDA 21 CFR Part 820.198","- **Complaint Files:** Service reports as complaints
+- Investigation and documentation
+- Post-market surveillance"
+"medtech_field_service_history","README","EU MDR Articles 83-92","- **Post-Market Surveillance (PMS)**
+- **Vigilance reporting** (serious incidents)
+- Trend analysis requirements"
+"medtech_field_service_history","README","ISO 13485:2016 Clause 8.2.1","- **Feedback** from users and customers
+- **Post-delivery activities**"
+"medtech_field_service_history","README","Technical Architecture",""
+"medtech_field_service_history","README","Models",""
+"medtech_field_service_history","README","`medtech.service.visit`","**Key Fields:**
+- `visit_number` - Auto-generated (SV-2024-0001)
+- `visit_type` - Installation, PM, Repair, Calibration, Software Update
+- `device_id` - Linked device/serial number
+- `customer_id` - Site location
+- `visit_date` - Scheduled/actual date
+- `technician_id` - Assigned engineer
+- `issue_description` - Complaint/request
+- `resolution` - Actions taken
+- `parts_replaced_ids` - Parts used
+- `service_hours` - Labor time
+- `followup_required` - Boolean
+- `reportable_event` - MDR/FDA flag"
+"medtech_field_service_history","README","`medtech.maintenance.plan`","- Device or device model
+- PM interval (days/months)
+- Tasks checklist
+- Due date calculation
+- Auto-work order generation"
+"medtech_field_service_history","README","Reports","- Service Visit Report (customer copy)
+- Device Service History
+- PM Compliance Report
+- Parts Consumption Report"
+"medtech_field_service_history","README","Module Structure","```
+medtech_field_service_history/
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ service_visit.py
+â”‚   â”œâ”€â”€ maintenance_plan.py
+â”‚   â”œâ”€â”€ service_parts.py
+â”‚   â””â”€â”€ medtech_device.py (extends)
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ service_visit_views.xml
+â”‚   â””â”€â”€ maintenance_plan_views.xml
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ service_report.xml
+â””â”€â”€ docs/
+```"
+"medtech_field_service_history","README","Use Cases",""
+"medtech_field_service_history","README","Use Case 1: New Device Installation","**Scenario:** Hospital purchases 5 ventilators, needs installation
+
+** Workflow:**
+
+**Pre-Installation:**
+1. Sales creates installation work orders
+2. Assign technician: John Smith
+3. Schedule date: 2026-03-15
+4. Add required parts: (power cables, mounting brackets)
+
+**Installation Day:**
+1. John arrives on-site
+2. Opens service visit on mobile device
+3. Performs installation:
+   - Unpacks devices (SN: V-10001 through V-10005)
+   - Mounts on walls
+   - Connects power and gases
+   - Runs IQ tests
+4. Documents:
+   - Photos of installation
+   - IQ test results (pass)
+   - Trains 3 nurses (names recorded)
+5. Hospital signs acceptance
+6. John closes service visit
+
+**Post-Installation:**
+1. System creates device records in customer location
+2. Sets up PM schedule (quarterly inspections)
+3. Uploads installation report to customer portal
+4. Triggers invoice for installation services"
+"medtech_field_service_history","README","Use Case 2: Preventive Maintenance","**Scenario:** Quarterly PM due for infusion pump fleet (20 devices)
+
+**Automated Process:**
+1. System identifies PM due dates approaching
+2. Auto-generates work orders 30 days in advance
+3. Emails technician assignments
+4. Technician receives checklist:
+   - Visual inspection
+   - Calibration verification
+   - Software version check
+   - Consumables replacement
+   - Function test
+5. Technician completes tasks, records results
+6. PM sticker applied (next due date)
+7. PM marked complete, next PM scheduled
+
+**If Issue Found:**
+- Technician flags problem (e.g., alarm malfunction)
+- Creates corrective service visit
+- Orders parts if needed
+- Schedules follow-up repair"
+"medtech_field_service_history","README","Use Case 3: Customer Complaint Handling","**Scenario:** Hospital calls: """"Monitor keeps shutting down""""
+
+**Workflow:**
+
+**Day 1: Complaint Received**
+1. Customer service creates service visit
+2. Type: Corrective Maintenance (Emergency)
+3. Priority: High
+4. Assigns nearest technician
+5. Technician dispatched within 4 hours
+
+**Day 1: On-Site Visit**
+1. Technician diagnoses: Power supply failure
+2. Replaces power supply (Part: PS-200)
+3. Tests device - issue resolved
+4. Documents in service visit
+5. Customer signs report
+
+**Day 2: Back Office Processing**
+1. Quality reviews complaint
+2. Checks for pattern (other devices with same issue?)
+3. If isolated: Close complaint
+4. If trend: Create CAPA for investigation
+5. If safety issue: Evaluate for MDR/FDA reporting
+
+**Monthly trend analysis shows:**
+- 5 power supply failures in 3 months
+- Same lot number
+- Creates supplier NCR
+- Initiates field change order (replace all proactively)"
+"medtech_field_service_history","README","Best Practices",""
+"medtech_field_service_history","README","Service Documentation","âœ… **Complete Service Reports:**
+- Clear problem description
+- Detailed troubleshooting steps
+- Parts replaced (with lot/serial)
+- Test results after repair
+- Customer feedback
+- Photos when relevant
+
+â‌Œ **Avoid:**
+- Vague descriptions (""""fixed it"""")
+- Missing traceability info
+- No verification testing
+- Unsigned reports"
+"medtech_field_service_history","README","PM Program Management","**Success Factors:**
+1. **Consistent Scheduling:** Don't skip PMs
+2. **Standardized Checklists:** Same process every time
+3. **Trained Technicians:** Qualified personnel only
+4. **Documentation:** Complete records
+5. **Follow-up:** Address any issues found"
+"medtech_field_service_history","README","Post-Market Surveillance","**Collect This Data:**
+- Failure modes and causes
+- Operating environment details
+- User error incidents
+- Software anomalies
+- adverse events
+
+**Analyze Regularly:**
+- Monthly: Trend reviews
+- Quarterly: Metrics to management
+- Annually: PMS report for regulators"
+"medtech_field_service_history","README","Improvements Roadmap",""
+"medtech_field_service_history","README","High Priority","1. **Mobile App:** Offline service reports with signature capture
+2. **Predictive Maintenance:** AI predicts failures before they occur
+3. **Customer Portal:** Self-schedule PM, view service history"
+"medtech_field_service_history","README","Medium Priority","4. **IoT Integration:** Connected devices auto-report issues
+5. **Parts Forecasting:** Predict spare parts needs
+6. **Technician Routing:** Optimize service routes"
+"medtech_field_service_history","README","Low Priority","7. **AR/VR Support:** Remote expert assistance
+8. **Voice Dictation:** Hands-free service report entry"
+"medtech_field_service_history","README","Changelog",""
+"medtech_field_service_history","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modern chatter implementation
+- Service visit views updated
+- Demo data placeholders"
+"error_reporter_enterprise","README","Error Reporter Enterprise Module",""
+"error_reporter_enterprise","README","Overview","**Version:** 19.0.1.0.0  
+**Dependencies:** base, web, mail"
+"error_reporter_enterprise","README","Purpose","Centralized error tracking and analytics system for Odoo development and production environments. Helps teams identify, prioritize, and resolve system errors efficiently. Integrates with MedTech ERP for software quality management."
+"error_reporter_enterprise","README","Key Features",""
+"error_reporter_enterprise","README","1. Error Reporting","- One-click error submission from systray
+- Automatic context capture (user, model, action, timestamp)
+- Screenshot attachment
+- Error categorization (Bug, Feature Request, Enhancement, Question)
+- Priority levels (Low, Medium, High, Blocker)"
+"error_reporter_enterprise","README","2. Error Management","- Kanban workflow (New, In Progress, Testing, Resolved, Closed)
+- Assignment to developers
+- Status tracking
+- Resolution documentation
+- Related error linking"
+"error_reporter_enterprise","README","3. Analytics Dashboard","- Error trends over time
+- Error by module
+- Error by user (identify training needs)
+- Top reporters (gamification)
+- Resolution time metrics
+- Recurring error detection"
+"error_reporter_enterprise","README","4. GitHub Integration","- Create GitHub issues directly
+- Sync status bidirectionally
+- Link Odoo errors to GitHub issues
+- Auto-close on merge"
+"error_reporter_enterprise","README","5. Systray Quick Access","- Bell icon in top menu bar
+- Quick error submission without leaving current page
+- Recent errors view
+- Notification badges for assigned errors"
+"error_reporter_enterprise","README","Technical Architecture",""
+"error_reporter_enterprise","README","Models",""
+"error_reporter_enterprise","README","`error.report`","**Key Fields:**
+- `name` - Auto-generated (Error #001)
+- `reporter_id` - User who reported
+- `error_type` - Bug/Feature/Enhancement
+- `priority` - Low/Medium/High/Blocker
+- `description` - Detailed error description
+- `steps_to_reproduce` - How to trigger error
+- `expected_result` - What should happen
+- `actual_result` - What actually happened
+- `model_name` - Affected Odoo model
+- `view_type` - Form/List/Kanban/etc.
+- `state` - new/in_progress/testing/resolved/closed
+- `assigned_to_id` - Developer assigned
+- `resolution` - How it was fixed
+- `github_issue_url` - Link to GitHub"
+"error_reporter_enterprise","README","JavaScript Components",""
+"error_reporter_enterprise","README","`systray_error_button.js`","- OWL component for systray icon
+- Error count badge
+- Quick error form
+- Recent errors dropdown"
+"error_reporter_enterprise","README","Reports","- Error Summary Report
+- Developer Productivity Report
+- Module Quality Scorecard"
+"error_reporter_enterprise","README","Module Structure","```
+error_reporter_enterprise/
+â”œâ”€â”€ models/
+â”‚   â””â”€â”€ error_report.py
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ error_report_views.xml
+â”‚   â””â”€â”€ error_report_menu.xml
+â”œâ”€â”€ static/src/
+â”‚   â”œâ”€â”€ js/
+â”‚   â”‚   â””â”€â”€ systray_error_button.js
+â”‚   â””â”€â”€ xml/
+â”‚       â””â”€â”€ systray_error_button.xml
+â”œâ”€â”€ security/
+â”‚   â””â”€â”€ ir.model.access.csv
+â””â”€â”€ docs/
+```"
+"error_reporter_enterprise","README","Use Cases",""
+"error_reporter_enterprise","README","Use Case 1: User Reports Error","**Scenario:** User can't save CAPA record
+
+**Steps:**
+
+**User:**
+1. Clicks error bell icon (systray)
+2. Fills quick form:
+   - Type: Bug
+   - Priority: High
+   - Description: """"Cannot save CAPAâ€”error says 'Missing required field'""""
+   - (Optional) Attaches screenshot
+3. Clicks """"Submit""""
+4. Receives error number: Error #123
+
+**Auto-Captured:**
+- Current URL
+- User ID
+- Timestamp
+- Browser info
+- Model: medtech.capa
+- View type: Form
+
+**System:**
+1. Creates error record
+2. Notifies development team
+3. Sends confirmation email to user"
+"error_reporter_enterprise","README","Use Case 2: Developer Resolves Error","**Workflow:**
+
+**Developer receives assignment:**
+1. Email: """"Error #123 assigned to you""""
+2. Opens error record
+3. Reviews:
+   - Description
+   - Steps to reproduce
+   - Screenshot
+   - Context data
+
+**Investigation:**
+1. Reproduces issue in dev environment
+2. Identifies root cause: Missing field validation
+3. Creates GitHub issue: """"Add validation for CAPA root_cause field""""
+4. Links GitHub URL to error record
+
+**Resolution:**
+1. Implements fix (PR #456)
+2. Tests in staging
+3. Moves error to """"Testing"""" state
+4. Requests QA verification
+
+**QA:**
+1. Verifies fix works
+2. Moves error to """"Resolved""""
+3. Notifies original reporter
+4. Reporter confirms and closes"
+"error_reporter_enterprise","README","Use Case 3: Analytics Review","**Monthly Team Meeting:**
+
+**Development Manager opens dashboard:**
+1. **Error Trends:** 45 errors last month (down from 60)
+2. **By Module:**
+   - medtech_quality_capa: 15 errors (highest)
+   - medtech_traceability: 8 errors
+   - error_reporter_enterprise: 2 errors (dogfooding!)
+3. **By Priority:**
+   - Blocker: 2 (both resolved)
+   - High: 12 (10 resolved, 2 open)
+   - Medium: 20
+   - Low: 11
+4. **Top Reporters:**
+   - User Jane: 12 reports (helpful!)
+   - User John: 2 reports
+5. **Resolution Time:**
+   - Average: 3.5 days
+   - Blocker average: 4 hours (good!)
+
+**Action Items:**
+- Focus on medtech_quality_capa stability
+- Add unit tests to prevent regressions
+- Recognize Jane for thorough error reporting"
+"error_reporter_enterprise","README","Best Practices",""
+"error_reporter_enterprise","README","For Error Reporters","âœ… **Good Error Report:**
+```
+Title: CAPA save fails with validation error
+
+Description:
+When creating a new CAPA, clicking Save button shows error:
+""""Missing required field 'root_cause'""""
+
+Steps to Reproduce:
+1. Go to MedTech > Quality > CAPAs > Create
+2. Fill Name: """"Test CAPA""""
+3. Fill Description: """"Test description""""
+4. Click Save (without filling Root Cause)
+5. Error appears
+
+Expected: Should save or show friendly validation message
+Actual: Technical error message displayed
+
+Environment: Firefox 120, Odoo 19, medtech_quality_capa v19.0.1.0.0
+```
+
+â‌Œ **Poor Error Report:**
+```
+Title: Broken
+
+Description: It doesn't work.
+```"
+"error_reporter_enterprise","README","For Developers","**Triage Priorities:**
+1. **Blocker:** Drop everything, fix immediately
+2. **High:** Fix within 24 hours
+3. **Medium:** Fix within 1 week
+4. **Low:** Backlog (fix when time permits)
+
+**Resolution Documentation:**
+- Attach link to GitHub PR
+- Explain what was changed
+- Note if configuration change needed
+- Update user documentation if needed"
+"error_reporter_enterprise","README","Improvements Roadmap",""
+"error_reporter_enterprise","README","High Priority","1. **Automatic Error Capture:** Catch Python exceptions and auto-create errors
+2. **Email Integration:** Reply to error notification to add comments
+3. **Slack/Teams Integration:** Post errors to dev channel"
+"error_reporter_enterprise","README","Medium Priority","4. **Error Deduplication:** AI detects duplicate errors
+5. **Knowledge Base:** Link errors to wiki articles
+6. **SLA Tracking:** Alert if resolution time exceeds SLA"
+"error_reporter_enterprise","README","Low Priority","7. **Public Error Portal:** Customers can track their reported errors
+8. **Gamification:** Badges for helpful reporters, fast resolvers"
+"error_reporter_enterprise","README","Changelog",""
+"error_reporter_enterprise","README","19.0.1.0.0","- Odoo 19 compatibility
+- Modern <chatter/> tag
+- @api.model_create_multi for create method
+- Removed expand attribute from search views
+- Fixed OWL JavaScript component compatibility
+- Updated documentation with installation and user guides"

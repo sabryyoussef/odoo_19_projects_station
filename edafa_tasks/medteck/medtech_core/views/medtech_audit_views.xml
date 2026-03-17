@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Audit Event Tree View -->
+    <record id="view_medtech_audit_event_tree" model="ir.ui.view">
+        <field name="name">medtech.audit.event.tree</field>
+        <field name="model">medtech.audit.event</field>
+        <field name="arch" type="xml">
+            <list string="Audit Trail" default_order="timestamp desc" create="false" delete="false">
+                <field name="timestamp"/>
+                <field name="user_id"/>
+                <field name="model"/>
+                <field name="res_id"/>
+                <field name="operation"/>
+                <field name="change_summary"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Audit Event Form View -->
+    <record id="view_medtech_audit_event_form" model="ir.ui.view">
+        <field name="name">medtech.audit.event.form</field>
+        <field name="model">medtech.audit.event</field>
+        <field name="arch" type="xml">
+            <form string="Audit Event" create="false" delete="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="timestamp"/>
+                            <field name="user_id"/>
+                            <field name="model"/>
+                            <field name="res_id"/>
+                        </group>
+                        <group>
+                            <field name="operation"/>
+                            <field name="ip_address"/>
+                            <field name="session_id"/>
+                        </group>
+                    </group>
+                    <group string="Change Summary">
+                        <field name="change_summary" nolabel="1"/>
+                    </group>
+                    <group string="Old Values">
+                        <field name="old_values" widget="text" nolabel="1"/>
+                    </group>
+                    <group string="New Values">
+                        <field name="new_values" widget="text" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Audit Event Search View -->
+    <record id="view_medtech_audit_event_search" model="ir.ui.view">
+        <field name="name">medtech.audit.event.search</field>
+        <field name="model">medtech.audit.event</field>
+        <field name="arch" type="xml">
+            <search string="Search Audit Trail">
+                <field name="user_id"/>
+                <field name="model"/>
+                <field name="operation"/>
+                <filter string="Today" name="today" domain="[('timestamp', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                <filter string="Last 7 Days" name="last_week" domain="[('timestamp', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last 30 Days" name="last_month" domain="[('timestamp', '>=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Create" name="create" domain="[('operation', '=', 'create')]"/>
+                <filter string="Write" name="write" domain="[('operation', '=', 'write')]"/>
+                <filter string="Unlink" name="unlink" domain="[('operation', '=', 'unlink')]"/>
+                <group>
+                    <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Model" name="group_model" context="{'group_by': 'model'}"/>
+                    <filter string="Operation" name="group_operation" context="{'group_by': 'operation'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'timestamp:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Approval History Tree View -->
+    <record id="view_medtech_approval_history_tree" model="ir.ui.view">
+        <field name="name">medtech.approval.history.tree</field>
+        <field name="model">medtech.approval.history</field>
+        <field name="arch" type="xml">
+            <list string="Approval History" default_order="timestamp desc">
+                <field name="timestamp"/>
+                <field name="user_id"/>
+                <field name="model"/>
+                <field name="res_id"/>
+                <field name="stage"/>
+                <field name="action" decoration-success="action == 'approve'" decoration-danger="action == 'reject'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Approval History Form View -->
+    <record id="view_medtech_approval_history_form" model="ir.ui.view">
+        <field name="name">medtech.approval.history.form</field>
+        <field name="model">medtech.approval.history</field>
+        <field name="arch" type="xml">
+            <form string="Approval History">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="timestamp"/>
+                            <field name="user_id"/>
+                            <field name="model"/>
+                            <field name="res_id"/>
+                        </group>
+                        <group>
+                            <field name="stage"/>
+                            <field name="action"/>
+                        </group>
+                    </group>
+                    <group string="Comments">
+                        <field name="comments" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_medtech_audit_event" model="ir.actions.act_window">
+        <field name="name">Audit Trail</field>
+        <field name="res_model">medtech.audit.event</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_last_week': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No audit events recorded yet
+            </p>
+            <p>
+                Audit events are automatically created when records are created, modified, or deleted.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_medtech_approval_history" model="ir.actions.act_window">
+        <field name="name">Approval History</field>
+        <field name="res_model">medtech.approval.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No approvals recorded yet
+            </p>
+        </field>
+    </record>
+
+</odoo>

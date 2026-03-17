@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mfg_flow_wizard_form" model="ir.ui.view">
+        <field name="name">mfg.flow.wizard.form</field>
+        <field name="model">mfg.flow.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Manufacturing Flow Assistant">
+                <header>
+                    <button name="action_previous_step" type="object" string="Previous" invisible="is_first_step"/>
+                    <button name="action_next_step" type="object" string="Next" class="oe_highlight" invisible="is_last_step"/>
+                    <field name="step_state" widget="statusbar" statusbar_visible="components,bom,mo,workorders,quality,produce,stock_review,traceability,capa,recall_field"/>
+                    <field name="is_first_step" invisible="1"/>
+                    <field name="is_last_step" invisible="1"/>
+                </header>
+                <sheet>
+                    <group string="Flow Context">
+                        <group>
+                            <field name="product_id" placeholder="Select or create final product"/>
+                            <field name="bom_id" readonly="1"/>
+                            <field name="production_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="component_status" string="Current Stage Status" readonly="1" invisible="step_state != 'components'"/>
+                            <field name="bom_status" string="Current Stage Status" readonly="1" invisible="step_state != 'bom'"/>
+                            <field name="mo_status" string="Current Stage Status" readonly="1" invisible="step_state != 'mo'"/>
+                            <field name="workorder_status" string="Current Stage Status" readonly="1" invisible="step_state != 'workorders'"/>
+                            <field name="quality_status" string="Current Stage Status" readonly="1" invisible="step_state != 'quality'"/>
+                            <field name="produce_status" string="Current Stage Status" readonly="1" invisible="step_state != 'produce'"/>
+                            <field name="stock_review_status" string="Current Stage Status" readonly="1" invisible="step_state != 'stock_review'"/>
+                            <field name="traceability_status" string="Current Stage Status" readonly="1" invisible="step_state != 'traceability'"/>
+                            <field name="capa_status" string="Current Stage Status" readonly="1" invisible="step_state != 'capa'"/>
+                            <field name="recall_status" string="Current Stage Status" readonly="1" invisible="step_state != 'recall_field'"/>
+                            <field name="instruction_html" widget="html" readonly="1" nolabel="1"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 1 - Components" invisible="step_state != 'components'">
+                        <separator string="Follow this sequence: Select product -> Ensure BoM -> Review components -> Validate"/>
+                        <div class="alert alert-info" role="alert" invisible="product_id">
+                            Select a final product first. You can create one directly from this screen.
+                        </div>
+                        <div class="alert alert-warning" role="alert" invisible="not product_id or bom_id">
+                            No Bill of Materials is linked to this product yet. Create the BoM, then refresh component snapshot.
+                        </div>
+                        <div class="alert alert-success" role="alert" invisible="component_status != 'ready'">
+                            Components are ready. You can validate and continue to Step 2.
+                        </div>
+                        <group>
+                            <group string="Readiness">
+                                <field name="product_id"/>
+                                <field name="bom_id" readonly="1"/>
+                                <field name="component_status" readonly="1"/>
+                                <field name="component_count" readonly="1"/>
+                            </group>
+                            <group string="Actions">
+                                <button name="action_create_final_product" type="object" string="Create Final Product"/>
+                                <button name="action_open_product" type="object" string="Open Final Product" invisible="not product_id"/>
+                                <button name="action_create_bom" type="object" string="Create BoM" invisible="not product_id"/>
+                                <button name="action_open_bom" type="object" string="Open BoM" invisible="not bom_id"/>
+                                <button name="action_create_component_product" type="object" string="Create Component"/>
+                                <button name="action_refresh_components" type="object" string="Refresh Component Snapshot"/>
+                                <button name="action_validate_components" type="object" string="Validate Components" class="oe_highlight"/>
+                            </group>
+                        </group>
+                        <separator string="BoM Component Snapshot"/>
+                        <field name="component_line_ids" nolabel="1" readonly="1" invisible="not bom_id">
+                            <list string="BoM Components" create="0" delete="0" edit="0">
+                                <field name="product_id"/>
+                                <field name="required_qty"/>
+                                <field name="product_uom_id"/>
+                                <field name="on_hand_qty"/>
+                                <field name="short_qty"/>
+                                <field name="is_available"/>
+                                <button name="action_open_component" type="object" string="Open" class="btn-link"/>
+                            </list>
+                        </field>
+                        <div class="text-muted" invisible="bom_id and component_count &gt; 0">
+                            No component lines to show. Create or update the BoM, then click Refresh Component Snapshot.
+                        </div>
+                    </group>
+
+                    <group string="Step 2 - Bill of Materials" invisible="step_state != 'bom'">
+                        <separator string="Check BoM existence and maintain BoM setup."/>
+                        <group>
+                            <field name="bom_id" readonly="1"/>
+                            <field name="bom_status" readonly="1"/>
+                            <field name="component_count" readonly="1"/>
+                            <field name="operation_count" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_bom" type="object" string="Open BoM" class="oe_highlight"/>
+                            <button name="action_create_bom" type="object" string="Create BoM"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 3 - Manufacturing Order" invisible="step_state != 'mo'">
+                        <separator string="Create or open a draft Manufacturing Order for the selected product."/>
+                        <group>
+                            <field name="production_id" readonly="1"/>
+                            <field name="mo_status" readonly="1"/>
+                            <field name="workorder_count" readonly="1"/>
+                            <field name="bom_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_mo" type="object" string="Open MO" class="oe_highlight"/>
+                            <button name="action_create_mo" type="object" string="Create MO"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 4 - Work Orders" invisible="step_state != 'workorders'">
+                        <separator string="Manage MO work orders in sequence from this guided screen."/>
+                        <group>
+                            <field name="production_id" readonly="1"/>
+                            <field name="workorder_status" readonly="1"/>
+                            <field name="workorder_count" readonly="1"/>
+                        </group>
+                        <field name="workorder_ids" nolabel="1" readonly="1">
+                            <list string="Work Orders" create="0" delete="0" edit="0">
+                                <field name="name"/>
+                                <field name="workcenter_id"/>
+                                <field name="state"/>
+                                <field name="qty_production"/>
+                                <field name="qty_produced"/>
+                            </list>
+                        </field>
+                        <group>
+                            <button name="action_open_mo_workorders" type="object" string="Open MO Work Orders" class="oe_highlight"/>
+                            <button name="action_start_first_workorder" type="object" string="Start First Work Order"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 5 - Quality" invisible="step_state != 'quality'">
+                        <separator string="Review and process quality checks linked to this MO/work orders."/>
+                        <group>
+                            <field name="production_id" readonly="1"/>
+                            <field name="quality_status" readonly="1"/>
+                            <field name="quality_check_count" readonly="1"/>
+                        </group>
+                        <field name="quality_check_ids" nolabel="1" readonly="1">
+                            <list string="Quality Checks" create="0" delete="0" edit="0">
+                                <field name="name"/>
+                                <field name="point_id"/>
+                                <field name="workorder_id"/>
+                                <field name="quality_state"/>
+                                <field name="product_id"/>
+                            </list>
+                        </field>
+                        <group>
+                            <button name="action_open_quality_checks" type="object" string="Open Quality Checks" class="oe_highlight"/>
+                            <button name="action_pass_first_pending_quality_check" type="object" string="Pass First Pending Check"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 6 - Produce" invisible="step_state != 'produce'">
+                        <separator string="Register produced quantity and complete the manufacturing order."/>
+                        <group>
+                            <field name="production_id" readonly="1"/>
+                            <field name="produce_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_produce_mo" type="object" string="Open MO for Produce" class="oe_highlight"/>
+                            <button name="action_set_qty_to_produce" type="object" string="Set Qty To Remaining"/>
+                            <button name="action_mark_mo_done" type="object" string="Mark MO Done"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 7 - Stock Review" invisible="step_state != 'stock_review'">
+                        <separator string="Review raw and finished stock moves for this MO."/>
+                        <group>
+                            <field name="raw_move_count" readonly="1"/>
+                            <field name="finished_move_count" readonly="1"/>
+                            <field name="stock_review_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_raw_moves" type="object" string="Open Raw Moves" class="oe_highlight"/>
+                            <button name="action_open_finished_moves" type="object" string="Open Finished Moves"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 8 - Traceability" invisible="step_state != 'traceability'">
+                        <separator string="Review produced serial/lot and DHR records."/>
+                        <group>
+                            <field name="serial_lot_count" readonly="1"/>
+                            <field name="dhr_count" readonly="1"/>
+                            <field name="traceability_status" readonly="1"/>
+                        </group>
+                        <field name="dhr_ids" nolabel="1" readonly="1">
+                            <list string="DHR Records" create="0" delete="0" edit="0">
+                                <field name="display_name"/>
+                                <field name="serial_lot_id"/>
+                                <field name="production_order_id"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                        <group>
+                            <button name="action_open_dhr_records" type="object" string="Open DHR Records" class="oe_highlight"/>
+                            <button name="action_create_dhr_from_mo" type="object" string="Create DHR From MO"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 9 - CAPA" invisible="step_state != 'capa'">
+                        <separator string="Manage nonconformance and CAPA from manufacturing context."/>
+                        <group>
+                            <field name="nonconformance_count" readonly="1"/>
+                            <field name="capa_count" readonly="1"/>
+                            <field name="capa_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_nonconformances" type="object" string="Open Nonconformances" class="oe_highlight"/>
+                            <button name="action_create_nonconformance_from_mo" type="object" string="Create NC From MO"/>
+                            <button name="action_open_capas" type="object" string="Open CAPAs"/>
+                            <button name="action_create_capa_from_nonconformance" type="object" string="Create CAPA"/>
+                        </group>
+                    </group>
+
+                    <group string="Step 10 - Recall &amp; Field" invisible="step_state != 'recall_field'">
+                        <separator string="Review recalls and field service impact for produced serials."/>
+                        <group>
+                            <field name="recall_count" readonly="1"/>
+                            <field name="service_visit_count" readonly="1"/>
+                            <field name="recall_status" readonly="1"/>
+                            <field name="field_service_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_open_recalls" type="object" string="Open Recalls" class="oe_highlight"/>
+                            <button name="action_create_recall_candidate" type="object" string="Create Recall Candidate"/>
+                            <button name="action_open_service_visits" type="object" string="Open Service Visits"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mfg_flow_wizard" model="ir.actions.act_window">
+        <field name="name">Manufacturing Flow Assistant</field>
+        <field name="res_model">mfg.flow.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mfg_flow_wizard_form"/>
+        <field name="target">current</field>
+        <field name="context">{'default_step_state': 'components'}</field>
+    </record>
+
+    <menuitem
+        id="menu_mfg_flow_assistant"
+        name="Manufacturing Flow Assistant"
+        parent="mrp.menu_mrp_root"
+        action="action_mfg_flow_wizard"
+        sequence="15"
+        groups="mrp.group_mrp_user"
+    />
+</odoo>

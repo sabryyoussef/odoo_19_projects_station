@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Quality & CAPA Submenu -->
+    <menuitem id="menu_medtech_quality"
+              name="Quality &amp; CAPA"
+              parent="medtech_core.menu_medtech_root"
+              sequence="30"/>
+
+    <menuitem id="menu_workflow_dashboard"
+              name="Workflow Dashboard"
+              parent="menu_medtech_quality"
+              action="action_workflow_dashboard"
+              sequence="1"/>
+
+    <menuitem id="menu_demo_full_workflow_wizard"
+              name="Demo Full Workflow Wizard"
+              parent="menu_medtech_quality"
+              action="action_medtech_full_workflow_wizard"
+              sequence="6"/>
+
+    <menuitem id="menu_nonconformance"
+              name="Nonconformances"
+              parent="menu_medtech_quality"
+              action="action_medtech_nonconformance"
+              sequence="10"/>
+
+    <menuitem id="menu_incoming_qc"
+              name="Incoming QC"
+              parent="menu_medtech_quality"
+              action="action_medtech_incoming_qc"
+              sequence="15"/>
+
+    <menuitem id="menu_weighing_dispensing"
+              name="Weighing &amp; Dispensing"
+              parent="menu_medtech_quality"
+              action="action_medtech_weighing_batch"
+              sequence="16"/>
+
+    <menuitem id="menu_inprocess_qc"
+              name="In-Process QC"
+              parent="menu_medtech_quality"
+              action="action_medtech_inprocess_qc"
+              sequence="17"/>
+
+    <menuitem id="menu_compounding"
+              name="Compounding"
+              parent="menu_medtech_quality"
+              action="action_medtech_compounding_batch"
+              sequence="18"/>
+
+    <menuitem id="menu_sterilization"
+              name="Sterilization / Filtration"
+              parent="menu_medtech_quality"
+              action="action_medtech_sterilization_batch"
+              sequence="19"/>
+
+    <menuitem id="menu_filling"
+              name="Filling"
+              parent="menu_medtech_quality"
+              action="action_medtech_filling_batch"
+              sequence="20"/>
+
+    <menuitem id="menu_packaging"
+              name="Packaging"
+              parent="menu_medtech_quality"
+              action="action_medtech_packaging_batch"
+              sequence="21"/>
+
+    <menuitem id="menu_final_release"
+              name="Final Release"
+              parent="menu_medtech_quality"
+              action="action_medtech_final_release_batch"
+              sequence="22"/>
+
+    <menuitem id="menu_capa"
+              name="CAPAs"
+              parent="menu_medtech_quality"
+              action="action_medtech_capa"
+              sequence="40"/>
+
+</odoo>

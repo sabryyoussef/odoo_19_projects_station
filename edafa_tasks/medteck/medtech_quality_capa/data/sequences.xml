@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Nonconformance Sequence -->
+        <record id="sequence_nonconformance" model="ir.sequence">
+            <field name="name">Nonconformance Sequence</field>
+            <field name="code">medtech.nonconformance</field>
+            <field name="prefix">NC</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- CAPA Sequence -->
+        <record id="sequence_capa" model="ir.sequence">
+            <field name="name">CAPA Sequence</field>
+            <field name="code">medtech.capa</field>
+            <field name="prefix">CAPA</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Incoming QC Sequence -->
+        <record id="sequence_incoming_qc" model="ir.sequence">
+            <field name="name">Incoming QC Sequence</field>
+            <field name="code">medtech.incoming.qc</field>
+            <field name="prefix">IQC</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Weighing & Dispensing Batch Sequence -->
+        <record id="sequence_weighing_batch" model="ir.sequence">
+            <field name="name">Weighing Batch Sequence</field>
+            <field name="code">medtech.weighing.batch</field>
+            <field name="prefix">WDB</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- In-Process QC Sequence -->
+        <record id="sequence_inprocess_qc" model="ir.sequence">
+            <field name="name">In-Process QC Sequence</field>
+            <field name="code">medtech.inprocess.qc</field>
+            <field name="prefix">IPQC</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Compounding Batch Sequence -->
+        <record id="sequence_compounding_batch" model="ir.sequence">
+            <field name="name">Compounding Batch Sequence</field>
+            <field name="code">medtech.compounding.batch</field>
+            <field name="prefix">CPD</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Sterilization Batch Sequence -->
+        <record id="sequence_sterilization_batch" model="ir.sequence">
+            <field name="name">Sterilization Batch Sequence</field>
+            <field name="code">medtech.sterilization.batch</field>
+            <field name="prefix">STZ</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Filling Batch Sequence -->
+        <record id="sequence_filling_batch" model="ir.sequence">
+            <field name="name">Filling Batch Sequence</field>
+            <field name="code">medtech.filling.batch</field>
+            <field name="prefix">FIL</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Packaging Batch Sequence -->
+        <record id="sequence_packaging_batch" model="ir.sequence">
+            <field name="name">Packaging Batch Sequence</field>
+            <field name="code">medtech.packaging.batch</field>
+            <field name="prefix">PKG</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Final Release Batch Sequence -->
+        <record id="sequence_final_release_batch" model="ir.sequence">
+            <field name="name">Final Release Batch Sequence</field>
+            <field name="code">medtech.final.release.batch</field>
+            <field name="prefix">REL</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

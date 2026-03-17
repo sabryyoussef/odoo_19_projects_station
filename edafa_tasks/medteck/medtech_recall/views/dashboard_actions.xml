@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Recall Dashboard Action -->
+    <record id="action_recall_dashboard" model="ir.actions.client">
+        <field name="name">Recall Dashboard</field>
+        <field name="tag">medtech_recall.dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Dashboard Menu Item -->
+    <menuitem id="menu_recall_dashboard"
+              name="Recall Dashboard"
+              parent="menu_medtech_recall"
+              action="action_recall_dashboard"
+              sequence="1"/>
+</odoo>

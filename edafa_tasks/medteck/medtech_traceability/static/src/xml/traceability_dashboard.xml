@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="medtech_traceability.TraceabilityDashboard" owl="1">
+        <div class="o_traceability_dashboard">
+            <!-- Header -->
+            <div class="o_dashboard_header mb-3">
+                <h3><i class="fa fa-sitemap"></i> Traceability Dashboard</h3>
+                <p class="text-muted">Real-time device traceability and genealogy analysis</p>
+            </div>
+
+            <!-- Loading State -->
+            <div t-if="state.loading" class="text-center py-5">
+                <i class="fa fa-spinner fa-spin fa-3x text-primary"></i>
+                <p class="mt-3">Loading dashboard data...</p>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div t-else="">
+                <!-- Statistics Cards Row -->
+                <div class="row mb-4">
+                    <!-- Total Device Masters -->
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white" style="cursor: pointer;" t-on-click="viewDeviceMaster">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Device Masters</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.totalDevices"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-cubes fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total UDIs -->
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white" style="cursor: pointer;" t-on-click="viewUDIs">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">UDI Records</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.totalUDIs"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-barcode fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total DHRs -->
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white" style="cursor: pointer;" t-on-click="viewDHRs">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">DHR Records</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.totalDHRs"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-file-text-o fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Serialized Devices -->
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Serialized Devices</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.devicesWithSerial"/></h2>
+                                        <small>Non-serialized: <t t-esc="state.stats.devicesWithoutSerial"/></small>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-qrcode fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Traceability Records -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fa fa-list"></i> Recent Device History Records</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>DHR Name</th>
+                                    <th>Serial Number</th>
+                                    <th>Lot Number</th>
+                                    <th>Product</th>
+                                    <th>Mfg Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="state.stats.recentTraceability.length === 0">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">
+                                            No DHR records found. Create your first device history record.
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr t-foreach="state.stats.recentTraceability" t-as="dhr" t-key="dhr.id">
+                                        <td><strong><t t-esc="dhr.name"/></strong></td>
+                                        <td>
+                                            <span t-if="dhr.serial_number" class="badge badge-info">
+                                                <t t-esc="dhr.serial_number"/>
+                                            </span>
+                                            <span t-else="" class="text-muted">N/A</span>
+                                        </td>
+                                        <td>
+                                            <span t-if="dhr.lot_number">
+                                                <t t-esc="dhr.lot_number"/>
+                                            </span>
+                                            <span t-else="" class="text-muted">N/A</span>
+                                        </td>
+                                        <td><t t-esc="dhr.product_id[1]"/></td>
+                                        <td><t t-esc="dhr.manufacturing_date"/></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1" t-on-click="() => this.openDHR(dhr.id)">
+                                                <i class="fa fa-folder-open"></i> Open
+                                            </button>
+                                            <button class="btn btn-sm btn-success" t-on-click="() => this.traceGenealogy(dhr.id)">
+                                                <i class="fa fa-sitemap"></i> Trace
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Genealogy Modal -->
+                <div t-if="state.genealogyData" class="modal d-block" style="background-color: rgba(0,0,0,0.5);">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="fa fa-sitemap"></i> Genealogy Tree
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" t-on-click="closeGenealogy"></button>
+                            </div>
+                            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                                <div class="genealogy-tree">
+                                    <t t-out="renderGenealogyTree(state.genealogyData)"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" t-on-click="closeGenealogy">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

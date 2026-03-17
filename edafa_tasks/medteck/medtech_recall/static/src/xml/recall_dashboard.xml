@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="medtech_recall.RecallDashboard" owl="1">
+        <div class="o_recall_dashboard">
+            <!-- Header -->
+            <div class="o_dashboard_header mb-3">
+                <h3><i class="fa fa-exclamation-triangle"></i> Recall Management Dashboard</h3>
+                <p class="text-muted">Real-time recall monitoring and affected population tracking</p>
+            </div>
+
+            <!-- Loading State -->
+            <div t-if="state.loading" class="text-center py-5">
+                <i class="fa fa-spinner fa-spin fa-3x text-danger"></i>
+                <p class="mt-3">Loading recall data...</p>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div t-else="">
+                <!-- Statistics Cards Row 1 -->
+                <div class="row mb-4">
+                    <!-- Total Recalls -->
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white" style="cursor: pointer;" t-on-click="viewAllRecalls">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Total Recalls</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.totalRecalls"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-list fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Recalls -->
+                    <div class="col-md-3">
+                        <div class="card bg-danger text-white" style="cursor: pointer;" t-on-click="viewActiveRecalls">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Active Recalls</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.activeRecalls"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-exclamation-circle fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quarantined Stock -->
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white" style="cursor: pointer;" t-on-click="viewQuarantinedStock">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Quarantined Stock</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.quarantinedStock"/></h2>
+                                        <small>Records</small>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-lock fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Closed Recalls -->
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title mb-0">Closed Recalls</h6>
+                                        <h2 class="mb-0"><t t-esc="state.stats.closedRecalls"/></h2>
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-check-circle fa-3x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recalls by FDA Class -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="fa fa-bar-chart"></i> Recalls by FDA Classification</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-4" style="cursor: pointer;" t-on-click="() => this.viewRecallsByClass('class_i')">
+                                        <div class="p-3 border rounded bg-danger text-white">
+                                            <h1 class="mb-0"><t t-esc="state.stats.recallsByClass.class_i"/></h1>
+                                            <h5>Class I</h5>
+                                            <small>Life-threatening</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="cursor: pointer;" t-on-click="() => this.viewRecallsByClass('class_ii')">
+                                        <div class="p-3 border rounded bg-warning text-white">
+                                            <h1 class="mb-0"><t t-esc="state.stats.recallsByClass.class_ii"/></h1>
+                                            <h5>Class II</h5>
+                                            <small>Serious injury risk</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="cursor: pointer;" t-on-click="() => this.viewRecallsByClass('class_iii')">
+                                        <div class="p-3 border rounded bg-info text-white">
+                                            <h1 class="mb-0"><t t-esc="state.stats.recallsByClass.class_iii"/></h1>
+                                            <h5>Class III</h5>
+                                            <small>Minor issue</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Recalls Table -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fa fa-history"></i> Recent Recall Events</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Recall ID</th>
+                                    <th>Date</th>
+                                    <th>FDA Class</th>
+                                    <th>Severity</th>
+                                    <th>Status</th>
+                                    <th>Affected Population</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="state.stats.recentRecalls.length === 0">
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">
+                                            No recall events found. System is operating normally.
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr t-foreach="state.stats.recentRecalls" t-as="recall" t-key="recall.id">
+                                        <td><strong><t t-esc="recall.name"/></strong></td>
+                                        <td><t t-esc="recall.initiation_date"/></td>
+                                        <td>
+                                            <span t-attf-class="badge {{getClassBadgeClass(recall.classification)}}">
+                                                <t t-esc="recall.classification ? recall.classification.replace('_', ' ').toUpperCase() : 'N/A'"/>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span t-attf-class="badge {{getSeverityBadgeClass(recall.severity)}}">
+                                                <t t-esc="recall.severity ? recall.severity.toUpperCase() : 'N/A'"/>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span t-attf-class="badge {{getStateBadgeClass(recall.state)}}">
+                                                <t t-esc="recall.state ? recall.state.toUpperCase() : 'N/A'"/>
+                                            </span>
+                                        </td>
+                                        <td><t t-esc="recall.total_manufactured || 'Unknown'"/></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" t-on-click="() => this.openRecall(recall.id)">
+                                                <i class="fa fa-folder-open"></i> Open
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quarantine Records Table -->
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="fa fa-lock"></i> Active Quarantine Records</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Quarantine ID</th>
+                                    <th>Product</th>
+                                    <th>Lot/Serial</th>
+                                    <th>Quantity</th>
+                                    <th>Date</th>
+                                    <th>Reason</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="state.stats.quarantineRecords.length === 0">
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">
+                                            No quarantined stock. All inventory is available.
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr t-foreach="state.stats.quarantineRecords" t-as="quarantine" t-key="quarantine.id">
+                                        <td><strong><t t-esc="quarantine.name"/></strong></td>
+                                        <td><t t-esc="quarantine.product_id ? quarantine.product_id[1] : 'N/A'"/></td>
+                                        <td>
+                                            <span t-if="quarantine.lot_id" class="badge badge-info">
+                                                <t t-esc="quarantine.lot_id[1]"/>
+                                            </span>
+                                            <span t-else="" class="text-muted">N/A</span>
+                                        </td>
+                                        <td><t t-esc="quarantine.quantity"/></td>
+                                        <td><t t-esc="quarantine.quarantine_date"/></td>
+                                        <td><t t-esc="quarantine.reason || 'Not specified'"/></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning" t-on-click="() => this.openQuarantine(quarantine.id)">
+                                                <i class="fa fa-folder-open"></i> Open
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

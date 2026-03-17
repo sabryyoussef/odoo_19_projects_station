@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="medtech_quality_capa.WorkflowDashboard">
+        <div class="o_workflow_dashboard p-3">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h3 class="mb-0">Workflow Dashboard</h3>
+                    <small class="text-muted">Eye Drops 10ml End-to-End Process Monitoring</small>
+                </div>
+                <button class="btn btn-primary" t-on-click="openWizard">
+                    <i class="fa fa-magic me-1"></i>
+                    Open Full Workflow Wizard
+                </button>
+            </div>
+
+            <t t-if="state.loading">
+                <div class="text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-3x text-primary"></i>
+                    <p class="mt-3 text-muted">Loading workflow dashboard...</p>
+                </div>
+            </t>
+
+            <t t-else="">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-primary shadow-sm" style="cursor:pointer" t-on-click="() => this.openModel('mrp.production')">
+                            <div class="card-body text-center">
+                                <h4 class="mb-1" t-esc="state.kpi.manufacturingOrders"></h4>
+                                <p class="text-muted mb-0">Manufacturing Orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-warning shadow-sm" style="cursor:pointer" t-on-click="() => this.openModel('medtech.incoming.qc', [['state', 'in', ['draft','in_progress']]])">
+                            <div class="card-body text-center">
+                                <h4 class="mb-1" t-esc="state.kpi.incomingQCOpen"></h4>
+                                <p class="text-muted mb-0">Incoming QC Open</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-info shadow-sm" style="cursor:pointer" t-on-click="() => this.openModel('medtech.inprocess.qc', [['state', 'in', ['draft','submitted']]])">
+                            <div class="card-body text-center">
+                                <h4 class="mb-1" t-esc="state.kpi.inProcessQCPending"></h4>
+                                <p class="text-muted mb-0">In-Process QC Pending</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-danger shadow-sm" style="cursor:pointer" t-on-click="() => this.openModel('medtech.final.release.batch', [['state', 'in', ['draft','pending_qa','approved']]])">
+                            <div class="card-body text-center">
+                                <h4 class="mb-1" t-esc="state.kpi.finalReleasePending"></h4>
+                                <p class="text-muted mb-0">Final Release Pending</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <strong>Stage Queue</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.weighing.batch')">
+                                    Weighing<br/>
+                                    <strong t-esc="state.stages.weighing"/>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.compounding.batch')">
+                                    Compounding<br/>
+                                    <strong t-esc="state.stages.compounding"/>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.sterilization.batch')">
+                                    Sterilization<br/>
+                                    <strong t-esc="state.stages.sterilization"/>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.filling.batch')">
+                                    Filling<br/>
+                                    <strong t-esc="state.stages.filling"/>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.packaging.batch')">
+                                    Packaging<br/>
+                                    <strong t-esc="state.stages.packaging"/>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" t-on-click="() => this.openModel('medtech.final.release.batch')">
+                                    Final Release<br/>
+                                    <strong t-esc="state.stages.finalRelease"/>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

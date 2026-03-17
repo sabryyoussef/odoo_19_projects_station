@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="location_raw_material_root" model="stock.location">
+            <field name="name">Raw Material</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+        </record>
+
+        <record id="location_raw_material_quarantine" model="stock.location">
+            <field name="name">Quarantine</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_raw_material_root"/>
+        </record>
+
+        <record id="location_raw_material_released" model="stock.location">
+            <field name="name">Released</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_raw_material_root"/>
+        </record>
+
+        <record id="location_wip_root" model="stock.location">
+            <field name="name">WIP</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+        </record>
+
+        <record id="location_wip_compounding" model="stock.location">
+            <field name="name">Compounding</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_wip_root"/>
+        </record>
+
+        <record id="location_wip_sterilization" model="stock.location">
+            <field name="name">Sterilization</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_wip_root"/>
+        </record>
+
+        <record id="location_wip_filling" model="stock.location">
+            <field name="name">Filling</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_wip_root"/>
+        </record>
+
+        <record id="location_wip_packaging" model="stock.location">
+            <field name="name">Packaging</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_wip_root"/>
+        </record>
+
+        <record id="location_finished_goods_root" model="stock.location">
+            <field name="name">Finished Goods</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+        </record>
+
+        <record id="location_finished_goods_quarantine" model="stock.location">
+            <field name="name">Quarantine</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_finished_goods_root"/>
+        </record>
+
+        <record id="location_finished_goods_released" model="stock.location">
+            <field name="name">Released</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="medtech_quality_capa.location_finished_goods_root"/>
+        </record>
+
+    </data>
+</odoo>

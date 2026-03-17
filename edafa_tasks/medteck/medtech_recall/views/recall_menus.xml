@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Recall Management Submenu -->
+    <menuitem id="menu_medtech_recall"
+              name="Recall Management"
+              parent="medtech_core.menu_medtech_root"
+              sequence="40"/>
+
+    <menuitem id="menu_recall"
+              name="Recalls"
+              parent="menu_medtech_recall"
+              action="action_medtech_recall"
+              sequence="10"/>
+
+    <menuitem id="menu_quarantine"
+              name="Quarantine"
+              parent="menu_medtech_recall"
+              action="action_medtech_quarantine"
+              sequence="20"/>
+
+</odoo>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_medtech_full_workflow_wizard_form" model="ir.ui.view">
+        <field name="name">medtech.full.workflow.wizard.form</field>
+        <field name="model">medtech.full.workflow.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Demo Full Workflow - Eye Drops 10ml">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="stage1,stage2,stage3,stage4,stage5,stage6,quality,traceability,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Workflow Context">
+                            <field name="name"/>
+                            <field name="product_id"/>
+                            <field name="target_units"/>
+                            <field name="production_id" readonly="1"/>
+                            <field name="finished_lot_id" readonly="1"/>
+                            <field name="recall_name" readonly="1"/>
+                            <field name="recall_record_id" readonly="1"/>
+                        </group>
+                        <group string="Quality Status">
+                            <field name="incoming_qc_done" readonly="1"/>
+                            <field name="inprocess_qc_done" readonly="1"/>
+                            <field name="sterility_qc_done" readonly="1"/>
+                            <field name="final_release_done" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Stage 1 Intake">
+                            <group>
+                                <button name="action_open_incoming_qc" string="Open Incoming QC" type="object" class="oe_highlight"/>
+                                <button name="action_stage1_complete" string="Mark Stage 1 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage1_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Stage 2 Weighing">
+                            <group>
+                                <button name="action_stage2_open_weighing" string="Open Weighing &amp; Dispensing" type="object" class="oe_highlight"/>
+                                <button name="action_stage2_complete" string="Mark Stage 2 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage2_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Stage 3 Compounding">
+                            <group>
+                                <button name="action_stage3_open_compounding" string="Open Compounding" type="object" class="oe_highlight"/>
+                                <button name="action_stage3_complete" string="Mark Stage 3 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage3_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Stage 4 Sterilization">
+                            <group>
+                                <button name="action_stage4_open_sterilization" string="Open Sterilization / Filtration" type="object" class="oe_highlight"/>
+                                <button name="action_stage4_complete" string="Mark Stage 4 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage4_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Stage 5 Filling">
+                            <group>
+                                <button name="action_stage5_open_filling" string="Open Filling" type="object" class="oe_highlight"/>
+                                <button name="action_stage5_complete" string="Mark Stage 5 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage5_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Stage 6 Packaging">
+                            <group>
+                                <button name="action_stage6_open_packaging" string="Open Packaging" type="object" class="oe_highlight"/>
+                                <button name="action_stage6_complete" string="Mark Stage 6 Complete" type="object" class="oe_highlight"/>
+                                <field name="stage6_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Quality + Release">
+                            <group>
+                                <button name="action_open_final_release" string="Open Final Release" type="object" class="oe_highlight"/>
+                                <button name="action_open_capa" string="Open CAPA" type="object"/>
+                                <button name="action_quality_release_complete" string="Mark Final Release Complete" type="object" class="oe_highlight"/>
+                                <field name="final_release_at" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <page string="Traceability + Recall">
+                            <group>
+                                <button name="action_open_batch_search" string="Open Instant Batch Search" type="object" class="oe_highlight"/>
+                                <button name="action_open_expiry_monitoring" string="Open Expiry Monitoring" type="object"/>
+                                <button name="action_open_recall_simulation" string="Open Recall Simulation" type="object"/>
+                                <button name="action_mark_traceability_ready" string="Mark Traceability Verified" type="object"/>
+                                <button name="action_run_recall_simulation" string="Run Recall Simulation" type="object"/>
+                                <button name="action_generate_recall_docs" string="Generate Regulatory Pack" type="object"/>
+                                <button name="action_complete_workflow" string="Complete Workflow" type="object" class="oe_highlight"/>
+                            </group>
+                            <group>
+                                <field name="traceability_done" readonly="1"/>
+                                <field name="recall_ready_done" readonly="1"/>
+                                <field name="docs_generated" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_medtech_full_workflow_wizard" model="ir.actions.act_window">
+        <field name="name">Demo Full Workflow Wizard</field>
+        <field name="res_model">medtech.full.workflow.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_target_units': 20}</field>
+    </record>
+
+</odoo>

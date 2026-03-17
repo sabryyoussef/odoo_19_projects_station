@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Main Menu -->
+    <menuitem id="menu_medtech_root"
+              name="MedTech"
+              sequence="10"/>
+
+    <!-- Compliance Submenu -->
+    <menuitem id="menu_medtech_compliance"
+              name="Compliance"
+              parent="menu_medtech_root"
+              sequence="100"/>
+
+    <menuitem id="menu_medtech_audit_trail"
+              name="Audit Trail"
+              parent="menu_medtech_compliance"
+              action="action_medtech_audit_event"
+              sequence="10"/>
+
+    <menuitem id="menu_medtech_approval_history"
+              name="Approval History"
+              parent="menu_medtech_compliance"
+              action="action_medtech_approval_history"
+              sequence="20"/>
+
+    <!-- Configuration Submenu -->
+    <menuitem id="menu_medtech_configuration"
+              name="Configuration"
+              parent="menu_medtech_root"
+              sequence="900"
+              groups="base.group_system"/>
+
+</odoo>

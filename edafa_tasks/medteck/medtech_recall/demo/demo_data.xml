@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Recall -->
+        <record id="recall_00001" model="medtech.recall">
+            <field name="name">REC-00001</field>
+            <field name="recall_type">safety</field>
+            <field name="severity_class">class_ii</field>
+            <field name="reason">Voluntary recall of Cardiac Pacemaker CP-2000 units from manufacturing LOT-2601-A due to potential battery connection intermittent failure.</field>
+            <field name="fda_notification_required" eval="True"/>
+            <field name="eu_mdr_notification_required" eval="True"/>
+            <field name="state">in_progress</field>
+            <field name="initiated_date">2026-01-25</field>
+            <field name="initiated_by_id" ref="base.user_admin"/>
+            <field name="customer_notification_method">direct_email_phone</field>
+            <field name="effectiveness_check_required" eval="True"/>
+        </record>
+
+        <!-- Quarantine Records -->
+        <record id="quarantine_001" model="medtech.quarantine">
+            <field name="name">QRT-001-CP2000-2601-001</field>
+            <field name="reason">Recall REC-00001: Battery connection quality issue - LOT-2601-A</field>
+            <field name="status">released</field>
+            <field name="disposition">scrap</field>
+            <field name="disposition_date">2026-01-26</field>
+            <field name="disposition_notes">Unit returned from Memorial Hospital. Destructive testing performed to validate root cause. Battery terminal solder joints exhibited poor wetting and voids. Scrapped per procedure SOP-QRT-001.</field>
+        </record>
+
+        <record id="quarantine_002" model="medtech.quarantine">
+            <field name="name">QRT-002-CP2000-2601-002</field>
+            <field name="reason">Recall REC-00001: Battery connection quality issue - LOT-2601-A</field>
+            <field name="status">quarantined</field>
+            <field name="disposition">pending</field>
+        </record>
+
+        <record id="quarantine_003" model="medtech.quarantine">
+            <field name="name">QRT-003-CP2000-2601-003</field>
+            <field name="reason">Recall REC-00001: Battery connection quality issue - LOT-2601-A</field>
+            <field name="status">quarantined</field>
+            <field name="disposition">pending</field>
+        </record>
+    </data>
+</odoo>

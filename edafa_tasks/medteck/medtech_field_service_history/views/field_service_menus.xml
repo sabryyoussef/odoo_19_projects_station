@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Field Service Submenu -->
+    <menuitem id="menu_medtech_field_service"
+              name="Field Service"
+              parent="medtech_core.menu_medtech_root"
+              sequence="60"/>
+
+    <menuitem id="menu_service_visit"
+              name="Service Visits"
+              parent="menu_medtech_field_service"
+              action="action_medtech_service_visit"
+              sequence="10"/>
+
+    <menuitem id="menu_maintenance_plan"
+              name="Maintenance Plans"
+              parent="menu_medtech_field_service"
+              action="action_medtech_maintenance_plan"
+              sequence="20"/>
+
+</odoo>

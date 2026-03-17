@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Ian Error #1: Child Loop Missing -->
+        <record id="error_ian_01_child_loop" model="error.report">
+            <field name="name">Pro-forma Confirmation - Child Loop Error</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 14:00:00</field>
+            <field name="error_location">Sales → Pro-forma → Confirm</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="record_reference">PFI04336</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>Tried to confirm pro-forma invoice.</p>
+                <p>System crashed during task creation.</p>
+                <p>Could not complete sale order confirmation.</p>
+            ]]></field>
+            <field name="error_message">UnboundLocalError: local variable 'child' referenced before assignment</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Create pro-forma invoice</li>
+                    <li>Add products with child tasks</li>
+                    <li>Click "Confirm"</li>
+                    <li>Error at line 385 in sale.py</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">38aa51b</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Added missing loop: for child in task.child_ids:</p>
+                <p>File: freezoner_custom/models/sale.py, line 384</p>
+                <p>Child tasks now process correctly.</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 16:00:00</field>
+        </record>
+
+        <!-- Ian Error #2: display_project_id -->
+        <record id="error_ian_02_display_project_id" model="error.report">
+            <field name="name">Pro-forma Confirmation - Invalid display_project_id Field</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 14:30:00</field>
+            <field name="error_location">Sales → Pro-forma → Confirm</field>
+            <field name="module_name">freezoner_custom</field>
+            <field name="record_reference">PFI04336</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>After fixing Error #1, tried to confirm pro-forma again.</p>
+                <p>Got another error about invalid field.</p>
+                <p>Still could not complete confirmation.</p>
+            ]]></field>
+            <field name="error_message">ValueError: Invalid field 'display_project_id' on model 'project.task'</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Upgrade freezoner_custom module</li>
+                    <li>Create/open pro-forma invoice</li>
+                    <li>Click "Confirm"</li>
+                    <li>Error at line 462 in sale.py</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">0e0a6aa</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Removed deprecated display_project_id field references.</p>
+                <p>Field doesn't exist in Odoo 17, only project_id needed.</p>
+                <p>File: freezoner_custom/models/sale.py, lines 390, 422</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 16:30:00</field>
+        </record>
+
+        <!-- Ian Error #3: Notify Thread Info -->
+        <record id="error_ian_03_notify_thread_info" model="error.report">
+            <field name="name">Pro-forma Confirmation - Missing _notify_get_recipients_thread_info</field>
+            <field name="reporter_id" ref="base.user_admin"/>
+            <field name="report_date">2025-10-27 15:00:00</field>
+            <field name="error_location">Sales → Pro-forma → Confirm (during notification)</field>
+            <field name="module_name">project_custom</field>
+            <field name="record_reference">PFI04336</field>
+            <field name="impact">critical</field>
+            <field name="status">fixed</field>
+            <field name="priority">3</field>
+            <field name="description"><![CDATA[
+                <p>After fixing Errors #1 and #2, tried to confirm again.</p>
+                <p>Error during task creation when sending notifications.</p>
+                <p>Third sequential error in same workflow.</p>
+            ]]></field>
+            <field name="error_message">AttributeError: 'project.task' object has no attribute '_notify_get_recipients_thread_info'</field>
+            <field name="steps_to_reproduce"><![CDATA[
+                <ol>
+                    <li>Fix Errors #1 and #2</li>
+                    <li>Upgrade modules</li>
+                    <li>Try to confirm pro-forma</li>
+                    <li>Error during notification phase</li>
+                </ol>
+            ]]></field>
+            <field name="fix_commit">04f473f</field>
+            <field name="fix_notes"><![CDATA[
+                <p>Replaced removed method with direct property check.</p>
+                <p>Changed to: message.message_type == 'notification'</p>
+                <p>File: project_custom/models/mail.py, line 48</p>
+            ]]></field>
+            <field name="fixed_date">2025-10-27 17:00:00</field>
+        </record>
+
+    </data>
+</odoo>
+

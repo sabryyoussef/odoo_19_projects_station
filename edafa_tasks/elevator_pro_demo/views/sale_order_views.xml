@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_elevator_demo" model="ir.ui.view">
+        <field name="name">sale.order.form.elevator.demo</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <widget name="web_ribbon" title="Engineering Approval Required" bg_color="text-bg-warning" invisible="engineering_approved or state not in ['draft', 'sent']"/>
+            </xpath>
+
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="elevator_lead_id"/>
+                <field name="engineering_approved"/>
+                <field name="elevator_installation_task_id" readonly="1"/>
+                <field name="elevator_equipment_id" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

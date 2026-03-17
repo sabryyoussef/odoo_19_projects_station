@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form2_elevator_demo" model="ir.ui.view">
+        <field name="name">project.task.form.elevator.demo</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_set_inspection_draft" type="object" string="Inspection Draft" class="btn-secondary" invisible="elevator_task_type != 'inspection'"/>
+                <button name="action_set_inspection_scheduled" type="object" string="Inspection Scheduled" class="btn-secondary" invisible="elevator_task_type != 'inspection'"/>
+                <button name="action_set_inspection_completed" type="object" string="Inspection Completed" class="oe_highlight" invisible="elevator_task_type != 'inspection'"/>
+                <button name="action_quality_pass" type="object" string="Quality Pass" class="oe_highlight" invisible="elevator_task_type not in ['installation', 'quality'] or quality_passed"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <widget name="web_ribbon" title="QC Passed" bg_color="text-bg-success" invisible="not quality_passed"/>
+            </xpath>
+
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="elevator_task_type"/>
+                <field name="elevator_lead_id"/>
+                <field name="elevator_sale_order_id"/>
+                <field name="inspection_status" invisible="elevator_task_type != 'inspection'"/>
+                <field name="quality_passed" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

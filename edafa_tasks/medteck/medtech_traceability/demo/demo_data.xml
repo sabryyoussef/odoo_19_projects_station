@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Product: Cardiac Pacemaker CP-2000 -->
+        <record id="product_cardiac_pacemaker_cp2000" model="product.template">
+            <field name="name">Cardiac Pacemaker CP-2000</field>
+            <field name="list_price">15000.00</field>
+            <field name="standard_price">8500.00</field>
+            <field name="tracking">serial</field>
+            <field name="description">Single-chamber cardiac pacemaker for bradycardia treatment</field>
+            
+            <!-- Device Master Fields -->
+            <field name="is_medical_device" eval="True"/>
+            <field name="device_family">CP Series</field>
+            <field name="risk_class">class_iii</field>
+            <field name="intended_use">Single-chamber cardiac pacemaker for bradycardia treatment</field>
+            <field name="udi_di">(01)00312345678906</field>
+        </record>
+
+        <!-- UDI-DI (Device Identifier) -->
+        <record id="udi_di_cp2000" model="medtech.udi">
+            <field name="udi_di">(01)00312345678906</field>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="status">active</field>
+        </record>
+
+        <!-- UDI-PI for Serial Numbers -->
+        <record id="udi_pi_001" model="medtech.udi">
+            <field name="udi_di">(01)00312345678906</field>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="serial_number">CP2000-2601-001</field>
+            <field name="manufacture_date">2026-01-10</field>
+            <field name="expiry_date">2028-01-10</field>
+            <field name="status">active</field>
+        </record>
+
+        <record id="udi_pi_002" model="medtech.udi">
+            <field name="udi_di">(01)00312345678906</field>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="serial_number">CP2000-2601-002</field>
+            <field name="manufacture_date">2026-01-10</field>
+            <field name="expiry_date">2028-01-10</field>
+            <field name="status">active</field>
+        </record>
+
+        <record id="udi_pi_003" model="medtech.udi">
+            <field name="udi_di">(01)00312345678906</field>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="serial_number">CP2000-2601-003</field>
+            <field name="manufacture_date">2026-01-10</field>
+            <field name="expiry_date">2028-01-10</field>
+            <field name="status">active</field>
+        </record>
+
+        <!-- Stock Lots/Serials -->
+        <record id="lot_cp2000_001" model="stock.lot">
+            <field name="name">CP2000-2601-001</field>
+            <field name="product_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="lot_cp2000_002" model="stock.lot">
+            <field name="name">CP2000-2601-002</field>
+            <field name="product_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <record id="lot_cp2000_003" model="stock.lot">
+            <field name="name">CP2000-2601-003</field>
+            <field name="product_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Device History Records (DHRs) -->
+        <record id="dhr_001" model="medtech.dhr">
+            <field name="serial_lot_id" ref="lot_cp2000_001"/>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="state">approved</field>
+        </record>
+
+        <record id="dhr_002" model="medtech.dhr">
+            <field name="serial_lot_id" ref="lot_cp2000_002"/>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="state">approved</field>
+        </record>
+
+        <record id="dhr_003" model="medtech.dhr">
+            <field name="serial_lot_id" ref="lot_cp2000_003"/>
+            <field name="device_master_id" ref="product_cardiac_pacemaker_cp2000"/>
+            <field name="state">approved</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- CAPA Dashboard Action -->
+    <record id="action_capa_dashboard" model="ir.actions.client">
+        <field name="name">CAPA Dashboard</field>
+        <field name="tag">medtech_quality_capa.dashboard</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_capa_dashboard"
+              name="CAPA Dashboard"
+              parent="menu_medtech_quality"
+              action="action_capa_dashboard"
+              sequence="1"/>
+</odoo>
+

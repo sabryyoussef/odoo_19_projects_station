@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Traceability Submenu -->
+    <menuitem id="menu_medtech_traceability"
+              name="Traceability"
+              parent="medtech_core.menu_medtech_root"
+              sequence="20"/>
+
+    <menuitem id="menu_device_master"
+              name="Device Master"
+              parent="menu_medtech_traceability"
+              action="action_medical_device_master"
+              sequence="10"/>
+
+    <menuitem id="menu_udi_registry"
+              name="UDI Registry"
+              parent="menu_medtech_traceability"
+              action="action_medtech_udi"
+              sequence="20"/>
+
+    <menuitem id="menu_dhr"
+              name="Device History Records"
+              parent="menu_medtech_traceability"
+              action="action_medtech_dhr"
+              sequence="30"/>
+
+    <menuitem id="menu_batch_search"
+              name="Instant Batch Search"
+              parent="menu_medtech_traceability"
+              action="action_medtech_batch_search_wizard"
+              sequence="40"/>
+
+    <menuitem id="menu_expiry_monitoring"
+              name="Expiry Monitoring"
+              parent="menu_medtech_traceability"
+              action="action_medtech_lot_expiry_monitor"
+              sequence="50"/>
+
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form_elevator_workflow" model="ir.ui.view">
+        <field name="name">project.task.form.elevator.workflow</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="x_sale_order_id"/>
+                <field name="x_fleet_vehicle_id"/>
+            </xpath>
+            <xpath expr="//sheet/group[1]" position="after">
+                <group string="Installation" name="elevator_installation">
+                    <group string="Final site measurements">
+                        <field name="x_final_shaft_height"/>
+                        <field name="x_final_shaft_width"/>
+                        <field name="x_final_shaft_depth"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

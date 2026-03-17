@@ -1,0 +1,10 @@
+# ERPPeek Automation Dependencies
+
+# Core dependency
+erppeek==1.7.1
+
+# Environment variable management
+python-dotenv==1.0.0
+
+# Optional: Enhanced logging
+colorlog==6.7.0

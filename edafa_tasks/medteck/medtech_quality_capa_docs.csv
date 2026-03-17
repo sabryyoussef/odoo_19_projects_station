@@ -1,0 +1,411 @@
+﻿"Module","DocType","Section","Content"
+"medtech_quality_capa","IMPROVEMENTS","MedTech Quality CAPA - Future Improvements",""
+"medtech_quality_capa","IMPROVEMENTS","High Priority",""
+"medtech_quality_capa","IMPROVEMENTS","1. Root Cause Analysis Templates","- Pre-built Fishbone (Ishikawa) diagram tool
+- 5 Whys wizard with guided questions
+-Fault Tree Analysis integration
+- FMEA linkage
+
+**Benefit:** Standardized, thorough root cause analysis"
+"medtech_quality_capa","IMPROVEMENTS","2. CAPA Risk Scoring","- Automatic risk calculation (Severity أ— Occurrence أ— Detection)
+- Priority-based workflow routing
+- High-risk CAPAs â†’ Expedited approval
+
+**Implementation:**
+```python
+risk_score = fields.Integer(compute='_compute_risk')
+# Low: 1-10, Medium: 11-50, High: 51-125
+```"
+"medtech_quality_capa","IMPROVEMENTS","3. Recurring CAPA Detection","- AI-powered duplicate/similar CAPA detection
+- Alert: """"Similar CAPA exists (CAPA-2024-0042)""""
+- Suggest investigation for systemic root cause"
+"medtech_quality_capa","IMPROVEMENTS","4. CAPA Templates Library","- Pre-defined CAPAs for common issues
+- Industry best practices
+- Customizable template catalog"
+"medtech_quality_capa","IMPROVEMENTS","5. Integration with Training Module","- Auto-assign training when CAPA identifies knowledge gap
+- Track training completion tied to CAPA closure
+- Verification of effectiveness through assessments"
+"medtech_quality_capa","IMPROVEMENTS","Medium Priority",""
+"medtech_quality_capa","IMPROVEMENTS","6. Advanced Dashboard Analytics","- Trend charts (CAPA creation over time)
+- Root cause Pareto analysis
+- Department/product breakdown
+- Cost of quality metrics"
+"medtech_quality_capa","IMPROVEMENTS","7. Mobile CAPA App","- Create NCRs from mobile device
+- Photo attachment for evidence
+- Approve CAPAs on-the-go
+- Offline capability"
+"medtech_quality_capa","IMPROVEMENTS","8. Email Escalation","- Auto-email if CAPA overdue by X days
+- Escalate to management if no response
+- Daily digest of assigned CAPAs"
+"medtech_quality_capa","IMPROVEMENTS","9. CAPA Metrics & KPIs","- Mean Time to Close (MTTC)
+- Recurrence rate
+- Effectiveness success rate
+- Cost per CAPA"
+"medtech_quality_capa","IMPROVEMENTS","10. External CAPA Management","- Customer CAPAs (issued to you)
+- Supplier CAPAs (issued to vendors)
+- Bidirectional status tracking"
+"medtech_quality_capa","IMPROVEMENTS","Low Priority",""
+"medtech_quality_capa","IMPROVEMENTS","11. CAPA Import/Export","- Import from Excel template
+- Export to FDA submission format  
+- Integration with eQMS systems"
+"medtech_quality_capa","IMPROVEMENTS","12. Geins/Losses Tracking","- Financial impact of nonconformances
+- Cost savings from preventive actions
+- ROI calculation"
+"medtech_quality_capa","IMPROVEMENTS","13. Predictive Analytics","- Predict likelihood of CAPA recurrence
+- Identify high-risk products/processes
+- Forecast CAPA volumes
+
+##14. Voice-to-Text NCR Creation
+- Dictate NCR descriptions
+- AI transcription and formatting"
+"medtech_quality_capa","INSTALLATION","MedTech Quality CAPA - Installation Guide",""
+"medtech_quality_capa","INSTALLATION","Prerequisites","- **Odoo 19.0+**
+- **medtech_core** module already installed
+- **Quality Control** (optional, for integration)"
+"medtech_quality_capa","INSTALLATION","Installation",""
+"medtech_quality_capa","INSTALLATION","Step 1: Install via Apps Menu","1. Go to **Apps** > Update Apps List
+2. Search """"MedTech Quality CAPA""""
+3. Click **Install**
+4. Wait 10-15 seconds"
+"medtech_quality_capa","INSTALLATION","Step 2: Verify Installation","Check that these menus appear under **MedTech > Quality**:
+- Nonconformances
+- CAPAs
+- CAPA Dashboard
+- Configuration"
+"medtech_quality_capa","INSTALLATION","Step 3: Configure Access Rights","Assign users to appropriate groups:
+- **Quality User:** Can create NCRs and CAPAs
+- **Quality Manager:** Can approve CAPAs
+- **Regulatory Manager:** Can signoff critical CAPAs"
+"medtech_quality_capa","INSTALLATION","Step 4: Configure Sequences","Navigate to **Settings** > **Technical** > **Sequences**
+
+Verify these exist:
+- `medtech.nonconformance` (Format: NCR/YYYY/0001)
+- `medtech.capa` (Format: CAPA/YYYY/0001)"
+"medtech_quality_capa","INSTALLATION","Post-Installation Setup",""
+"medtech_quality_capa","INSTALLATION","1. Define Root Cause Categories","Create common root cause categories for your organization:
+- Material defect
+- Process deviation
+- Equipment failure
+- Human error
+- Design flaw
+- Software bug
+- Environmental factor"
+"medtech_quality_capa","INSTALLATION","2. Set CAPA Thresholds","Define when CAPAs are mandatory:
+- All Critical NCRs â†’ Automatic CAPA
+- Multiple Minor NCRs (same root cause) â†’ CAPA
+- Customer complaints â†’ CAPA evaluation"
+"medtech_quality_capa","INSTALLATION","3. Configure Effectiveness Check Schedule","Typical timeline:
+- Immediate actions: 1 week effectiveness check
+- Process changes: 30 days effectiveness check
+- Design changes: 90 days effectiveness check"
+"medtech_quality_capa","INSTALLATION","Troubleshooting","**Dashboard not loading?**
+- Clear browser cache (Ctrl+Shift+R)
+- Check browser console for JavaScript errors
+- Verify OWL component loaded: Check static/src/js/capa_dashboard.js
+
+**CAPAs not creating?**
+- Check user has Quality User group
+- Verify sequences configured
+- Check server logs for errors
+
+**Approval buttons missing?**
+- Verify user has Quality Manager group
+- Check CAPA state (must be """"Pending Approval"""")
+- Review record rules in Security settings"
+"medtech_quality_capa","README","MedTech Quality CAPA Module",""
+"medtech_quality_capa","README","Overview","**Version:** 19.0.1.0.0  
+**Category:** Manufacturing/MedTech/Quality  
+**License:** LGPL-3  
+**Dependencies:** medtech_core"
+"medtech_quality_capa","README","Purpose","Comprehensive CAPA (Corrective and Preventive Action) and Nonconformance management system for medical device manufacturers, compliant with FDA 21 CFR Part 820 and ISO 13485."
+"medtech_quality_capa","README","Key Features",""
+"medtech_quality_capa","README","1. Nonconformance Report (NCR) Management","- Create NCRs from quality inspections, complaints, or audits
+- Classify by severity (Critical, Major, Minor)
+- Disposition decision (Scrap, Rework, Use-As-Is, Return)
+- Root cause analysis framework
+- Link to related DHRs, lots, or devices"
+"medtech_quality_capa","README","2. CAPA System","- Corrective AND preventive action tracking
+- Multi-stage approval workflow
+- Effectiveness check scheduling
+- Recurrence prevention measures
+- FDA inspection-ready documentation"
+"medtech_quality_capa","README","3. CAPA Dashboard (OWL Component)","- Real-time KPI visualization
+- Overdue CAPA highlighting
+- Effectiveness check calendar
+- CAPA trend charts
+- By-stage pipeline view"
+"medtech_quality_capa","README","4. Approval Workflows","- Draft â†’ In Progress â†’ Pending Approval â†’ Approved â†’ Effectiveness Check â†’ Closed
+- Quality Manager approval required
+- Regulatory Manager signoff for critical CAPAs
+- Audit trail for all approvals"
+"medtech_quality_capa","README","Technical Architecture",""
+"medtech_quality_capa","README","Models",""
+"medtech_quality_capa","README","`medtech.nonconformance`","**Purpose:** Document quality deviations
+
+**Key Fields:**
+- `name` - Auto-generated NCR number
+- `description` - Detailed description
+- `severity` - Critical/Major/Minor
+- `disposition` - Scrap/Rework/Use-As-Is/Return
+- `root_cause` - Text analysis
+- `capa_ids` - Linked CAPAs"
+"medtech_quality_capa","README","`medtech.capa`","**Purpose:** Manage corrective/preventive actions
+
+**Key Fields:**
+- `name` - Auto-generated CAPA number
+- `capa_type` - Corrective, Preventive, or Both
+- `root_cause` - Root cause categoryization
+- `corrective_action` - What to fix
+- `preventive_action` - How to prevent recurrence
+- `target_completion_date` - Deadline
+- `effectiveness_check_required` - Boolean
+- `effectiveness_check_date` - When to verify
+- `effectiveness_result` - Pass/Fail"
+"medtech_quality_capa","README","Views","- Tree, form, kanban for NCRs and CAPAs
+- CAPA dashboard with charts
+- Calendar view for effectiveness checks"
+"medtech_quality_capa","README","Reports","- CAPA effectiveness report
+- NCR summary report
+- Trend analysis"
+"medtech_quality_capa","README","Regulatory Compliance",""
+"medtech_quality_capa","README","FDA 21 CFR Part 820.100","- **(a)** Corrective and preventive action procedures
+- **(b)** Analysis of processes, operations, concessions, quality data
+- **(c)** Investigation of nonconforming product causes
+- **(d)** Identification of action needed
+- **(e)** Verification or validation of corrective/preventive action
+- **(f)** Documentation and information dissemination
+- **(g)** Submission of relevant information to management review"
+"medtech_quality_capa","README","ISO 13485:2016 Clause 8.5","- **8.5.2** Corrective action
+- **8.5.3** Preventive action"
+"medtech_quality_capa","README","Module Structure","```
+medtech_quality_capa/
+â”œâ”€â”€ __init__.py
+â”œâ”€â”€ __manifest__.py
+â”œâ”€â”€ models/
+â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”œâ”€â”€ medtech_nonconformance.py
+â”‚   â”œâ”€â”€ medtech_capa.py
+â”‚   â””â”€â”€ medtech_quality_config.py
+â”œâ”€â”€ views/
+â”‚   â”œâ”€â”€ nonconformance_views.xml
+â”‚   â”œâ”€â”€ capa_views.xml
+â”‚   â”œâ”€â”€ capa_dashboard_actions.xml
+â”‚   â””â”€â”€ quality_menus.xml
+â”œâ”€â”€ static/src/
+â”‚   â”œâ”€â”€ js/capa_dashboard.js        # OWL Component
+â”‚   â””â”€â”€ xml/capa_dashboard.xml      # Dashboard template
+â”œâ”€â”€ reports/
+â”‚   â””â”€â”€ capa_report.xml
+â”œâ”€â”€ data/
+â”‚   â””â”€â”€ ir_sequence_data.xml
+â”œâ”€â”€ security/
+â”‚   â””â”€â”€ ir.model.access.csv
+â”œâ”€â”€ demo/
+â”‚   â””â”€â”€ demo_data.xml
+â””â”€â”€ docs/
+    â”œâ”€â”€ README.md
+    â”œâ”€â”€ INSTALLATION.md
+    â”œâ”€â”€ USER_GUIDE.md
+    â””â”€â”€ IMPROVEMENTS.md
+```"
+"medtech_quality_capa","README","CAPA Dashboard","The OWL-based dashboard provides real-time visibility:"
+"medtech_quality_capa","README","KPI Cards","- Total CAPAs
+- Open CAPAs
+- Overdue CAPAs
+- Closed this month
+- Average time to close
+- Effectiveness rate"
+"medtech_quality_capa","README","Charts","- CAPA by stage (pie chart)
+- Trend over time (line chart)
+- Root cause Pareto (bar chart)"
+"medtech_quality_capa","README","Lists","- Overdue CAPAs (action required)
+- Effectiveness checks due
+- Recent CAPAs"
+"medtech_quality_capa","README","Integration Points","- **medtech_core:** Audit trails, approval workflows
+- **medtech_traceability:** Link DHRs to NCRs
+- **medtech_recall:** Trigger recalls from CAPAs
+- **medtech_vendor_compliance:** Supplier CAPAs
+- **quality_control:** Auto-create NCRs from failed inspections"
+"medtech_quality_capa","README","Best Practices","1. **Create NCRs Immediately:** Don't delay documentation
+2. **Root Cause is Critical:** Invest time in thorough analysis (5 Whys, Fishbone)
+3. **Preventive > Corrective:** Focus on preventing recurrence
+4. **Effectiveness Checks:** Always verify CAPA worked
+5. **Close CAPAs Promptly:** Don't leave open indefinitely
+6. **Link Related Records:** Connect NCRs, CAPAs, DHRs for traceability"
+"medtech_quality_capa","README","Changelog",""
+"medtech_quality_capa","README","Version 19.0.1.0.0","- Odoo 19 compatibility
+- Modern <chatter/> tag implementation
+- OWL dashboard with modern hooks (onWillStart)
+- Fixed create method to use @api.model_create_multi
+- HTML-decoded XML templates"
+"medtech_quality_capa","USER_GUIDE","MedTech Quality CAPA - User Guide",""
+"medtech_quality_capa","USER_GUIDE","Creating a Nonconformance Report (NCR)",""
+"medtech_quality_capa","USER_GUIDE","Scenario: Failed Inspection","1. **Navigate:** MedTech > Quality > Nonconformances > Create
+2. **Fill Required Fields:**
+   - **Description:** """"Dimension B out of specification (12.3mm, spec: 12.0آ±0.2mm)""""
+   - **Severity:** Major
+   - **Product:** Select affected product
+   - **Lot/Serial:** Enter traceability info
+3. **Root Cause Analysis:**
+   - Use 5 Whys technique
+   - Document findings
+4. **Disposition Decision:**
+   - **Scrap:** If unusable
+   - **Rework:** If can be corrected
+   - **Use-As-Is:** If acceptable (requires waiver)
+   - **Return to Supplier:** If vendor issue
+5. **Determine if CAPA Needed:**
+   - Click """"Create CAPA"""" if systemic issue
+   - Otherwise, close NCR after disposition"
+"medtech_quality_capa","USER_GUIDE","Creating a CAPA",""
+"medtech_quality_capa","USER_GUIDE","From NCR","1. Open NCR
+2. Click """"Create CAPA"""" button
+3. CAPA auto-populates with NCR info"
+"medtech_quality_capa","USER_GUIDE","Standalone CAPA","1. **Navigate:** MedTech > Quality > CAPAs > Create
+2. **CAPA Type:**
+   - **Corrective:** Fix existing problem
+   - **Preventive:** Prevent potential problem
+   - **Both:** Fix and prevent
+3. **Root Cause:** Document thoroughly
+4. **Corrective Action:**
+   - What specifically will be done
+   - Who is responsible
+   - Target completion date
+5. **Preventive Action:**
+   - How to prevent recurrence
+   - Process changes needed
+   - Training requirements
+6. **Effectiveness Check:**
+   - Set review date
+   - Define success criteria
+7. **Save and Submit for Approval**"
+"medtech_quality_capa","USER_GUIDE","CAPA Workflow","```
+Draft â†’ In Progress â†’ Pending Approval â†’ Approved â†’ 
+Effectiveness Check â†’ Closed (or Re-opened if ineffective)
+```"
+"medtech_quality_capa","USER_GUIDE","As CAPA Owner","1. **Draft:** Fill all required fields
+2. **Submit for Approval:** Click button
+3. **Implement Actions:** Complete corrective/preventive actions
+4. **Request Effectiveness Check:** When ready"
+"medtech_quality_capa","USER_GUIDE","As Quality Manager","1. **Receive Notification:** """"CAPA awaiting approval""""
+2. **Review Thoroughly:**
+   - Root cause makes sense?
+   - Actions address root cause?
+   - Timeline realistic?
+3. **Approve or Reject:**
+   - Approve: CAPA proceeds
+   - Reject: Returns to owner with comments"
+"medtech_quality_capa","USER_GUIDE","Effectiveness Check","1. **When Due:** System sends reminder
+2. **Perform Verification:**
+   - Check if issue recurred
+   - Review metrics
+   - Interview staff
+3. **Record Results:**
+   - **Pass:** Close CAPA
+   - **Fail:** Re-open CAPA, refine actions"
+"medtech_quality_capa","USER_GUIDE","Using the CAPA Dashboard",""
+"medtech_quality_capa","USER_GUIDE","Access Dashboard","**MedTech > Quality > CAPA Dashboard**"
+"medtech_quality_capa","USER_GUIDE","Dashboard Sections","**KPI Cards (Top Row):**
+- Total CAPAs
+- Open CAPAs
+- Overdue CAPAs (red if > 0)
+- Closed This Month
+- Avg Time to Close (days)
+- Effectiveness Rate (%)
+
+**CAPA Pipeline (Middle):**
+Pie chart showing distribution:
+- Draft
+- In Progress
+- Pending Approval
+- Approved
+- Effectiveness Check
+- Closed
+
+**Action Lists (Bottom):**
+- **Overdue CAPAs:** Requires immediate attention
+- **Effectiveness Checks Due:** Schedule reviews
+- **Recent CAPAs:** Last 10 created"
+"medtech_quality_capa","USER_GUIDE","Filtering","Click chart segments to filter:
+- Click """"Overdue"""" slice â†’ Shows only overdue CAPAs
+- Click """"In Progress"""" â†’ Shows all in-progress"
+"medtech_quality_capa","USER_GUIDE","Use Cases",""
+"medtech_quality_capa","USER_GUIDE","Use Case 1: Product Defect Found During Final Inspection","**Situation:** Inspector finds crack in 10% of units from Lot ABC123
+
+**Steps:**
+1. **Create NCR:**
+   - Description: """"Cracks found in housingâ€”10% defect rate""""
+   - Severity: Critical
+   - Lot: ABC123
+   - Disposition: Scrap (100 units)
+
+2. **Immediate Containment:**
+   - Quarantine entire lot
+   - Inspect all other lots from same production run
+
+3. **Create CAPA:**
+   - Root Cause: Injection molding pressure too high
+   - Corrective: Adjust molding parameters
+   - Preventive: Implement process monitoring, operator training
+
+4. **Effectiveness Check (30 days):**
+   - Review next 1000 units
+   - No cracks found
+   - Close CAPA"
+"medtech_quality_capa","USER_GUIDE","Use Case 2: Customer Complaint Trend","**Situation:** Three customer complaints about device software crash
+
+**Steps:**
+1. **Create CAPA (Preventive):**
+   - Type: Both (Corrective + Preventive)
+   - Root Cause: Software memory leak
+   - Corrective: Release firmware update
+   - Preventive: Implement stress testing in QA
+
+2. **Link Related Records:**
+   - Add links to 3 customer complaint records
+   - Reference software test reports
+
+3. **Implementation:**
+   - Develop and validate firmware fix
+   - Notify customers of available update
+   - Update design controls
+
+4. **Effectiveness Check (90 days):**
+   - Monitor complaint database
+   - No new complaints
+   - Close CAPA"
+"medtech_quality_capa","USER_GUIDE","Best Practices",""
+"medtech_quality_capa","USER_GUIDE","Root Cause Analysis","**Use 5 Whys:**
+```
+Problem: Part failed leak test
+Why? Seal was defective
+Why? Seal had visible crack
+Why? Molding temperature too low
+Why? Thermocouple miscalibrated
+Why? Calibration schedule not followed
+Root Cause: Inadequate calibration procedure
+```"
+"medtech_quality_capa","USER_GUIDE","CAPA Writing Tips","âœ… **Good CAPA:**
+- """"Implement weekly calibration checks for all thermocouples per SOP-CAL-001. Training completed by 2026-03-15. Verify with calibration logbook review at 30 days.""""
+
+â‌Œ **Poor CAPA:**
+- """"Fix the problem. Train people better."""""
+"medtech_quality_capa","USER_GUIDE","Effectiveness Criteria","Define measurable success:
+- âœ… """"Zero defects in next 500 units""""
+- âœ… """"Cycle time reduced by 15%""""
+- âœ… """"100% operator quiz scores > 90%""""
+- â‌Œ """"Things get better"""""
+"medtech_quality_capa","USER_GUIDE","FAQ","**Q: Do I need a CAPA for every NCR?**  
+A: No. Single isolated incidents may not require CAPA. Trends or critical issues always need CAPA.
+
+**Q: Can I have multiple CAPAs for one NCR?**  
+A: Yes. Complex issues may need multiple correction paths.
+
+**Q: What if CAPA fails effectiveness check?**  
+A: Re-open CAPA, revise actions, implement additional measures.
+
+**Q: How long to keep closed CAPAs?**  
+A: Minimum 3 years per FDA. Some critical device CAPAs: life of device + 2 years.
+
+**Q: Can I delete a CAPA?**  
+A: No. Cancel it instead (provides audit trail)."

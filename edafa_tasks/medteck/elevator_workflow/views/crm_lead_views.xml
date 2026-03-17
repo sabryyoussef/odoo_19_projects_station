@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_elevator_workflow" model="ir.ui.view">
+        <field name="name">crm.lead.form.elevator.workflow</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[1]" position="after">
+                <group string="Technical survey data" name="elevator_technical_survey">
+                    <group>
+                        <field name="x_elevator_floors"/>
+                        <field name="x_elevator_passenger_capacity"/>
+                    </group>
+                    <group>
+                        <field name="x_elevator_shaft_height"/>
+                        <field name="x_elevator_shaft_width"/>
+                        <field name="x_elevator_shaft_depth"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

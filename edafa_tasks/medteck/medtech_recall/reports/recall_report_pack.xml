@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Recall Report Pack Template (FDA Submission Format) -->
+    <template id="report_recall_pack_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <!-- Cover Page -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="text-danger">
+                            <strong>MEDICAL DEVICE RECALL REPORT</strong>
+                        </h1>
+                        <h3 class="text-muted mt-3">FDA 21 CFR Part 7 | ISO 13485:2016 Clause 8.2.2</h3>
+                        <div class="mt-5 p-4 border">
+                            <h4><t t-esc="o.name"/></h4>
+                            <p class="lead">
+                                Classification: <strong t-esc="o.classification"/><br/>
+                                Severity: <strong t-esc="o.severity"/><br/>
+                                Status: <strong t-esc="o.state.upper()"/><br/>
+                            </p>
+                        </div>
+                        <p class="mt-5 text-muted">
+                            Report Generated: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                        </p>
+                    </div>
+                </div>
+
+                <div style="page-break-before: always;"/>
+
+                <!-- Section 1: Executive Summary -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3 class="bg-danger text-white p-2">1. EXECUTIVE SUMMARY</h3>
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td class="bg-light" width="30%"><strong>Recall Number:</strong></td>
+                                <td><t t-esc="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>FDA Classification:</strong></td>
+                                <td>
+                                    <span t-if="o.classification == 'class_i'" class="badge badge-danger">Class I - Most Serious</span>
+                                    <span t-elif="o.classification == 'class_ii'" class="badge badge-warning">Class II - May Cause Temporary/Reversible Health Problems</span>
+                                    <span t-elif="o.classification == 'class_iii'" class="badge badge-info">Class III - Not Likely to Cause Health Problems</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Recall Type:</strong></td>
+                                <td><t t-esc="o.recall_type"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Severity:</strong></td>
+                                <td>
+                                    <span t-if="o.severity == 'critical'" class="badge badge-danger">CRITICAL</span>
+                                    <span t-elif="o.severity == 'high'" class="badge badge-warning">HIGH</span>
+                                    <span t-elif="o.severity == 'medium'" class="badge badge-info">MEDIUM</span>
+                                    <span t-elif="o.severity == 'low'" class="badge badge-secondary">LOW</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Initiation Date:</strong></td>
+                                <td><t t-esc="o.initiation_date"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Target Completion:</strong></td>
+                                <td><t t-esc="o.target_completion_date"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Trigger Source:</strong></td>
+                                <td><t t-esc="o.trigger_source"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Reason for Recall:</strong></td>
+                                <td><t t-esc="o.description"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section 2: Affected Products &amp; Population -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3 class="bg-danger text-white p-2">2. AFFECTED PRODUCTS &amp; POPULATION</h3>
+
+                        <!-- Population Metrics -->
+                        <h5 class="mt-3">2.1 Population Analysis</h5>
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td class="bg-light" width="30%"><strong>Total Manufactured:</strong></td>
+                                <td><t t-esc="o.total_manufactured"/> units</td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Total in Stock:</strong></td>
+                                <td><t t-esc="o.total_in_stock"/> units</td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Total Distributed:</strong></td>
+                                <td><t t-esc="o.total_distributed"/> units</td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Total Returned:</strong></td>
+                                <td><t t-esc="o.total_returned"/> units</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section 3: Recall Actions -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3 class="bg-danger text-white p-2">3. RECALL ACTIONS TAKEN</h3>
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td width="30%"><strong>Recall Action:</strong></td>
+                                <td><t t-esc="o.recall_action"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Quarantines Created:</strong></td>
+                                <td><t t-esc="o.quarantine_count"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Customer Notifications:</strong></td>
+                                <td><t t-esc="o.notification_count"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Impacted Customers:</strong></td>
+                                <td><t t-esc="o.impacted_customer_count"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Simulation Executed:</strong></td>
+                                <td><t t-esc="'Yes' if o.simulation_done else 'No'"/> <t t-if="o.simulation_at">(<t t-esc="o.simulation_at"/>)</t></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Related CAPA:</strong></td>
+                                <td><t t-esc="o.capa_id.name if o.capa_id else 'N/A'"/></td>
+                            </tr>
+                        </table>
+
+                        <div class="mt-3">
+                            <strong>Correction Instructions:</strong>
+                            <p class="border p-2"><t t-esc="o.correction_instructions or 'Not specified'"/></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Regulatory Approvals &amp; Signatures -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h3 class="bg-danger text-white p-2">4. REGULATORY REPORTING</h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="50%" class="p-4">
+                                    <strong>FDA Reporting:</strong><br/>
+                                    <t t-if="o.fda_reported">
+                                        Reported: Yes<br/>
+                                        Date: <t t-esc="o.fda_report_date or 'N/A'"/><br/>
+                                        Number: <t t-esc="o.fda_report_number or 'N/A'"/>
+                                    </t>
+                                    <t t-else="">
+                                        <em class="text-muted">Not yet reported to FDA</em>
+                                    </t>
+                                </td>
+                                <td width="50%" class="p-4">
+                                    <strong>EU Competent Authority:</strong><br/>
+                                    <t t-if="o.eu_competent_authority_reported">
+                                        Reported: Yes<br/>
+                                        Date: <t t-esc="o.eu_report_date or 'N/A'"/><br/>
+                                        FSCA Number: <t t-esc="o.eu_fsca_number or 'N/A'"/>
+                                    </t>
+                                    <t t-else="">
+                                        <em class="text-muted">Not yet reported to EU authority</em>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="row mt-3">
+                    <div class="col-12 text-center text-muted">
+                        <small>
+                            <strong>CONFIDENTIAL - FOR REGULATORY SUBMISSION ONLY</strong><br/>
+                            This recall report is submitted in accordance with FDA 21 CFR Part 7 regulations.<br/>
+                            Unauthorized reproduction or disclosure is prohibited.<br/>
+                            Document generated from MedTech ERP System on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Report Definition -->
+    <record id="action_report_recall_pack" model="ir.actions.report">
+        <field name="name">Recall Report Pack (FDA Submission)</field>
+        <field name="model">medtech.recall</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medtech_recall.report_recall_pack_document</field>
+        <field name="report_file">medtech_recall.report_recall_pack_document</field>
+        <field name="binding_model_id" ref="model_medtech_recall"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_us"/>
+    </record>
+</odoo>
+

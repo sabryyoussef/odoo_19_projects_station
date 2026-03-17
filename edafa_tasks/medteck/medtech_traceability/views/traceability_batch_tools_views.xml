@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_medtech_batch_search_wizard_form" model="ir.ui.view">
+        <field name="name">medtech.batch.search.wizard.form</field>
+        <field name="model">medtech.batch.search.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Instant Batch Search">
+                <group>
+                    <field name="search_lot_id"/>
+                    <field name="mode"/>
+                </group>
+                <group>
+                    <field name="result_text" nolabel="1" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_run_search" string="Run Search" type="object" class="oe_highlight"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_medtech_batch_search_wizard" model="ir.actions.act_window">
+        <field name="name">Instant Batch Search</field>
+        <field name="res_model">medtech.batch.search.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_medtech_lot_expiry_monitor_list" model="ir.ui.view">
+        <field name="name">medtech.lot.expiry.monitor.list</field>
+        <field name="model">medtech.lot.expiry.monitor</field>
+        <field name="arch" type="xml">
+            <list string="Expiry Monitoring" decoration-danger="status == 'expired'" decoration-warning="status in ('critical','warning')">
+                <field name="lot_id"/>
+                <field name="product_id"/>
+                <field name="expiry_date"/>
+                <field name="days_to_expiry"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_medtech_lot_expiry_monitor_search" model="ir.ui.view">
+        <field name="name">medtech.lot.expiry.monitor.search</field>
+        <field name="model">medtech.lot.expiry.monitor</field>
+        <field name="arch" type="xml">
+            <search string="Expiry Monitoring">
+                <field name="lot_id"/>
+                <field name="product_id"/>
+                <filter string="Expired" name="expired" domain="[('status', '=', 'expired')]"/>
+                <filter string="Critical" name="critical" domain="[('status', '=', 'critical')]"/>
+                <filter string="Warning" name="warning" domain="[('status', '=', 'warning')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_medtech_lot_expiry_monitor" model="ir.actions.act_window">
+        <field name="name">Expiry Monitoring</field>
+        <field name="res_model">medtech.lot.expiry.monitor</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

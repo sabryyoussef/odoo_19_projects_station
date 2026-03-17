@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Device Master (Product Template extension) Form View -->
+    <record id="view_product_template_medtech_form" model="ir.ui.view">
+        <field name="name">product.template.medtech.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Medical Device Info" invisible="not is_medical_device">
+                    <group>
+                        <group string="Device Classification">
+                            <field name="is_medical_device"/>
+                            <field name="device_family" invisible="not is_medical_device"/>
+                            <field name="risk_class" invisible="not is_medical_device"/>
+                        </group>
+                        <group string="Regulatory">
+                            <field name="udi_di" invisible="not is_medical_device"/>
+                            <field name="intended_use" invisible="not is_medical_device"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Device Master Tree View -->
+    <record id="view_product_template_medtech_tree" model="ir.ui.view">
+        <field name="name">product.template.medtech.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="Medical Devices">
+                <field name="name"/>
+                <field name="device_family"/>
+                <field name="risk_class"/>
+                <field name="udi_di"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Device Master Search View -->
+    <record id="view_product_template_medtech_search" model="ir.ui.view">
+        <field name="name">product.template.medtech.search</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search string="Medical Devices">
+                <field name="name"/>
+                <field name="device_family"/>
+                <field name="udi_di"/>
+                <filter string="Medical Devices" name="medical_devices" domain="[('is_medical_device', '=', True)]"/>
+                <group>
+                    <filter string="Device Family" name="group_family" context="{'group_by': 'device_family'}"/>
+                    <filter string="Risk Class" name="group_risk" context="{'group_by': 'risk_class'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Device Master Action -->
+    <record id="action_medical_device_master" model="ir.actions.act_window">
+        <field name="name">Device Master</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_medical_device', '=', True)]</field>
+        <field name="context">{'default_is_medical_device': True, 'search_default_medical_devices': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Medical Device
+            </p>
+            <p>
+                Medical devices are products with regulatory classification (Class I, IIa, IIb, III)
+                and require UDI tracking for compliance with FDA 21 CFR Part 820 and EU MDR.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_error_reporter_root"
+              name="🐛 Error Reports"
+              action="action_error_report"
+              sequence="100"
+              web_icon="error_reporter_enterprise,static/description/icon.png"/>
+
+    <!-- Error Reports Menu -->
+    <menuitem id="menu_error_reports"
+              name="Error Reports"
+              parent="menu_error_reporter_root"
+              action="action_error_report"
+              sequence="10"/>
+
+    <!-- Quick Report (will open form in dialog) -->
+    <record id="action_quick_error_report" model="ir.actions.act_window">
+        <field name="name">Report New Error</field>
+        <field name="res_model">error.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_impact': 'high', 'form_view_initial_mode': 'edit'}</field>
+    </record>
+
+    <menuitem id="menu_quick_report"
+              name="➕ Report New Error"
+              parent="menu_error_reporter_root"
+              action="action_quick_error_report"
+              sequence="5"/>
+    
+    <!-- My Error Reports -->
+    <record id="action_my_error_reports" model="ir.actions.act_window">
+        <field name="name">My Error Reports</field>
+        <field name="res_model">error.report</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('reporter_id', '=', uid)]</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <!-- New Errors (filter applied) -->
+    <record id="action_new_error_reports" model="ir.actions.act_window">
+        <field name="name">New Errors</field>
+        <field name="res_model">error.report</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_filter_new': 1}</field>
+    </record>
+    
+    <!-- Fixed Errors -->
+    <record id="action_fixed_error_reports" model="ir.actions.act_window">
+        <field name="name">Fixed Errors</field>
+        <field name="res_model">error.report</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_filter_fixed': 1}</field>
+    </record>
+
+    <menuitem id="menu_my_reports"
+              name="My Reports"
+              parent="menu_error_reporter_root"
+              action="action_my_error_reports"
+              sequence="15"/>
+    
+    <menuitem id="menu_new_errors"
+              name="New Errors"
+              parent="menu_error_reporter_root"
+              action="action_new_error_reports"
+              sequence="16"/>
+    
+    <menuitem id="menu_fixed_errors"
+              name="Fixed Errors"
+              parent="menu_error_reporter_root"
+              action="action_fixed_error_reports"
+              sequence="17"/>
+
+    <!-- Statistics Menu -->
+    <menuitem id="menu_error_statistics"
+              name="📊 Statistics"
+              parent="menu_error_reporter_root"
+              sequence="20"/>
+
+</odoo>
+

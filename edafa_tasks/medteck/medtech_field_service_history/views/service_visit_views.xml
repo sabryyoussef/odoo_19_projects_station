@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Service Visit Tree View -->
+    <record id="view_medtech_service_visit_tree" model="ir.ui.view">
+        <field name="name">medtech.service.visit.tree</field>
+        <field name="model">medtech.service.visit</field>
+        <field name="arch" type="xml">
+            <list string="Service Visits" decoration-info="state == 'scheduled'" decoration-warning="state == 'in_progress'">
+                <field name="name"/>
+                <field name="device_serial_id"/>
+                <field name="customer_id"/>
+                <field name="service_type"/>
+                <field name="visit_date"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Service Visit Form View -->
+    <record id="view_medtech_service_visit_form" model="ir.ui.view">
+        <field name="name">medtech.service.visit.form</field>
+        <field name="model">medtech.service.visit</field>
+        <field name="arch" type="xml">
+            <form string="Service Visit">
+                <header>
+                    <button name="action_start_visit" string="Start Visit" type="object" class="oe_highlight" invisible="state != 'scheduled'"/>
+                    <button name="action_complete_visit" string="Complete Visit" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_view_dhr" string="View DHR" type="object" icon="fa-history" invisible="not dhr_id"/>
+                    <field name="state" widget="statusbar" statusbar_visible="scheduled,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-camera-retro">
+                            <field name="photo_count" widget="statinfo" string="Photos"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Device &amp; Customer">
+                            <field name="device_serial_id"/>
+                            <field name="device_product_id"/>
+                            <field name="customer_id"/>
+                            <field name="customer_location"/>
+                        </group>
+                        <group string="Visit Details">
+                            <field name="service_type"/>
+                            <field name="scheduled_date"/>
+                            <field name="visit_date"/>
+                            <field name="completion_date"/>
+                            <field name="technician_id"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Work Description">
+                        <field name="work_description" nolabel="1"/>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Problem &amp; Resolution">
+                            <group string="Problem">
+                                <field name="problem_reported" nolabel="1"/>
+                            </group>
+                            <group string="Root Cause">
+                                <field name="root_cause" nolabel="1"/>
+                            </group>
+                            <group string="Corrective Action">
+                                <field name="corrective_action" nolabel="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Parts Replaced">
+                            <field name="parts_replaced_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="old_serial_id"/>
+                                    <field name="new_serial_id"/>
+                                    <field name="quantity"/>
+                                    <field name="reason"/>
+                                    <field name="old_part_condition"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                        <page string="Firmware/Software">
+                            <group>
+                                <field name="firmware_version_old"/>
+                                <field name="firmware_version_new"/>
+                            </group>
+                            <group string="Changes">
+                                <field name="software_changes" nolabel="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Test Results">
+                            <group>
+                                <field name="device_condition"/>
+                            </group>
+                            <group string="Calibration Results">
+                                <field name="calibration_results" nolabel="1"/>
+                            </group>
+                            <group string="Test Results">
+                                <field name="test_results" nolabel="1"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Signatures &amp; Photos">
+                            <group>
+                                <field name="signature" widget="image"/>
+                                <field name="customer_signature" widget="image"/>
+                            </group>
+                            <field name="photos" widget="many2many_binary"/>
+                        </page>
+                        
+                        <page string="Follow-up">
+                            <group>
+                                <field name="followup_required"/>
+                                <field name="followup_date" invisible="not followup_required"/>
+                                <field name="followup_notes" invisible="not followup_required"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Service Visit Action -->
+    <record id="action_medtech_service_visit" model="ir.actions.act_window">
+        <field name="name">Service Visits</field>
+        <field name="res_model">medtech.service.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Schedule your first Service Visit
+            </p>
+        </field>
+    </record>
+
+    <!-- Maintenance Plan Tree View -->
+    <record id="view_medtech_maintenance_plan_tree" model="ir.ui.view">
+        <field name="name">medtech.maintenance.plan.tree</field>
+        <field name="model">medtech.maintenance.plan</field>
+        <field name="arch" type="xml">
+            <list string="Maintenance Plans" decoration-danger="status == 'overdue'">
+                <field name="display_name"/>
+                <field name="device_serial_id"/>
+                <field name="customer_id"/>
+                <field name="frequency"/>
+                <field name="next_service_date"/>
+                <field name="status"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Maintenance Plan Form View -->
+    <record id="view_medtech_maintenance_plan_form" model="ir.ui.view">
+        <field name="name">medtech.maintenance.plan.form</field>
+        <field name="model">medtech.maintenance.plan</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Plan">
+                <header>
+                    <button name="action_create_service_visit" string="Create Service Visit" type="object" class="oe_highlight"/>
+                    <button name="action_reschedule" string="Reschedule" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-wrench">
+                            <field name="visit_count" widget="statinfo" string="Visits"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group string="Device">
+                            <field name="device_serial_id"/>
+                            <field name="device_product_id"/>
+                            <field name="customer_id"/>
+                        </group>
+                        <group string="Schedule">
+                            <field name="frequency"/>
+                            <field name="service_type"/>
+                            <field name="last_service_date"/>
+                            <field name="next_service_date"/>
+                            <field name="technician_id"/>
+                            <field name="status"/>
+                        </group>
+                    </group>
+                    <group string="Service Checklist">
+                        <field name="service_checklist" nolabel="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Service History">
+                            <field name="service_visit_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Maintenance Plan Action -->
+    <record id="action_medtech_maintenance_plan" model="ir.actions.act_window">
+        <field name="name">Maintenance Plans</field>
+        <field name="res_model">medtech.maintenance.plan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Maintenance Plan
+            </p>
+        </field>
+    </record>
+
+</odoo>

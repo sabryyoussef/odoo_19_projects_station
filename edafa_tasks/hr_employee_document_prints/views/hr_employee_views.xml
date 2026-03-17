@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_document_prints" model="ir.ui.view">
+        <field name="name">hr.employee.form.document.prints</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button
+                    name="action_print_work_commencement_notice"
+                    type="object"
+                    string="إشعار مباشرة عمل"
+                    class="btn btn-secondary"
+                    groups="hr.group_hr_user,hr.group_hr_manager"
+                    invisible="not id"
+                />
+            </xpath>
+
+            <xpath expr="//field[@name='private_email']" position="after">
+                <field name="document_nationality_id" groups="hr.group_hr_user,hr.group_hr_manager"/>
+                <field name="document_id_iqama" groups="hr.group_hr_user,hr.group_hr_manager"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

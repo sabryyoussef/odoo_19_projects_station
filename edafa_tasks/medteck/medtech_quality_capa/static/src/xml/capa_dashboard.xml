@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="medtech_quality_capa.CapaDashboard">
+        <div class="o_capa_dashboard p-3">
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <i class="fa fa-tasks fa-2x text-primary me-2"></i>
+                <div>
+                    <h3 class="mb-0">CAPA Dashboard</h3>
+                    <small class="text-muted">Corrective &amp; Preventive Action Monitoring</small>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <t t-if="state.loading">
+                <div class="text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-3x text-primary"></i>
+                    <p class="mt-3 text-muted">Loading CAPA dashboard data...</p>
+                </div>
+            </t>
+
+            <!-- Dashboard Content -->
+            <t t-else="">
+                <!-- KPI Cards Row -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card border-primary shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewAllCapas()">
+                            <div class="card-body text-center">
+                                <i class="fa fa-clipboard-list fa-2x text-primary mb-2"></i>
+                                <h4 class="mb-1" t-esc="state.stats.totalCapas"></h4>
+                                <p class="text-muted mb-0">Total CAPAs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-warning shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewOpenCapas()">
+                            <div class="card-body text-center">
+                                <i class="fa fa-folder-open fa-2x text-warning mb-2"></i>
+                                <h4 class="mb-1" t-esc="state.stats.openCapas"></h4>
+                                <p class="text-muted mb-0">Open CAPAs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-danger shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewOverdueCapas()">
+                            <div class="card-body text-center">
+                                <i class="fa fa-exclamation-triangle fa-2x text-danger mb-2"></i>
+                                <h4 class="mb-1" t-esc="state.stats.overdueCapas"></h4>
+                                <p class="text-muted mb-0">Overdue</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-success shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewClosedThisMonth()">
+                            <div class="card-body text-center">
+                                <i class="fa fa-check-circle fa-2x text-success mb-2"></i>
+                                <h4 class="mb-1" t-esc="state.stats.closedThisMonth"></h4>
+                                <p class="text-muted mb-0">Closed This Month</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage Breakdown Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="mb-3">
+                            <i class="fa fa-stream me-2"></i>CAPA Breakdown by Stage
+                        </h5>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-secondary shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('draft')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.draft"></h5>
+                                <small class="text-muted">Draft</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-primary shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('in_progress')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.in_progress"></h5>
+                                <small class="text-muted">In Progress</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-warning shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('pending_approval')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.pending_approval"></h5>
+                                <small class="text-muted">Pending Approval</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-success shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('approved')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.approved"></h5>
+                                <small class="text-muted">Approved</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-info shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('effectiveness')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.effectiveness"></h5>
+                                <small class="text-muted">Effectiveness</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card border-success shadow-sm" style="cursor: pointer;" t-on-click="() => this.viewCapasByStage('closed')">
+                            <div class="card-body text-center p-2">
+                                <h5 class="mb-1" t-esc="state.capasByStage.closed"></h5>
+                                <small class="text-muted">Closed</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overdue CAPAs Table -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-danger text-white">
+                                <i class="fa fa-exclamation-triangle me-2"></i>
+                                <strong>Overdue CAPAs (Aging Analysis)</strong>
+                            </div>
+                            <div class="card-body p-0">
+                                <t t-if="state.overdueCAPAs.length > 0">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>CAPA ID</th>
+                                                <th>Type</th>
+                                                <th>Priority</th>
+                                                <th>Status</th>
+                                                <th>Target Date</th>
+                                                <th>Aging (Days)</th>
+                                                <th>Responsible</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="state.overdueCAPAs" t-as="capa" t-key="capa.id">
+                                                <td><strong t-esc="capa.name"></strong></td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getTypeBadgeClass(capa.source)" t-esc="capa.source"></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getPriorityBadgeClass(capa.severity)" t-esc="capa.severity"></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getStateBadgeClass(capa.state)" t-esc="capa.state"></span>
+                                                </td>
+                                                <td t-esc="capa.target_completion_date"></td>
+                                                <td>
+                                                    <span class="badge badge-danger" t-esc="this.calculateAgingDays(capa.target_completion_date) + ' days'"></span>
+                                                </td>
+                                                <td t-esc="capa.responsible_id ? capa.responsible_id[1] : 'Unassigned'"></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary" t-on-click="() => this.openCapa(capa.id)">
+                                                        <i class="fa fa-eye"></i> View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center p-4 text-success">
+                                        <i class="fa fa-check-circle fa-2x mb-2"></i>
+                                        <p class="mb-0">No overdue CAPAs! Excellent compliance.</p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two Column Layout: Recent CAPAs + Effectiveness Checks -->
+                <div class="row">
+                    <!-- Recent CAPAs -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <i class="fa fa-clock me-2"></i>
+                                <strong>Recent CAPAs</strong>
+                            </div>
+                            <div class="card-body p-0">
+                                <t t-if="state.recentCAPAs.length > 0">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>CAPA ID</th>
+                                                <th>Type</th>
+                                                <th>Priority</th>
+                                                <th>Status</th>
+                                                <th>Created</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="state.recentCAPAs" t-as="capa" t-key="capa.id">
+                                                <td>
+                                                    <a href="#" t-on-click.prevent="() => this.openCapa(capa.id)">
+                                                        <strong t-esc="capa.name"></strong>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getTypeBadgeClass(capa.source)" t-esc="capa.source"></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getPriorityBadgeClass(capa.severity)" t-esc="capa.severity"></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getStateBadgeClass(capa.state)" t-esc="capa.state"></span>
+                                                </td>
+                                                <td t-esc="capa.create_date"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center p-4 text-muted">
+                                        <p class="mb-0">No recent CAPAs.</p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Effectiveness Checks Due -->
+                    <div class="col-md-6">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-info text-white">
+                                <i class="fa fa-check-square me-2"></i>
+                                <strong>Effectiveness Checks Due</strong>
+                            </div>
+                            <div class="card-body p-0">
+                                <t t-if="state.effectivenessChecksDue.length > 0">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>CAPA ID</th>
+                                                <th>Type</th>
+                                                <th>Check Date</th>
+                                                <th>Responsible</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="state.effectivenessChecksDue" t-as="capa" t-key="capa.id">
+                                                <td>
+                                                    <a href="#" t-on-click.prevent="() => this.openCapa(capa.id)">
+                                                        <strong t-esc="capa.name"></strong>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <span class="badge" t-att-class="this.getTypeBadgeClass(capa.source)" t-esc="capa.source"></span>
+                                                </td>
+                                                <td t-esc="capa.effectiveness_check_date"></td>
+                                                <td t-esc="capa.responsible_id ? capa.responsible_id[1] : 'Unassigned'"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <div class="text-center p-4 text-muted">
+                                        <p class="mb-0">No effectiveness checks pending.</p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_kanban_elevator_flow" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.elevator.flow</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_group_by">elevator_flow_stage</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_crm_case_opportunities_filter_elevator_flow" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.elevator.flow</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="elevator_flow_stage"/>
+                <filter name="group_by_elevator_flow_stage" string="Elevator Flow" context="{'group_by': 'elevator_flow_stage'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_elevator_flow_dashboard" model="ir.actions.act_window">
+        <field name="name">Elevator Flow Dashboard</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{'default_type': 'opportunity', 'search_default_group_by_elevator_flow_stage': 1}</field>
+    </record>
+
+    <menuitem id="menu_elevator_flow_dashboard" name="Elevator Flow" parent="crm.crm_menu_root" action="action_elevator_flow_dashboard" sequence="30"/>
+</odoo>

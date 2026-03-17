@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- DHR Report Template -->
+    <template id="report_dhr_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <!-- Header Section -->
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h2 class="text-primary">
+                            <strong>DEVICE HISTORY RECORD (DHR)</strong>
+                        </h2>
+                        <p class="text-muted">FDA 21 CFR 820.184 | ISO 13485:2016 Clause 4.2.5</p>
+                    </div>
+                </div>
+
+                <!-- DHR Header Information -->
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td class="bg-light" width="40%"><strong>DHR Number:</strong></td>
+                                <td><t t-esc="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Serial Number:</strong></td>
+                                <td><t t-esc="o.serial_number"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Product:</strong></td>
+                                <td><t t-esc="o.product_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Product Code:</strong></td>
+                                <td><t t-esc="o.product_id.default_code"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td class="bg-light" width="40%"><strong>Manufacturing Date:</strong></td>
+                                <td><t t-esc="o.manufacturing_date"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Lot Number (if applicable):</strong></td>
+                                <td><t t-esc="o.lot_id.name if o.lot_id else 'N/A'"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>UDI-DI:</strong></td>
+                                <td><t t-esc="o.product_id.udi_di or 'N/A'"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Report Generated:</strong></td>
+                                <td><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Bill of Materials (Components) -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h5 class="bg-primary text-white p-2">1. Bill of Materials (Components Used)</h5>
+                        <table class="table table-sm table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Part Number</th>
+                                    <th>Lot/Serial</th>
+                                    <th>Quantity</th>
+                                    <th>Supplier</th>
+                                    <th>Cert Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.component_ids" t-as="comp">
+                                    <tr>
+                                        <td><t t-esc="comp.product_id.name"/></td>
+                                        <td><t t-esc="comp.product_id.default_code"/></td>
+                                        <td><t t-esc="comp.lot_id.name if comp.lot_id else comp.serial_number"/></td>
+                                        <td><t t-esc="comp.quantity_used"/> <t t-esc="comp.product_id.uom_id.name"/></td>
+                                        <td><t t-esc="comp.supplier_id.name if comp.supplier_id else 'Internal'"/></td>
+                                        <td>
+                                            <span t-if="comp.certification_status == 'valid'" class="badge badge-success">Valid</span>
+                                            <span t-elif="comp.certification_status == 'expired'" class="badge badge-danger">Expired</span>
+                                            <span t-else="" class="badge badge-warning">N/A</span>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr t-if="not o.component_ids">
+                                    <td colspan="6" class="text-center text-muted">No components recorded</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Final Release &amp; Certification -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <h5 class="bg-success text-white p-2">2. Final Release &amp; Certification</h5>
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td class="bg-light" width="30%"><strong>Release Status:</strong></td>
+                                <td>
+                                    <span t-if="o.state == 'released'" class="badge badge-success">RELEASED</span>
+                                    <span t-elif="o.state == 'quarantine'" class="badge badge-danger">QUARANTINE</span>
+                                    <span t-else="" class="badge badge-warning"><t t-esc="o.state.upper()"/></span>
+                                </td>
+                                <td class="bg-light" width="30%"><strong>Released By:</strong></td>
+                                <td><t t-esc="o.released_by.name if o.released_by else 'Pending'"/></td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light"><strong>Release Date:</strong></td>
+                                <td><t t-esc="o.release_date or 'Pending'"/></td>
+                                <td class="bg-light"><strong>Expiration Date:</strong></td>
+                                <td><t t-esc="o.expiration_date or 'N/A'"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td width="50%" class="p-4">
+                                    <strong>QA Approval:</strong><br/>
+                                    <t t-if="o.qa_approved_by">
+                                        Name: <t t-esc="o.qa_approved_by.name"/><br/>
+                                        Date: <t t-esc="o.qa_approval_date"/><br/>
+                                        <em>Electronic Signature on File</em>
+                                    </t>
+                                    <t t-else="">
+                                        <em class="text-muted">Pending QA Approval</em>
+                                    </t>
+                                </td>
+                                <td width="50%" class="p-4">
+                                    <strong>Regulatory Approval:</strong><br/>
+                                    <t t-if="o.regulatory_approved_by">
+                                        Name: <t t-esc="o.regulatory_approved_by.name"/><br/>
+                                        Date: <t t-esc="o.regulatory_approval_date"/><br/>
+                                        <em>Electronic Signature on File</em>
+                                    </t>
+                                    <t t-else="">
+                                        <em class="text-muted">Pending Regulatory Approval</em>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="row mt-3">
+                    <div class="col-12 text-center text-muted">
+                        <small>
+                            This DHR is a controlled document. Unauthorized reproduction or modification is prohibited.<br/>
+                            Document generated from MedTech ERP System on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Report Definition -->
+    <record id="action_report_dhr" model="ir.actions.report">
+        <field name="name">Device History Record</field>
+        <field name="model">medtech.dhr</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medtech_traceability.report_dhr_document</field>
+        <field name="report_file">medtech_traceability.report_dhr_document</field>
+        <field name="binding_model_id" ref="model_medtech_dhr"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_us"/>
+    </record>
+</odoo>
+

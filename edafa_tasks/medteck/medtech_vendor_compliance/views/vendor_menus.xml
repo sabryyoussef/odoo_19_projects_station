@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vendor Compliance Submenu -->
+    <menuitem id="menu_medtech_vendor"
+              name="Vendor Compliance"
+              parent="medtech_core.menu_medtech_root"
+              sequence="50"/>
+
+    <menuitem id="menu_vendor_certification"
+              name="Vendor Certifications"
+              parent="menu_medtech_vendor"
+              action="action_medtech_vendor_certification"
+              sequence="10"/>
+
+</odoo>
