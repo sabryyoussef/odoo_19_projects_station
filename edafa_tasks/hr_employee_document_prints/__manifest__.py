@@ -18,4 +18,7 @@ The module is structured to support additional HR document templates later.
     'installable': True,
     'application': False,
     'auto_install': False,
+    'test': [
+        'tests/test_hr_employee_document_prints.py',
+    ],
 }
